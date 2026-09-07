@@ -115,6 +115,39 @@ function createContext(fetch) {
   return { api: window.SiyadaoDownloads, window, clock };
 }
 
+test('正式官网按需读取固定同源入口，本地预览使用公开 API', async () => {
+  const urls = [];
+  const { api, window } = createContext(async (url) => {
+    urls.push(url);
+    return response([]);
+  });
+  window.location = { hostname: 'studio.siyadao.cn' };
+  window.SIYADAO_REPOSITORY = 'siyadao/studio';
+  assert.equal(urls.length, 0);
+  await api.getRelease();
+  assert.deepEqual(urls, ['/api/releases']);
+  const local = createContext(async (url) => {
+    urls.push(url);
+    return response([]);
+  });
+  local.window.location = { hostname: '127.0.0.1' };
+  local.window.SIYADAO_REPOSITORY = 'siyadao/studio';
+  await local.api.getRelease();
+  assert.equal(urls[1], 'https://api.github.com/repos/siyadao/studio/releases?per_page=20');
+});
+
+test('服务端过期缓存保留显式提示，允许立即重新获取', async () => {
+  let calls = 0;
+  const { api, window } = createContext(async () => {
+    calls++;
+    return { ...response([]), headers: new Headers({ 'X-Release-Cache': calls === 1 ? 'STALE' : 'HIT' }) };
+  });
+  window.SIYADAO_REPOSITORY = 'siyadao/studio';
+  assert.equal((await api.getRelease()).stale, true);
+  assert.equal((await api.getRelease()).stale, false);
+  assert.equal(calls, 2);
+});
+
 test('按发布时间识别 preview，各平台取最近可用包并标注自己的版本', async () => {
   const mac = { ...asset('macos-arm64.dmg'), browser_download_url: 'https://github.com/demo/product/releases/download/v2/siyadao-macos-arm64.dmg' };
   const windows = asset('windows-x64.zip');

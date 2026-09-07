@@ -1,7 +1,7 @@
 /** 公开安装包仓库，填入 owner/name；留空时不发起任何外部请求。 */
 window.SIYADAO_REPOSITORY = 'siyadao/studio';
 
-/** 六种平台共用一个按需请求与短期缓存，不需要后端或 GitHub 凭据。 */
+/** 六种平台共用按需请求与短期缓存；官网复用 Nginx 缓存，不需要 GitHub 凭据。 */
 window.SiyadaoDownloads = (() => {
   const platforms = [
     {
@@ -49,7 +49,7 @@ window.SiyadaoDownloads = (() => {
     const repository = window.SIYADAO_REPOSITORY;
     const key = repository;
     if (!repository) return { status: 'setup', assets: {} };
-    if (cached?.key === key && Date.now() - cached.at < 60000)
+    if (cached?.key === key && !cached.value.stale && Date.now() - cached.at < 60000)
       return cached.value;
     if (inflight?.key === key) return inflight.promise;
     const promise = requestRelease(repository).then((value) => {
@@ -84,8 +84,12 @@ window.SiyadaoDownloads = (() => {
         throw new Error('发布仓库应为 owner/name');
       }
       console.info('[downloads] 开始读取公开版本');
+      // 正式站点共用匿名缓存，避免每位访客都受 GitHub 网络与限流影响；本地预览仍独立可用。
+      const endpoint = window.location?.hostname === 'studio.siyadao.cn' && repository === 'siyadao/studio'
+        ? '/api/releases'
+        : `https://api.github.com/repos/${repository}/releases?per_page=20`;
       const response = await fetch(
-        `https://api.github.com/repos/${repository}/releases?per_page=20`,
+        endpoint,
         {
           headers: { Accept: 'application/vnd.github+json' },
           credentials: 'omit',
@@ -95,7 +99,7 @@ window.SiyadaoDownloads = (() => {
       const releaseUrl = `https://github.com/${repository}/releases`;
       if (response.status === 404)
         return { status: 'empty', assets: {}, releaseUrl };
-      if (!response.ok) throw new Error('公开版本服务暂不可用');
+      if (!response.ok) throw new Error(`公开版本服务暂不可用（HTTP ${response.status}）`);
       const data = await response.json();
       if (!Array.isArray(data)) {
         throw new Error('公开版本数据格式错误');
@@ -150,6 +154,7 @@ window.SiyadaoDownloads = (() => {
         status: 'ready',
         version: latest.tag_name,
         prerelease: latest.prerelease,
+        stale: ['STALE', 'UPDATING'].includes(response.headers?.get('X-Release-Cache')),
         releaseUrl: `${releaseUrl}/tag/${encodeURIComponent(latest.tag_name)}`,
         assets,
       };
