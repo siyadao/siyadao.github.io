@@ -145,17 +145,18 @@
       label.textContent = platform.label;
       const size = document.createElement("small");
       size.textContent = asset
-        ? `${Math.max(1, Math.round(asset.size / 1024 / 1024))} MB`
+        ? `${Math.max(1, Math.round(asset.size / 1024 / 1024))} MB${asset.version !== release.version ? ` · ${asset.version}` : ''}`
         : loading
           ? "查询中"
           : release.status === "unavailable"
             ? "暂不可用"
-            : "未发布";
+            : "暂无安装包";
       option.append(label, size);
       if (asset) {
         option.href = asset.url;
         option.download = asset.name;
-        option.setAttribute("aria-label", `下载 ${platform.label}`);
+        option.setAttribute("aria-label", `下载 ${platform.label} ${asset.version}`);
+        option.title = `${platform.label} · ${asset.version}`;
       } else {
         option.type = "button";
         option.disabled = true;
@@ -170,10 +171,14 @@
     };
     menu.querySelector(".download-status").textContent = loading
       ? "正在获取最新版本…"
+      : release.stale
+        ? "暂时无法刷新，当前显示上次获取的版本。"
       : release.status === "ready" && release.prerelease
-        ? "测试版 · 未签名/未公证；点击平台即可下载。"
+        ? Object.values(release.assets).some((asset) => asset.version !== release.version)
+          ? "测试版 · 各平台版本可能不同，以下载项为准。"
+          : "测试版 · 未签名/未公证；点击平台即可下载。"
         : messages[release.status];
-    menu.querySelector(".download-retry").hidden = loading || release.status !== "unavailable";
+    menu.querySelector(".download-retry").hidden = loading || (release.status !== "unavailable" && !release.stale);
     const history = menu.querySelector(".release-history");
     history.hidden = !release.releaseUrl;
     if (release.releaseUrl) history.href = release.releaseUrl;

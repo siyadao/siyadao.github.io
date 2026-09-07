@@ -46,11 +46,11 @@ python3 scripts/package-samples.py
 
 保留 macOS M 芯片、macOS Intel、Windows x86_64、Windows ARM64、Linux x86_64、Linux ARM64 六种平台入口。
 
-`downloads.js` 顶部的 `window.SIYADAO_REPOSITORY` 指向公开安装包仓库 `siyadao/studio`。`window.SIYADAO_RELEASE_MANIFEST` 指向发布完成后导出的同源清单 `public/releases/v0.1.0-preview.1.json`；不得在 GitHub Release 仍为草稿时部署清单。
+`downloads.js` 顶部的 `window.SIYADAO_REPOSITORY` 指向公开安装包仓库 `siyadao/studio`。版本名和各平台链接自动读取 GitHub 最近 20 个公开 Release（包含 preview），不再写死版本或依赖每次手动更新同源清单。
 
-仅在用户首次打开下载菜单时读取同源清单，不需要后端、API Key 或 Token，也不消耗访问者的 GitHub API 额度。多个入口合并请求，成功结果缓存五分钟。清单记录实际公开版本、草稿/测试版状态及真实附件；只接受同一仓库、同一版本的 `/releases/download/` 文件链接，点击平台直接下载文件，不经过 GitHub 发布详情页。缺少的架构禁用，测试版明确提示未签名/未公证，问题反馈仍指向 GitHub Issues。
+用户打开下载菜单时才发起一次匿名请求，不需要后端、API Key 或 Token；多个入口合并请求，成功结果缓存一分钟。各平台独立选择最近可用安装包，并明确显示旧版本；只接受所属公开仓库及对应版本的 `/releases/download/` 链接。草稿不会出现，缺少的架构禁用，问题反馈指向 GitHub Issues。
 
-若将清单配置设为空，仍支持按需读取 GitHub 最新稳定版。建议附件名包含版本、平台和架构，例如 `siyadao-v0.1.0-preview.1-macos-arm64.dmg`、`siyadao-v0.1.0-preview.1-windows-x64.zip`。清单必须在附件公开且 SHA-256 验证后生成；实际联调与部署证据单独记录。
+建议附件名包含版本、平台和架构，例如 `siyadao-v0.1.1-preview-macos-arm64.dmg`。以后在 GitHub 完成新版附件上传并公开发布即可，官网不需要逐版修改。匿名 API 有限流与网络可用性限制：首次失败显示重试；已有结果刷新失败时显示上次有效版本及明确的缓存提示，不能宣称绝对实时。`public/releases/` 仅保留历史记录，已不参与下载逻辑。
 
 ## 迁移说明
 

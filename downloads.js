@@ -1,7 +1,5 @@
 /** 公开安装包仓库，填入 owner/name；留空时不发起任何外部请求。 */
 window.SIYADAO_REPOSITORY = 'siyadao/studio';
-/** 发布完成后部署同源清单，避免浏览器依赖 GitHub API 额度；文件链接仍直达安装包。 */
-window.SIYADAO_RELEASE_MANIFEST = 'public/releases/v0.1.0-preview.1.json';
 
 /** 六种平台共用一个按需请求与短期缓存，不需要后端或 GitHub 凭据。 */
 window.SiyadaoDownloads = (() => {
@@ -46,22 +44,23 @@ window.SiyadaoDownloads = (() => {
   let cached;
   let inflight;
 
-  /** 首次打开菜单才读取发布清单；未指定清单时读取最新稳定版。 */
+  /** 打开菜单时读取最近公开版本（含 preview），一分钟内复用结果；不在启动时请求或轮询。 */
   async function getRelease() {
     const repository = window.SIYADAO_REPOSITORY;
-    const manifest = window.SIYADAO_RELEASE_MANIFEST;
-    const key = JSON.stringify([repository, manifest]);
+    const key = repository;
     if (!repository) return { status: 'setup', assets: {} };
-    if (cached?.key === key && Date.now() - cached.at < 300000)
+    if (cached?.key === key && Date.now() - cached.at < 60000)
       return cached.value;
     if (inflight?.key === key) return inflight.promise;
-    const promise = requestRelease(repository, manifest);
+    const promise = requestRelease(repository).then((value) => {
+      if (value.status === 'unavailable' && cached?.key === key)
+        return { ...cached.value, stale: true };
+      if (value.status !== 'unavailable') cached = { key, at: Date.now(), value };
+      return value;
+    });
     inflight = { key, promise };
     try {
-      const value = await promise;
-      if (value.status !== 'unavailable')
-        cached = { key, at: Date.now(), value };
-      return value;
+      return await promise;
     } finally {
       if (inflight?.promise === promise) inflight = undefined;
     }
@@ -76,7 +75,7 @@ window.SiyadaoDownloads = (() => {
       : null;
   }
 
-  async function requestRelease(repository, manifest) {
+  async function requestRelease(repository) {
     try {
       if (
         typeof repository !== 'string' ||
@@ -84,11 +83,9 @@ window.SiyadaoDownloads = (() => {
       ) {
         throw new Error('发布仓库应为 owner/name');
       }
-      if (manifest && (typeof manifest !== 'string' || !/^public\/releases\/[a-zA-Z0-9_.-]+\.json$/.test(manifest)))
-        throw new Error('发布清单必须为本站相对路径');
       console.info('[downloads] 开始读取公开版本');
       const response = await fetch(
-        manifest || `https://api.github.com/repos/${repository}/releases/latest`,
+        `https://api.github.com/repos/${repository}/releases?per_page=20`,
         {
           headers: { Accept: 'application/vnd.github+json' },
           credentials: 'omit',
@@ -100,17 +97,17 @@ window.SiyadaoDownloads = (() => {
         return { status: 'empty', assets: {}, releaseUrl };
       if (!response.ok) throw new Error('公开版本服务暂不可用');
       const data = await response.json();
-      // GitHub 是外部数据边界：版本字段与下载链接在此校验一次。
-      if (
-        !data ||
-        typeof data.tag_name !== 'string' ||
-        data.draft !== false ||
-        typeof data.prerelease !== 'boolean' ||
-        !Array.isArray(data.assets)
-      ) {
+      if (!Array.isArray(data)) {
         throw new Error('公开版本数据格式错误');
       }
-      const available = data.assets.flatMap((item) => {
+      // 最近 20 个公开版本构成一次有界请求，各平台独立选包；草稿绝不进入下载项。
+      const releases = data.filter((release) => release && release.draft === false &&
+        typeof release.tag_name === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(release.tag_name) &&
+        typeof release.prerelease === 'boolean' && Array.isArray(release.assets))
+        .sort((a, b) => (Date.parse(b.published_at || b.created_at) || 0) - (Date.parse(a.published_at || a.created_at) || 0));
+      if (!releases.length) return { status: 'empty', assets: {}, releaseUrl };
+      const latest = releases[0];
+      const available = releases.flatMap((release, rank) => release.assets.flatMap((item) => {
         if (
           !item ||
           typeof item.name !== 'string' ||
@@ -119,6 +116,7 @@ window.SiyadaoDownloads = (() => {
           item.size < 0
         )
           return [];
+        const version = release.tag_name;
         let url;
         try {
           url = new URL(item.browser_download_url);
@@ -129,11 +127,11 @@ window.SiyadaoDownloads = (() => {
           url.origin !== 'https://github.com' ||
           url.username ||
           url.password ||
-          !url.pathname.startsWith(`/${repository}/releases/download/${encodeURIComponent(data.tag_name)}/`)
+          !url.pathname.startsWith(`/${repository}/releases/download/${encodeURIComponent(version)}/`)
         )
           return [];
-        return [{ name: item.name, url: url.href, size: item.size }];
-      });
+        return [{ name: item.name, url: url.href, size: item.size, version, rank }];
+      }));
       const assets = {};
       for (const platform of platforms) {
         const candidates = available.filter((asset) =>
@@ -141,6 +139,7 @@ window.SiyadaoDownloads = (() => {
         );
         candidates.sort(
           (a, b) =>
+            a.rank - b.rank ||
             installPriority(a.name) - installPriority(b.name) ||
             a.name.localeCompare(b.name),
         );
@@ -149,9 +148,9 @@ window.SiyadaoDownloads = (() => {
       console.info('[downloads] 公开版本读取成功');
       return {
         status: 'ready',
-        version: data.tag_name,
-        prerelease: data.prerelease,
-        releaseUrl: `${releaseUrl}/tag/${encodeURIComponent(data.tag_name)}`,
+        version: latest.tag_name,
+        prerelease: latest.prerelease,
+        releaseUrl: `${releaseUrl}/tag/${encodeURIComponent(latest.tag_name)}`,
         assets,
       };
     } catch (error) {

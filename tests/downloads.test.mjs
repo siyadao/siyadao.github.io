@@ -18,7 +18,7 @@ test('初始化与未配置仓库不会触发请求', async () => {
   assert.equal(calls, 0);
 });
 
-test('多个入口合并首次请求，成功结果缓存五分钟', async () => {
+test('多个入口合并首次请求，成功结果缓存一分钟', async () => {
   let calls = 0;
   let finish;
   const { api, window, clock } = createContext(() => {
@@ -36,7 +36,7 @@ test('多个入口合并首次请求，成功结果缓存五分钟', async () =>
   await second;
   await api.getRelease();
   assert.equal(calls, 1);
-  clock.now += 300001;
+  clock.now += 60001;
   const expired = api.getRelease();
   assert.equal(calls, 2);
   finish(response([]));
@@ -108,13 +108,31 @@ function createContext(fetch) {
     fetch,
     URL,
     AbortSignal,
-    Date: { now: () => clock.now },
+    Date: { now: () => clock.now, parse: Date.parse },
     console: { info() {}, warn() {} },
   });
   window.SIYADAO_REPOSITORY = null;
-  window.SIYADAO_RELEASE_MANIFEST = null;
   return { api: window.SiyadaoDownloads, window, clock };
 }
+
+test('按发布时间识别 preview，各平台取最近可用包并标注自己的版本', async () => {
+  const mac = { ...asset('macos-arm64.dmg'), browser_download_url: 'https://github.com/demo/product/releases/download/v2/siyadao-macos-arm64.dmg' };
+  const windows = asset('windows-x64.zip');
+  const invalid = asset('linux-x64.AppImage');
+  const { api, window } = createContext(async () => ({
+    ...response([]), json: async () => [
+      { tag_name: 'v1', published_at: '2026-09-06T00:00:00Z', draft: false, prerelease: false, assets: [windows, asset('macos-arm64.dmg')] },
+      { tag_name: 'v2', published_at: '2026-09-07T00:00:00Z', draft: false, prerelease: true, assets: [mac, invalid] },
+    ],
+  }));
+  window.SIYADAO_REPOSITORY = 'demo/product';
+  const release = await api.getRelease();
+  assert.equal(release.version, 'v2');
+  assert.equal(release.assets['macos-arm64'].version, 'v2');
+  assert.equal(release.assets['windows-x64'].version, 'v1');
+  assert.match(release.assets['windows-x64'].url, /\/download\/v1\//);
+  assert.equal(release.assets['linux-x64'], undefined);
+});
 
 function asset(name) {
   return {
@@ -128,28 +146,27 @@ function response(assets) {
   return {
     ok: true,
     status: 200,
-    json: async () => ({ tag_name: 'v1', assets, draft: false, prerelease: false }),
+    json: async () => ([{ tag_name: 'v1', assets, draft: false, prerelease: false }]),
   };
 }
 
-test('官网读取同源测试版清单，平台链接直接指向安装包', async () => {
+test('官网自动读取公开版本列表而非仅支持稳定版的 latest 接口', async () => {
   const urls = [];
   const { api, window } = createContext(async (url) => {
     urls.push(url);
     return {
       ...response([]),
-      json: async () => ({ tag_name: 'v1', draft: false, prerelease: true, assets: [asset('macos-arm64.dmg'), asset('windows-x64.zip')] }),
+      json: async () => ([{ tag_name: 'v1', draft: false, prerelease: true, assets: [asset('macos-arm64.dmg'), asset('windows-x64.zip')] }]),
     };
   });
   window.SIYADAO_REPOSITORY = 'demo/product';
-  window.SIYADAO_RELEASE_MANIFEST = 'public/releases/v1.json';
   const release = await api.getRelease();
-  assert.deepEqual(urls, ['public/releases/v1.json']);
+  assert.deepEqual(urls, ['https://api.github.com/repos/demo/product/releases?per_page=20']);
   assert.equal(release.prerelease, true);
   assert.equal(release.releaseUrl, 'https://github.com/demo/product/releases/tag/v1');
   assert.match(release.assets['windows-x64'].url, /\/releases\/download\/v1\/.*\.zip$/);
   assert.equal(release.assets['windows-arm64'], undefined);
-  window.SIYADAO_RELEASE_MANIFEST = 'public/releases/v2.json';
+  window.SIYADAO_REPOSITORY = 'demo/another';
   await api.getRelease();
   assert.equal(urls.length, 2);
 });
@@ -157,14 +174,29 @@ test('官网读取同源测试版清单，平台链接直接指向安装包', as
 test('草稿版本及与版本号不一致的附件不能用于下载', async () => {
   const { api, window } = createContext(async () => ({
     ...response([]),
-    json: async () => ({ tag_name: 'v2', draft: false, prerelease: true, assets: [asset('windows-x64.zip')] }),
+    json: async () => ([{ tag_name: 'v2', draft: false, prerelease: true, assets: [asset('windows-x64.zip')] }]),
   }));
   window.SIYADAO_REPOSITORY = 'demo/product';
   assert.equal(Object.keys((await api.getRelease()).assets).length, 0);
   const draft = createContext(async () => ({
     ...response([]),
-    json: async () => ({ tag_name: 'v1', draft: true, prerelease: true, assets: [asset('macos-arm64.dmg')] }),
+    json: async () => ([{ tag_name: 'v1', draft: true, prerelease: true, assets: [asset('macos-arm64.dmg')] }]),
   }));
   draft.window.SIYADAO_REPOSITORY = 'demo/product';
-  assert.equal((await draft.api.getRelease()).status, 'unavailable');
+  assert.equal((await draft.api.getRelease()).status, 'empty');
+});
+
+test('临时断网保留上次有效版本并明确标记缓存状态', async () => {
+  let calls = 0;
+  const { api, window, clock } = createContext(async () => {
+    if (++calls > 1) throw new Error('offline');
+    return response([asset('macos-arm64.dmg')]);
+  });
+  window.SIYADAO_REPOSITORY = 'demo/product';
+  const first = await api.getRelease();
+  clock.now += 60001;
+  const cached = await api.getRelease();
+  assert.equal(calls, 2);
+  assert.equal(cached.stale, true);
+  assert.equal(cached.assets['macos-arm64'].url, first.assets['macos-arm64'].url);
 });
