@@ -1,0 +1,66 @@
+{
+  "capturedAt": "2026-09-06",
+  "application": "思芽岛 QA",
+  "bundleId": "dev.lance.studio.qa.siyadao",
+  "applicationBuildDate": "2026-09-05",
+  "captureMethod": "CUA 原生应用窗口截图",
+  "format": "JPEG (original capture bytes)",
+  "retouched": false,
+  "sampleProject": "山野手记",
+  "shots": [
+    {
+      "file": "canvas.jpg",
+      "width": 1259,
+      "height": 768,
+      "sample": "02-灵感地图.excalidraw",
+      "action": "文件树打开 Excalidraw 文件，真实渲染"
+    },
+    {
+      "file": "writing.jpg",
+      "width": 1259,
+      "height": 768,
+      "sample": "01-创作手记.md",
+      "action": "文件树打开 Markdown 文件，真实渲染"
+    },
+    {
+      "file": "code.jpg",
+      "width": 1259,
+      "height": 768,
+      "sample": "03-trail.rs",
+      "action": "文件树打开 Rust 文件，真实语法高亮"
+    },
+    {
+      "file": "tools.jpg",
+      "width": 1259,
+      "height": 768,
+      "sample": "04-路线数据.json",
+      "action": "打开 JSON 格式化工具，输入相同路线数据，点击执行"
+    },
+    {
+      "file": "sticky-notes.jpg",
+      "width": 1259,
+      "height": 768,
+      "sample": "05-便签墙.md",
+      "action": "经用户授权备份原始便签数据，临时加载演示便签，从魔法球打开便签墙并拍摄；拍完恢复原文件并逐字节核对一致"
+    },
+    {
+      "file": "todo.jpg",
+      "width": 760,
+      "height": 561,
+      "sample": "06-TODO待办.md",
+      "action": "经用户授权备份原始待办数据，临时加载演示任务，打开 Quick Access 的 TODO 页拍摄；拍完恢复原文件并逐字节核对一致"
+    },
+    {
+      "file": "magic-ring.jpg",
+      "width": 220,
+      "height": 204,
+      "action": "单击原生魔法球展开工具环，保留截图原始白色背景与像素尺寸"
+    },
+    {
+      "file": "magic-orb.jpg",
+      "width": 36,
+      "height": 36,
+      "action": "原生魔法球收起状态，保留原始小尺寸截图作为素材，当前页面未使用"
+    }
+  ]
+}

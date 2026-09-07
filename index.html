@@ -1,0 +1,2261 @@
+<!doctype html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>思芽岛 — 让想法，即刻发生</title>
+    <meta
+      name="description"
+      content="便签记录灵感，TODO 推动计划，魔法球连接下一步。思芽岛以本地智能串联写作、白板、代码与开发工具。"
+    />
+    <link rel="icon" href="./public/favicon.svg" />
+    <link rel="canonical" href="https://studio.siyadao.cn/" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./downloads.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳转到正文</a>
+    <header class="site-header shell">
+      <a class="brand" href="#main" aria-label="思芽岛首页"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-sparkles"
+          aria-hidden="true"
+        >
+          <path
+            d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+          ></path>
+          <path d="M20 2v4"></path>
+          <path d="M22 4h-4"></path>
+          <circle cx="4" cy="20" r="2"></circle></svg
+        ><span>思芽岛</span><span class="brand-en">SIYADAO</span></a
+      >
+      <nav aria-label="主导航">
+        <a href="#intelligence">魔法球</a><a href="#workspace">工作台</a
+        ><a href="#highlights">亮点功能</a>
+        <div class="download-container">
+          <details class="download-menu download-menu-compact">
+            <summary class="nav-cta download-trigger">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-download"
+                aria-hidden="true"
+              >
+                <path d="M12 15V3"></path>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <path d="m7 10 5 5 5-5"></path></svg
+              ><span>应用下载</span
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-chevron-down"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </summary>
+            <div class="download-popup">
+              <div class="download-heading">
+                选择你的平台<span class="release-version">SIYADAO</span>
+              </div>
+              <div class="platform-list">
+                <button
+                  type="button"
+                  class="platform-option"
+                  data-platform="macos-arm64"
+                  disabled
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-monitor"
+                    aria-hidden="true"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                  ><span>macOS（M 芯片）</span><small>未发布</small>
+                </button>
+                <button
+                  type="button"
+                  class="platform-option"
+                  data-platform="macos-x64"
+                  disabled
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-monitor"
+                    aria-hidden="true"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                  ><span>macOS（Intel）</span><small>未发布</small>
+                </button>
+                <button
+                  type="button"
+                  class="platform-option"
+                  data-platform="windows-x64"
+                  disabled
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-monitor"
+                    aria-hidden="true"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                  ><span>Windows（x86_64）</span><small>未发布</small>
+                </button>
+                <button
+                  type="button"
+                  class="platform-option"
+                  data-platform="windows-arm64"
+                  disabled
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-monitor"
+                    aria-hidden="true"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                  ><span>Windows（ARM64）</span><small>未发布</small>
+                </button>
+                <button
+                  type="button"
+                  class="platform-option"
+                  data-platform="linux-x64"
+                  disabled
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-monitor"
+                    aria-hidden="true"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                  ><span>Linux（x86_64）</span><small>未发布</small>
+                </button>
+                <button
+                  type="button"
+                  class="platform-option"
+                  data-platform="linux-arm64"
+                  disabled
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-monitor"
+                    aria-hidden="true"
+                  >
+                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                    <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                  ><span>Linux（ARM64）</span><small>未发布</small>
+                </button>
+              </div>
+              <hr />
+              <output class="download-status" aria-live="polite"
+                >安装包发布准备中，敬请期待。</output
+              >
+              <button type="button" class="download-retry" hidden>
+                重新获取
+              </button>
+              <a
+                class="release-link release-history"
+                target="_blank"
+                rel="noreferrer"
+                hidden
+                >版本记录
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-up-right"
+                  aria-hidden="true"
+                >
+                  <path d="M7 7h10v10"></path>
+                  <path d="M7 17 17 7"></path></svg
+              ></a>
+              <a
+                class="release-link"
+                href="./public/samples/siyadao-samples.zip"
+                download
+                >先下载创作样例
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-up-right"
+                  aria-hidden="true"
+                >
+                  <path d="M7 7h10v10"></path>
+                  <path d="M7 17 17 7"></path></svg
+              ></a>
+            </div>
+          </details>
+        </div>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero shell" aria-labelledby="hero-title">
+        <div class="hero-field" aria-hidden="true">
+          <div class="field-orbit orbit-one"></div>
+          <div class="field-orbit orbit-two"></div>
+          <div class="field-cross"></div>
+          <span class="field-index">SIYADAO / INTELLIGENT WORKSPACE</span
+          ><span class="field-point point-a"></span
+          ><span class="field-point point-b"></span>
+        </div>
+        <p class="eyebrow">
+          <span class="live-dot"></span> LOCAL INTELLIGENCE. NATIVE POWER.
+        </p>
+        <h1 id="hero-title">让想法，<br /><span>即刻发生。</span></h1>
+        <p class="hero-description">
+          灵感、待办、创作，一处相连。<br />让魔法球，找到你的下一步。
+        </p>
+        <div class="hero-actions">
+          <div class="download-actions">
+            <div class="download-container">
+              <details class="download-menu">
+                <summary class="button-primary download-trigger">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-download"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 15V3"></path>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <path d="m7 10 5 5 5-5"></path></svg
+                  ><span>应用下载</span
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-chevron-down"
+                    aria-hidden="true"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </summary>
+                <div class="download-popup">
+                  <div class="download-heading">
+                    选择你的平台<span class="release-version">SIYADAO</span>
+                  </div>
+                  <div class="platform-list">
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="macos-arm64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>macOS（M 芯片）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="macos-x64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>macOS（Intel）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="windows-x64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Windows（x86_64）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="windows-arm64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Windows（ARM64）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="linux-x64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Linux（x86_64）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="linux-arm64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Linux（ARM64）</span><small>未发布</small>
+                    </button>
+                  </div>
+                  <hr />
+                  <output class="download-status" aria-live="polite"
+                    >安装包发布准备中，敬请期待。</output
+                  >
+                  <button type="button" class="download-retry" hidden>
+                    重新获取
+                  </button>
+                  <a
+                    class="release-link release-history"
+                    target="_blank"
+                    rel="noreferrer"
+                    hidden
+                    >版本记录
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-arrow-up-right"
+                      aria-hidden="true"
+                    >
+                      <path d="M7 7h10v10"></path>
+                      <path d="M7 17 17 7"></path></svg
+                  ></a>
+                  <a
+                    class="release-link"
+                    href="./public/samples/siyadao-samples.zip"
+                    download
+                    >先下载创作样例
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-arrow-up-right"
+                      aria-hidden="true"
+                    >
+                      <path d="M7 7h10v10"></path>
+                      <path d="M7 17 17 7"></path></svg
+                  ></a>
+                </div>
+              </details>
+            </div>
+            <button type="button" class="feedback-link" data-feedback="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-book-open"
+                aria-hidden="true"
+              >
+                <path d="M12 5v16"></path>
+                <path
+                  d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"
+                ></path></svg
+              >问题反馈<svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-up-right"
+                aria-hidden="true"
+              >
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </button>
+          </div>
+          <a class="button-text" href="#workspace"
+            >探索工作台
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></a>
+        </div>
+        <div class="hero-bottom">
+          <span>THINK IT. MAKE IT.</span
+          ><span class="micro">本地智能 · 原生性能 · 多维创作</span>
+        </div>
+      </section>
+      <section
+        class="workspace-section shell"
+        id="workspace"
+        aria-label="真实产品截图"
+      >
+        <div>
+          <div class="screenshot-gallery">
+            <div class="gallery-bar">
+              <div
+                class="scene-tabs"
+                role="tablist"
+                aria-label="选择产品展示场景"
+              >
+                <button
+                  type="button"
+                  class="scene-tab"
+                  role="tab"
+                  id="tab-sticky-notes"
+                  aria-controls="scene-sticky-notes"
+                  aria-selected="true"
+                  tabindex="0"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-sticky-note"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M21 9a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 15 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"
+                    ></path>
+                    <path d="M15 3v5a1 1 0 0 0 1 1h5"></path></svg
+                  >便签墙
+                </button>
+                <button
+                  type="button"
+                  class="scene-tab"
+                  role="tab"
+                  id="tab-todo"
+                  aria-controls="scene-todo"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-list-todo"
+                    aria-hidden="true"
+                  >
+                    <path d="M13 5h8"></path>
+                    <path d="M13 12h8"></path>
+                    <path d="M13 19h8"></path>
+                    <path d="m3 17 2 2 4-4"></path>
+                    <rect x="3" y="4" width="6" height="6" rx="1"></rect></svg
+                  >TODO
+                </button>
+                <button
+                  type="button"
+                  class="scene-tab"
+                  role="tab"
+                  id="tab-canvas"
+                  aria-controls="scene-canvas"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-move-up-right"
+                    aria-hidden="true"
+                  >
+                    <path d="M13 5H19V11"></path>
+                    <path d="M19 5L5 19"></path></svg
+                  >构思
+                </button>
+                <button
+                  type="button"
+                  class="scene-tab"
+                  role="tab"
+                  id="tab-writing"
+                  aria-controls="scene-writing"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-file-text"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                    ></path>
+                    <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                    <path d="M10 9H8"></path>
+                    <path d="M16 13H8"></path>
+                    <path d="M16 17H8"></path></svg
+                  >写作
+                </button>
+                <button
+                  type="button"
+                  class="scene-tab"
+                  role="tab"
+                  id="tab-code"
+                  aria-controls="scene-code"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-braces"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"
+                    ></path>
+                    <path
+                      d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"
+                    ></path></svg
+                  >开发
+                </button>
+                <button
+                  type="button"
+                  class="scene-tab"
+                  role="tab"
+                  id="tab-tools"
+                  aria-controls="scene-tools"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-keyboard"
+                    aria-hidden="true"
+                  >
+                    <path d="M10 8h.01"></path>
+                    <path d="M12 12h.01"></path>
+                    <path d="M14 8h.01"></path>
+                    <path d="M16 12h.01"></path>
+                    <path d="M18 8h.01"></path>
+                    <path d="M6 8h.01"></path>
+                    <path d="M7 16h10"></path>
+                    <path d="M8 12h.01"></path>
+                    <rect width="20" height="16" x="2" y="4" rx="2"></rect></svg
+                  >工具
+                </button>
+              </div>
+              <span class="gallery-status"
+                ><span class="live-dot"></span>真实应用 · 样例演示</span
+              >
+            </div>
+            <div
+              class="scene-panel"
+              id="scene-sticky-notes"
+              role="tabpanel"
+              aria-labelledby="tab-sticky-notes"
+              tabindex="0"
+            >
+              <div class="product-stack">
+                <div class="stack-halo" aria-hidden="true"></div>
+                <div class="stack-window stack-window-back" aria-hidden="true">
+                  <img
+                    src="./public/screenshots/todo.jpg"
+                    width="760"
+                    height="561"
+                    alt="思芽岛 TODO 实际截图：山野手记创作计划的三级任务、备注与完成进度"
+                    loading="lazy"
+                  />
+                </div>
+                <figure class="product-frame">
+                  <a
+                    class="screenshot-trigger"
+                    href="./public/screenshots/sticky-notes.jpg"
+                    data-zoom
+                    data-title="灵感，先贴在这里。"
+                    data-description="自由摆放、彩色分类、桌面置顶。"
+                    aria-label="放大查看：便签墙真实截图"
+                    ><img
+                      src="./public/screenshots/sticky-notes.jpg"
+                      width="1259"
+                      height="768"
+                      alt="思芽岛便签墙实际截图：六张彩色便签记录山野手记的路线、创作和拍摄灵感"
+                      fetchpriority="high"
+                    /><span class="zoom-hint"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-maximize2 lucide-maximize-2"
+                        aria-hidden="true"
+                      >
+                        <path d="M15 3h6v6"></path>
+                        <path d="m21 3-7 7"></path>
+                        <path d="m3 21 7-7"></path>
+                        <path d="M9 21H3v-6"></path></svg
+                      >放大查看</span
+                    ></a
+                  >
+                </figure>
+                <div class="stack-window stack-window-front" aria-hidden="true">
+                  <div class="stack-window-label">
+                    <span class="live-dot"></span>构思<span>SIYADAO</span>
+                  </div>
+                  <img
+                    src="./public/screenshots/canvas.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实白板截图：山野手记产品构思，展示发现、记录、分享三个阶段及连线"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="stack-caption" aria-hidden="true">
+                  <span class="stack-caption-line"></span>ONE SPACE. MORE
+                  POSSIBILITIES.
+                </div>
+              </div>
+              <div class="scene-metadata">
+                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
+                ><span>山野手记 / 05-便签墙.md</span>
+              </div>
+              <div class="scene-description">
+                <h2>灵感，先贴在这里。</h2>
+                <p>自由摆放、彩色分类、桌面置顶。</p>
+              </div>
+            </div>
+            <div
+              class="scene-panel"
+              id="scene-todo"
+              role="tabpanel"
+              aria-labelledby="tab-todo"
+              tabindex="0"
+              hidden
+            >
+              <div class="product-stack">
+                <div class="stack-halo" aria-hidden="true"></div>
+                <div class="stack-window stack-window-back" aria-hidden="true">
+                  <img
+                    src="./public/screenshots/canvas.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实白板截图：山野手记产品构思，展示发现、记录、分享三个阶段及连线"
+                    loading="lazy"
+                  />
+                </div>
+                <figure class="product-frame">
+                  <a
+                    class="screenshot-trigger"
+                    href="./public/screenshots/todo.jpg"
+                    data-zoom
+                    data-title="把想做的，一件件做到。"
+                    data-description="三级任务、完成进度、Markdown 存储。"
+                    aria-label="放大查看：TODO真实截图"
+                    ><img
+                      src="./public/screenshots/todo.jpg"
+                      width="760"
+                      height="561"
+                      alt="思芽岛 TODO 实际截图：山野手记创作计划的三级任务、备注与完成进度"
+                      loading="lazy"
+                    /><span class="zoom-hint"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-maximize2 lucide-maximize-2"
+                        aria-hidden="true"
+                      >
+                        <path d="M15 3h6v6"></path>
+                        <path d="m21 3-7 7"></path>
+                        <path d="m3 21 7-7"></path>
+                        <path d="M9 21H3v-6"></path></svg
+                      >放大查看</span
+                    ></a
+                  >
+                </figure>
+                <div class="stack-window stack-window-front" aria-hidden="true">
+                  <div class="stack-window-label">
+                    <span class="live-dot"></span>写作<span>SIYADAO</span>
+                  </div>
+                  <img
+                    src="./public/screenshots/writing.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实 Markdown 截图：把山野写进日常，包含路线表格与创作手记"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="stack-caption" aria-hidden="true">
+                  <span class="stack-caption-line"></span>ONE SPACE. MORE
+                  POSSIBILITIES.
+                </div>
+              </div>
+              <div class="scene-metadata">
+                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
+                ><span>山野手记 / 06-TODO待办.md</span>
+              </div>
+              <div class="scene-description">
+                <h2>把想做的，一件件做到。</h2>
+                <p>三级任务、完成进度、Markdown 存储。</p>
+              </div>
+            </div>
+            <div
+              class="scene-panel"
+              id="scene-canvas"
+              role="tabpanel"
+              aria-labelledby="tab-canvas"
+              tabindex="0"
+              hidden
+            >
+              <div class="product-stack">
+                <div class="stack-halo" aria-hidden="true"></div>
+                <div class="stack-window stack-window-back" aria-hidden="true">
+                  <img
+                    src="./public/screenshots/writing.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实 Markdown 截图：把山野写进日常，包含路线表格与创作手记"
+                    loading="lazy"
+                  />
+                </div>
+                <figure class="product-frame">
+                  <a
+                    class="screenshot-trigger"
+                    href="./public/screenshots/canvas.jpg"
+                    data-zoom
+                    data-title="让思路，在画布上展开。"
+                    data-description="形状、连线、文字，灵感自由展开。"
+                    aria-label="放大查看：构思真实截图"
+                    ><img
+                      src="./public/screenshots/canvas.jpg"
+                      width="1259"
+                      height="768"
+                      alt="思芽岛真实白板截图：山野手记产品构思，展示发现、记录、分享三个阶段及连线"
+                      loading="lazy"
+                    /><span class="zoom-hint"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-maximize2 lucide-maximize-2"
+                        aria-hidden="true"
+                      >
+                        <path d="M15 3h6v6"></path>
+                        <path d="m21 3-7 7"></path>
+                        <path d="m3 21 7-7"></path>
+                        <path d="M9 21H3v-6"></path></svg
+                      >放大查看</span
+                    ></a
+                  >
+                </figure>
+                <div class="stack-window stack-window-front" aria-hidden="true">
+                  <div class="stack-window-label">
+                    <span class="live-dot"></span>开发<span>SIYADAO</span>
+                  </div>
+                  <img
+                    src="./public/screenshots/code.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实 Rust 编辑截图：Trail 结构体和步行时间计算，显示行号与语法高亮"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="stack-caption" aria-hidden="true">
+                  <span class="stack-caption-line"></span>ONE SPACE. MORE
+                  POSSIBILITIES.
+                </div>
+              </div>
+              <div class="scene-metadata">
+                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
+                ><span>山野手记 / 02-灵感地图.excalidraw</span>
+              </div>
+              <div class="scene-description">
+                <h2>让思路，在画布上展开。</h2>
+                <p>形状、连线、文字，灵感自由展开。</p>
+              </div>
+            </div>
+            <div
+              class="scene-panel"
+              id="scene-writing"
+              role="tabpanel"
+              aria-labelledby="tab-writing"
+              tabindex="0"
+              hidden
+            >
+              <div class="product-stack">
+                <div class="stack-halo" aria-hidden="true"></div>
+                <div class="stack-window stack-window-back" aria-hidden="true">
+                  <img
+                    src="./public/screenshots/code.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实 Rust 编辑截图：Trail 结构体和步行时间计算，显示行号与语法高亮"
+                    loading="lazy"
+                  />
+                </div>
+                <figure class="product-frame">
+                  <a
+                    class="screenshot-trigger"
+                    href="./public/screenshots/writing.jpg"
+                    data-zoom
+                    data-title="让文字，长成自己的样子。"
+                    data-description="Markdown 写作，清晰预览。"
+                    aria-label="放大查看：写作真实截图"
+                    ><img
+                      src="./public/screenshots/writing.jpg"
+                      width="1259"
+                      height="768"
+                      alt="思芽岛真实 Markdown 截图：把山野写进日常，包含路线表格与创作手记"
+                      loading="lazy"
+                    /><span class="zoom-hint"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-maximize2 lucide-maximize-2"
+                        aria-hidden="true"
+                      >
+                        <path d="M15 3h6v6"></path>
+                        <path d="m21 3-7 7"></path>
+                        <path d="m3 21 7-7"></path>
+                        <path d="M9 21H3v-6"></path></svg
+                      >放大查看</span
+                    ></a
+                  >
+                </figure>
+                <div class="stack-window stack-window-front" aria-hidden="true">
+                  <div class="stack-window-label">
+                    <span class="live-dot"></span>工具<span>SIYADAO</span>
+                  </div>
+                  <img
+                    src="./public/screenshots/tools.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实 JSON 工具截图：左侧路线数据输入，右侧实际格式化结果"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="stack-caption" aria-hidden="true">
+                  <span class="stack-caption-line"></span>ONE SPACE. MORE
+                  POSSIBILITIES.
+                </div>
+              </div>
+              <div class="scene-metadata">
+                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
+                ><span>山野手记 / 01-创作手记.md</span>
+              </div>
+              <div class="scene-description">
+                <h2>让文字，长成自己的样子。</h2>
+                <p>Markdown 写作，清晰预览。</p>
+              </div>
+            </div>
+            <div
+              class="scene-panel"
+              id="scene-code"
+              role="tabpanel"
+              aria-labelledby="tab-code"
+              tabindex="0"
+              hidden
+            >
+              <div class="product-stack">
+                <div class="stack-halo" aria-hidden="true"></div>
+                <div class="stack-window stack-window-back" aria-hidden="true">
+                  <img
+                    src="./public/screenshots/tools.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛真实 JSON 工具截图：左侧路线数据输入，右侧实际格式化结果"
+                    loading="lazy"
+                  />
+                </div>
+                <figure class="product-frame">
+                  <a
+                    class="screenshot-trigger"
+                    href="./public/screenshots/code.jpg"
+                    data-zoom
+                    data-title="让下一步，有代码可循。"
+                    data-description="真实 Rust 文件，多语言语法高亮。"
+                    aria-label="放大查看：开发真实截图"
+                    ><img
+                      src="./public/screenshots/code.jpg"
+                      width="1259"
+                      height="768"
+                      alt="思芽岛真实 Rust 编辑截图：Trail 结构体和步行时间计算，显示行号与语法高亮"
+                      loading="lazy"
+                    /><span class="zoom-hint"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-maximize2 lucide-maximize-2"
+                        aria-hidden="true"
+                      >
+                        <path d="M15 3h6v6"></path>
+                        <path d="m21 3-7 7"></path>
+                        <path d="m3 21 7-7"></path>
+                        <path d="M9 21H3v-6"></path></svg
+                      >放大查看</span
+                    ></a
+                  >
+                </figure>
+                <div class="stack-window stack-window-front" aria-hidden="true">
+                  <div class="stack-window-label">
+                    <span class="live-dot"></span>便签墙<span>SIYADAO</span>
+                  </div>
+                  <img
+                    src="./public/screenshots/sticky-notes.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛便签墙实际截图：六张彩色便签记录山野手记的路线、创作和拍摄灵感"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="stack-caption" aria-hidden="true">
+                  <span class="stack-caption-line"></span>ONE SPACE. MORE
+                  POSSIBILITIES.
+                </div>
+              </div>
+              <div class="scene-metadata">
+                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
+                ><span>山野手记 / 03-trail.rs</span>
+              </div>
+              <div class="scene-description">
+                <h2>让下一步，有代码可循。</h2>
+                <p>真实 Rust 文件，多语言语法高亮。</p>
+              </div>
+            </div>
+            <div
+              class="scene-panel"
+              id="scene-tools"
+              role="tabpanel"
+              aria-labelledby="tab-tools"
+              tabindex="0"
+              hidden
+            >
+              <div class="product-stack">
+                <div class="stack-halo" aria-hidden="true"></div>
+                <div class="stack-window stack-window-back" aria-hidden="true">
+                  <img
+                    src="./public/screenshots/sticky-notes.jpg"
+                    width="1259"
+                    height="768"
+                    alt="思芽岛便签墙实际截图：六张彩色便签记录山野手记的路线、创作和拍摄灵感"
+                    loading="lazy"
+                  />
+                </div>
+                <figure class="product-frame">
+                  <a
+                    class="screenshot-trigger"
+                    href="./public/screenshots/tools.jpg"
+                    data-zoom
+                    data-title="把手边的小事，顺手完成。"
+                    data-description="整理 JSON，让数据清晰可读。"
+                    aria-label="放大查看：工具真实截图"
+                    ><img
+                      src="./public/screenshots/tools.jpg"
+                      width="1259"
+                      height="768"
+                      alt="思芽岛真实 JSON 工具截图：左侧路线数据输入，右侧实际格式化结果"
+                      loading="lazy"
+                    /><span class="zoom-hint"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-maximize2 lucide-maximize-2"
+                        aria-hidden="true"
+                      >
+                        <path d="M15 3h6v6"></path>
+                        <path d="m21 3-7 7"></path>
+                        <path d="m3 21 7-7"></path>
+                        <path d="M9 21H3v-6"></path></svg
+                      >放大查看</span
+                    ></a
+                  >
+                </figure>
+                <div class="stack-window stack-window-front" aria-hidden="true">
+                  <div class="stack-window-label">
+                    <span class="live-dot"></span>TODO<span>SIYADAO</span>
+                  </div>
+                  <img
+                    src="./public/screenshots/todo.jpg"
+                    width="760"
+                    height="561"
+                    alt="思芽岛 TODO 实际截图：山野手记创作计划的三级任务、备注与完成进度"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="stack-caption" aria-hidden="true">
+                  <span class="stack-caption-line"></span>ONE SPACE. MORE
+                  POSSIBILITIES.
+                </div>
+              </div>
+              <div class="scene-metadata">
+                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
+                ><span>山野手记 / 04-路线数据.json</span>
+              </div>
+              <div class="scene-description">
+                <h2>把手边的小事，顺手完成。</h2>
+                <p>整理 JSON，让数据清晰可读。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="daily-products shell"
+        id="highlights"
+        aria-labelledby="daily-title"
+      >
+        <div class="visual-section-heading">
+          <p class="eyebrow">01 / CAPTURE. ORGANIZE. DO.</p>
+          <h2 id="daily-title">
+            记下来。<span class="text-electric">做得到。</span>
+          </h2>
+        </div>
+        <div class="daily-product-grid">
+          <article class="daily-product sticky-product">
+            <div class="product-heading">
+              <span class="highlight-kicker"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-sticky-note"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M21 9a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 15 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"
+                  ></path>
+                  <path d="M15 3v5a1 1 0 0 0 1 1h5"></path>
+                </svg>
+                便签墙</span
+              >
+              <h3>让灵感，贴在眼前。</h3>
+              <p>自由摆放 · 彩色分类 · 桌面置顶</p>
+            </div>
+            <a
+              class="daily-product-image"
+              href="./public/screenshots/sticky-notes.jpg"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="查看便签墙原始产品截图"
+              ><img
+                src="./public/screenshots/sticky-notes.jpg"
+                alt="六张山野手记样例便签在思芽岛真实画布上自由排列"
+                width="1259"
+                height="768"
+                loading="lazy" /><span class="shot-open"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-up-right"
+                  aria-hidden="true"
+                >
+                  <path d="M7 7h10v10"></path>
+                  <path d="M7 17 17 7"></path></svg></span
+            ></a>
+          </article>
+          <article class="daily-product todo-product">
+            <div class="product-heading">
+              <span class="highlight-kicker"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-list-todo"
+                  aria-hidden="true"
+                >
+                  <path d="M13 5h8"></path>
+                  <path d="M13 12h8"></path>
+                  <path d="M13 19h8"></path>
+                  <path d="m3 17 2 2 4-4"></path>
+                  <rect x="3" y="4" width="6" height="6" rx="1"></rect>
+                </svg>
+                TODO 待办</span
+              >
+              <h3>把想做的，一件件做到。</h3>
+              <p>三级任务 · 完成进度 · Markdown 存储</p>
+            </div>
+            <a
+              class="daily-product-image"
+              href="./public/screenshots/todo.jpg"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="查看 TODO 待办原始产品截图"
+              ><img
+                src="./public/screenshots/todo.jpg"
+                alt="山野手记创作计划在真实 TODO 界面中显示三级任务、备注和完成进度"
+                width="760"
+                height="561"
+                loading="lazy" /><span class="shot-open"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-up-right"
+                  aria-hidden="true"
+                >
+                  <path d="M7 7h10v10"></path>
+                  <path d="M7 17 17 7"></path></svg></span
+            ></a>
+          </article>
+        </div>
+      </section>
+      <section
+        class="magic-product shell"
+        id="intelligence"
+        aria-labelledby="magic-title"
+      >
+        <div class="visual-section-heading">
+          <p class="eyebrow">02 / YOUR NEXT MOVE, WITHIN REACH</p>
+          <h2 id="magic-title">
+            魔法球。<span class="text-electric">随叫随到。</span>
+          </h2>
+          <p>单击展开工具，双击说出想法。</p>
+        </div>
+        <div class="magic-product-stage">
+          <a
+            class="magic-workspace-image"
+            href="./public/screenshots/tools.jpg"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="查看魔法球可召回的 JSON 工具真实截图"
+            ><img
+              src="./public/screenshots/tools.jpg"
+              alt="思芽岛 JSON 格式化工具真实操作画面"
+              width="1259"
+              height="768"
+              loading="lazy"
+          /></a>
+          <figure class="magic-ring-image">
+            <a
+              href="./public/screenshots/magic-ring.jpg"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="查看魔法球工具环原始截图"
+              ><img
+                src="./public/screenshots/magic-ring.jpg"
+                alt="真实魔法球工具环，包含搜索、文件、日历、便签和 Git 入口"
+                width="220"
+                height="204"
+                loading="lazy"
+            /></a>
+            <figcaption>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-sparkles"
+                aria-hidden="true"
+              >
+                <path
+                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+                ></path>
+                <path d="M20 2v4"></path>
+                <path d="M22 4h-4"></path>
+                <circle cx="4" cy="20" r="2"></circle>
+              </svg>
+              魔法球 · 真实工具环
+            </figcaption>
+          </figure>
+          <div class="magic-product-caption">
+            <span class="live-dot"></span> 从一个入口，连接常用工具。
+          </div>
+        </div>
+        <div class="magic-benefits">
+          <span>本地意图识别</span><span>功能名与模糊匹配</span
+          ><span>本机表达学习</span>
+        </div>
+        <p class="privacy-caption">表达学习可关闭、可清除，数据留在本机。</p>
+      </section>
+      <section class="creation-products shell" aria-labelledby="creation-title">
+        <div class="visual-section-heading">
+          <p class="eyebrow">03 / A SPACE FOR EVERY IDEA</p>
+          <h2 id="creation-title">
+            从灵感，<span class="text-electric">到作品。</span>
+          </h2>
+        </div>
+        <div class="creation-grid">
+          <article class="creation-product">
+            <div class="product-heading">
+              <span class="highlight-kicker"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-network"
+                  aria-hidden="true"
+                >
+                  <rect x="16" y="16" width="6" height="6" rx="1"></rect>
+                  <rect x="2" y="16" width="6" height="6" rx="1"></rect>
+                  <rect x="9" y="2" width="6" height="6" rx="1"></rect>
+                  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path>
+                  <path d="M12 12V8"></path>
+                </svg>
+                白板 · 思维导图</span
+              >
+              <h3>自由构思，有序展开。</h3>
+              <p>Excalidraw 白板 · XMind 导图</p>
+            </div>
+            <a
+              class="creation-shot"
+              href="./public/screenshots/canvas.jpg"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="查看真实白板截图"
+              ><img
+                src="./public/screenshots/canvas.jpg"
+                alt="思芽岛真实白板，展示发现、记录、分享的灵感地图"
+                width="1259"
+                height="768"
+                loading="lazy"
+            /></a>
+          </article>
+          <article class="creation-product">
+            <div class="product-heading">
+              <span class="highlight-kicker"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-file-text"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                  ></path>
+                  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                  <path d="M10 9H8"></path>
+                  <path d="M16 13H8"></path>
+                  <path d="M16 17H8"></path>
+                </svg>
+                Markdown · 公众号创作</span
+              >
+              <h3>写下来，分享出去。</h3>
+              <p>富文本复制 · 预检 · 草稿同步</p>
+            </div>
+            <a
+              class="creation-shot"
+              href="./public/screenshots/writing.jpg"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="查看真实 Markdown 写作截图"
+              ><img
+                src="./public/screenshots/writing.jpg"
+                alt="山野手记 Markdown 文章在思芽岛中的真实预览"
+                width="1259"
+                height="768"
+                loading="lazy"
+            /></a>
+            <p class="product-condition">
+              公众号同步需配置账号，发布由你确认。
+            </p>
+          </article>
+          <article class="creation-product">
+            <div class="product-heading">
+              <span class="highlight-kicker"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-braces"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"
+                  ></path>
+                  <path
+                    d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"
+                  ></path>
+                </svg>
+                代码编辑</span
+              >
+              <h3>想到，也能做到。</h3>
+              <p>多语言高亮 · F12 导航 · 跨文件跳转</p>
+            </div>
+            <a
+              class="creation-shot"
+              href="./public/screenshots/code.jpg"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="查看真实 Rust 编辑截图"
+              ><img
+                src="./public/screenshots/code.jpg"
+                alt="思芽岛对 Rust 路线样例进行真实语法高亮"
+                width="1259"
+                height="768"
+                loading="lazy"
+            /></a>
+            <p class="product-condition">代码导航需安装对应语言服务。</p>
+          </article>
+          <article class="creation-product">
+            <div class="product-heading">
+              <span class="highlight-kicker"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-keyboard"
+                  aria-hidden="true"
+                >
+                  <path d="M10 8h.01"></path>
+                  <path d="M12 12h.01"></path>
+                  <path d="M14 8h.01"></path>
+                  <path d="M16 12h.01"></path>
+                  <path d="M18 8h.01"></path>
+                  <path d="M6 8h.01"></path>
+                  <path d="M7 16h10"></path>
+                  <path d="M8 12h.01"></path>
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                </svg>
+                开发工具集</span
+              >
+              <h3>小事，顺手完成。</h3>
+              <p>JSON · Cron · 正则 · 编码转换</p>
+            </div>
+            <a
+              class="creation-shot"
+              href="./public/screenshots/tools.jpg"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="查看 JSON 格式化真实截图"
+              ><img
+                src="./public/screenshots/tools.jpg"
+                alt="思芽岛真实 JSON 工具的输入与格式化输出"
+                width="1259"
+                height="768"
+                loading="lazy"
+            /></a>
+          </article>
+        </div>
+        <div class="workspace-feature-strip" aria-label="更多工作台功能">
+          <article>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-calendar-days"
+              aria-hidden="true"
+            >
+              <path d="M8 2v3"></path>
+              <path d="M16 2v3"></path>
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <path d="M3 9h18"></path>
+              <path d="M8 13h.01"></path>
+              <path d="M12 13h.01"></path>
+              <path d="M16 13h.01"></path>
+              <path d="M8 17h.01"></path>
+              <path d="M12 17h.01"></path>
+              <path d="M16 17h.01"></path>
+            </svg>
+            <h3>日历笔记</h3>
+            <p>按日记录 · 模板 · 提醒</p>
+          </article>
+          <article>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-book-open"
+              aria-hidden="true"
+            >
+              <path d="M12 5v16"></path>
+              <path
+                d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"
+              ></path>
+            </svg>
+            <h3>PDF 阅读</h3>
+            <p>高亮与批注 · macOS</p>
+          </article>
+          <article>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-search"
+              aria-hidden="true"
+            >
+              <path d="m21 21-4.34-4.34"></path>
+              <circle cx="11" cy="11" r="8"></circle>
+            </svg>
+            <h3>全局搜索</h3>
+            <p>文件 · 正文 · 代码符号</p>
+          </article>
+          <article>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-terminal"
+              aria-hidden="true"
+            >
+              <path d="M12 19h8"></path>
+              <path d="m4 17 6-6-6-6"></path>
+            </svg>
+            <h3>多会话终端</h3>
+            <p>独立 shell · 真实 PTY</p>
+          </article>
+          <article>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-git-branch"
+              aria-hidden="true"
+            >
+              <path d="M15 6a9 9 0 0 0-9 9V3"></path>
+              <circle cx="18" cy="6" r="3"></circle>
+              <circle cx="6" cy="18" r="3"></circle>
+            </svg>
+            <h3>可视化 Git</h3>
+            <p>变更 · 分支 · 历史 · Diff</p>
+          </article>
+          <article>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-hard-drive"
+              aria-hidden="true"
+            >
+              <path d="M10 16h.01"></path>
+              <path
+                d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
+              ></path>
+              <path d="M21.946 12.013H2.054"></path>
+              <path d="M6 16h.01"></path>
+            </svg>
+            <h3>本地工作区</h3>
+            <p>真实文件 · 自由备份</p>
+          </article>
+        </div>
+      </section>
+      <section class="closing-section shell" aria-labelledby="closing-title">
+        <div>
+          <p class="eyebrow">MAKE ROOM FOR YOUR IDEAS</p>
+          <h2 id="closing-title">下一步，<br />从你的想法开始。</h2>
+        </div>
+        <div class="closing-actions">
+          <div class="download-actions">
+            <div class="download-container">
+              <details class="download-menu">
+                <summary class="button-primary download-trigger">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-download"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 15V3"></path>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <path d="m7 10 5 5 5-5"></path></svg
+                  ><span>应用下载</span
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-chevron-down"
+                    aria-hidden="true"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </summary>
+                <div class="download-popup">
+                  <div class="download-heading">
+                    选择你的平台<span class="release-version">SIYADAO</span>
+                  </div>
+                  <div class="platform-list">
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="macos-arm64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>macOS（M 芯片）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="macos-x64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>macOS（Intel）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="windows-x64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Windows（x86_64）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="windows-arm64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Windows（ARM64）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="linux-x64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Linux（x86_64）</span><small>未发布</small>
+                    </button>
+                    <button
+                      type="button"
+                      class="platform-option"
+                      data-platform="linux-arm64"
+                      disabled
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-monitor"
+                        aria-hidden="true"
+                      >
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      ><span>Linux（ARM64）</span><small>未发布</small>
+                    </button>
+                  </div>
+                  <hr />
+                  <output class="download-status" aria-live="polite"
+                    >安装包发布准备中，敬请期待。</output
+                  >
+                  <button type="button" class="download-retry" hidden>
+                    重新获取
+                  </button>
+                  <a
+                    class="release-link release-history"
+                    target="_blank"
+                    rel="noreferrer"
+                    hidden
+                    >版本记录
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-arrow-up-right"
+                      aria-hidden="true"
+                    >
+                      <path d="M7 7h10v10"></path>
+                      <path d="M7 17 17 7"></path></svg
+                  ></a>
+                  <a
+                    class="release-link"
+                    href="./public/samples/siyadao-samples.zip"
+                    download
+                    >先下载创作样例
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-arrow-up-right"
+                      aria-hidden="true"
+                    >
+                      <path d="M7 7h10v10"></path>
+                      <path d="M7 17 17 7"></path></svg
+                  ></a>
+                </div>
+              </details>
+            </div>
+            <button type="button" class="feedback-link" data-feedback="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-book-open"
+                aria-hidden="true"
+              >
+                <path d="M12 5v16"></path>
+                <path
+                  d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"
+                ></path></svg
+              >问题反馈<svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-up-right"
+                aria-hidden="true"
+              >
+                <path d="M7 7h10v10"></path>
+                <path d="M7 17 17 7"></path>
+              </svg>
+            </button>
+          </div>
+          <p>macOS · Windows · Linux</p>
+          <a
+            class="inline-link"
+            href="./public/samples/siyadao-samples.zip"
+            download=""
+            >下载演示样例
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-up-right"
+              aria-hidden="true"
+            >
+              <path d="M7 7h10v10"></path>
+              <path d="M7 17 17 7"></path></svg
+          ></a>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer shell">
+      <a class="brand" href="#main"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-sparkles"
+          aria-hidden="true"
+        >
+          <path
+            d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+          ></path>
+          <path d="M20 2v4"></path>
+          <path d="M22 4h-4"></path>
+          <circle cx="4" cy="20" r="2"></circle></svg
+        >思芽岛</a
+      ><span>让智能，融入每一次创作。</span
+      ><a href="#main" class="micro">回到顶部 ↑</a
+      ><span class="micro">© 2026 SIYADAO</span>
+      <a
+        class="site-registration"
+        href="https://beian.miit.gov.cn/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >粤ICP备2026108587号-1</a
+      >
+    </footer>
+    <dialog
+      class="screenshot-dialog"
+      id="screenshot-dialog"
+      aria-labelledby="zoom-title"
+      aria-describedby="zoom-description"
+    >
+      <div class="dialog-heading">
+        <h2 id="zoom-title"></h2>
+        <button
+          type="button"
+          class="dialog-dismiss"
+          data-close
+          aria-label="关闭截图"
+          autofocus
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-x"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <p id="zoom-description"></p>
+      <div class="dialog-image-scroll"><img id="zoom-image" alt="" /></div>
+      <a class="inline-link" id="zoom-original" target="_blank" rel="noreferrer"
+        >查看原始 JPEG
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-arrow-up-right"
+          aria-hidden="true"
+        >
+          <path d="M7 7h10v10"></path>
+          <path d="M7 17 17 7"></path></svg
+      ></a>
+    </dialog>
+    <dialog
+      class="feedback-dialog"
+      id="feedback-dialog"
+      aria-labelledby="feedback-title"
+      aria-describedby="feedback-description"
+    >
+      <div class="dialog-heading">
+        <h2 id="feedback-title">问题反馈</h2>
+        <button
+          type="button"
+          class="dialog-dismiss"
+          data-close
+          aria-label="关闭反馈窗口"
+          autofocus
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-x"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <p id="feedback-description">
+        公开反馈渠道正在准备中。你仍然可以下载完整创作样例，了解思芽岛的实际工作流。
+      </p>
+      <a
+        class="inline-link"
+        href="./public/samples/siyadao-samples.zip"
+        download
+        >下载创作样例
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-arrow-up-right"
+          aria-hidden="true"
+        >
+          <path d="M7 7h10v10"></path>
+          <path d="M7 17 17 7"></path></svg
+      ></a>
+    </dialog>
+  </body>
+</html>

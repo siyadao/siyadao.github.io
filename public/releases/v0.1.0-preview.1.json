@@ -1,0 +1,19 @@
+{
+  "tag_name": "v0.1.0-preview.1",
+  "draft": false,
+  "prerelease": true,
+  "assets": [
+    {
+      "name": "siyadao-v0.1.0-preview.1-macos-arm64.dmg",
+      "size": 34521483,
+      "browser_download_url": "https://github.com/siyadao/studio/releases/download/v0.1.0-preview.1/siyadao-v0.1.0-preview.1-macos-arm64.dmg",
+      "digest": "sha256:ec2367879a9b08f9b249b21cdef6b497af5098049ae138f35f7b5e76d0c531d6"
+    },
+    {
+      "name": "siyadao-v0.1.0-preview.1-windows-x64.zip",
+      "size": 36563099,
+      "browser_download_url": "https://github.com/siyadao/studio/releases/download/v0.1.0-preview.1/siyadao-v0.1.0-preview.1-windows-x64.zip",
+      "digest": "sha256:a29b697f7e904c05fe0eb280f61b139e88c5c6e0066c1ec531dee8fa504bdeee"
+    }
+  ]
+}

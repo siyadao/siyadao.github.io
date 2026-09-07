@@ -1,0 +1,21 @@
+{
+  "project": "山野手记",
+  "edition": "2026 · 初秋",
+  "trails": [
+    {
+      "name": "林间环线",
+      "distance_km": 4.8,
+      "elevation_m": 160
+    },
+    {
+      "name": "溪谷小径",
+      "distance_km": 7.2,
+      "elevation_m": 240
+    },
+    {
+      "name": "山顶日落",
+      "distance_km": 3.6,
+      "elevation_m": 320
+    }
+  ]
+}
