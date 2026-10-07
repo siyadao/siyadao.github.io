@@ -1,8 +1,12 @@
-/** 公开安装包仓库，填入 owner/name；留空时不发起任何外部请求。 */
+/** 公开反馈仓库；安装包元数据与主下载源由官方服务提供。 */
 window.SIYADAO_REPOSITORY = 'siyadao/studio';
 
-/** 六种平台共用按需请求与短期缓存；官网复用 Nginx 缓存，不需要 GitHub 凭据。 */
+/** 六种平台共用按需请求与短期缓存；不探测 GitHub，不需要账号或凭据。 */
 window.SiyadaoDownloads = (() => {
+  const officialApi = 'https://studioapi.siyadao.cn/v1/app/releases';
+  const releaseHistory = 'https://github.com/siyadao/studio/releases';
+  const maximumResponseBytes = 2 * 1024 * 1024;
+  const versionPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/;
   const platforms = [
     {
       id: 'macos-arm64',
@@ -46,13 +50,13 @@ window.SiyadaoDownloads = (() => {
 
   /** 打开菜单时读取最近公开版本（含 preview），一分钟内复用结果；不在启动时请求或轮询。 */
   async function getRelease() {
-    const repository = window.SIYADAO_REPOSITORY;
-    const key = repository;
-    if (!repository) return { status: 'setup', assets: {} };
+    const key = window.location?.hostname === 'studio.siyadao.cn'
+      ? '/api/app/releases'
+      : officialApi;
     if (cached?.key === key && !cached.value.stale && Date.now() - cached.at < 60000)
       return cached.value;
     if (inflight?.key === key) return inflight.promise;
-    const promise = requestRelease(repository).then((value) => {
+    const promise = requestRelease(key).then((value) => {
       if (value.status === 'unavailable' && cached?.key === key)
         return { ...cached.value, stale: true };
       if (value.status !== 'unavailable') cached = { key, at: Date.now(), value };
@@ -69,82 +73,41 @@ window.SiyadaoDownloads = (() => {
   /** 只返回公开仓库的 Issues 链接，不处理账号或凭据。 */
   function getFeedbackUrl() {
     const repository = window.SIYADAO_REPOSITORY;
-    return typeof repository === 'string' &&
-      /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(repository)
-      ? `https://github.com/${repository}/issues/new/choose`
-      : null;
+    if (typeof repository !== 'string' ||
+      !/^[a-zA-Z0-9][a-zA-Z0-9-]*\/[a-zA-Z0-9_.-]+$/.test(repository)) return null;
+    const url = `https://github.com/${repository}/issues/new/choose`;
+    return new URL(url).href === url ? url : null;
   }
 
-  async function requestRelease(repository) {
+  async function requestRelease(endpoint) {
     try {
-      if (
-        typeof repository !== 'string' ||
-        !/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(repository)
-      ) {
-        throw new Error('发布仓库应为 owner/name');
-      }
       console.info('[downloads] 开始读取公开版本');
-      // 正式站点共用匿名缓存，避免每位访客都受 GitHub 网络与限流影响；本地预览仍独立可用。
-      const endpoint = window.location?.hostname === 'studio.siyadao.cn' && repository === 'siyadao/studio'
-        ? '/api/releases'
-        : `https://api.github.com/repos/${repository}/releases?per_page=20`;
       const response = await fetch(
         endpoint,
         {
-          headers: { Accept: 'application/vnd.github+json' },
+          headers: { Accept: 'application/json' },
           credentials: 'omit',
+          redirect: 'error',
           signal: AbortSignal.timeout(8000),
         },
       );
-      const releaseUrl = `https://github.com/${repository}/releases`;
-      if (response.status === 404)
-        return { status: 'empty', assets: {}, releaseUrl };
       if (!response.ok) throw new Error(`公开版本服务暂不可用（HTTP ${response.status}）`);
-      const data = await response.json();
-      if (!Array.isArray(data)) {
-        throw new Error('公开版本数据格式错误');
-      }
-      // 最近 20 个公开版本构成一次有界请求，各平台独立选包；草稿绝不进入下载项。
-      const releases = data.filter((release) => release && release.draft === false &&
-        typeof release.tag_name === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(release.tag_name) &&
-        typeof release.prerelease === 'boolean' && Array.isArray(release.assets))
-        .sort((a, b) => (Date.parse(b.published_at || b.created_at) || 0) - (Date.parse(a.published_at || a.created_at) || 0));
-      if (!releases.length) return { status: 'empty', assets: {}, releaseUrl };
+      const releases = validateReleases(await readReleaseBody(response));
+      const stale = ['STALE', 'UPDATING'].includes(response.headers.get('X-Release-Cache'));
+      if (!releases.length) return { status: 'empty', assets: {}, stale, releaseUrl: releaseHistory };
       const latest = releases[0];
-      const available = releases.flatMap((release, rank) => release.assets.flatMap((item) => {
-        if (
-          !item ||
-          typeof item.name !== 'string' ||
-          typeof item.browser_download_url !== 'string' ||
-          !Number.isFinite(item.size) ||
-          item.size < 0
-        )
-          return [];
-        const version = release.tag_name;
-        let url;
-        try {
-          url = new URL(item.browser_download_url);
-        } catch {
-          return [];
-        }
-        if (
-          url.origin !== 'https://github.com' ||
-          url.username ||
-          url.password ||
-          !url.pathname.startsWith(`/${repository}/releases/download/${encodeURIComponent(version)}/`)
-        )
-          return [];
-        return [{ name: item.name, url: url.href, size: item.size, version, rank }];
-      }));
+      const available = releases.flatMap((release, rank) => release.assets.map((item) => ({
+        ...item, version: release.version, rank,
+      })));
       const assets = {};
       for (const platform of platforms) {
         const candidates = available.filter((asset) =>
-          matchesPlatform(asset.name, platform),
+          installerPriority(asset.name, asset.version, platform) !== undefined,
         );
         candidates.sort(
           (a, b) =>
             a.rank - b.rank ||
-            installPriority(a.name) - installPriority(b.name) ||
+            installerPriority(a.name, a.version, platform) - installerPriority(b.name, b.version, platform) ||
             a.name.localeCompare(b.name),
         );
         if (candidates[0]) assets[platform.id] = candidates[0];
@@ -152,10 +115,10 @@ window.SiyadaoDownloads = (() => {
       console.info('[downloads] 公开版本读取成功');
       return {
         status: 'ready',
-        version: latest.tag_name,
+        version: latest.version,
         prerelease: latest.prerelease,
-        stale: ['STALE', 'UPDATING'].includes(response.headers?.get('X-Release-Cache')),
-        releaseUrl: `${releaseUrl}/tag/${encodeURIComponent(latest.tag_name)}`,
+        stale,
+        releaseUrl: `${releaseHistory}/tag/v${latest.version}`,
         assets,
       };
     } catch (error) {
@@ -167,32 +130,90 @@ window.SiyadaoDownloads = (() => {
     }
   }
 
-  function matchesPlatform(filename, platform) {
-    const name = filename.toLowerCase();
-    const systemMatches =
-      platform.system === 'macos'
-        ? /(?:macos|darwin|mac)[-_.]|\.(?:dmg|pkg)$/.test(name) &&
-          /\.(?:dmg|pkg|zip)$/.test(name)
-        : platform.system === 'windows'
-          ? /\.(?:exe|msi)$/.test(name) ||
-            /(?:windows|win)[-_.].*\.zip$/.test(name)
-          : /(?:linux[-_.]|\.appimage$|\.deb$|\.rpm$)/.test(name) &&
-            /\.(?:appimage|deb|rpm|tar\.gz)$/.test(name);
-    const architectureMatches =
-      platform.architecture === 'arm64'
-        ? /(?:arm64|aarch64)/.test(name) ||
-          (platform.system === 'macos' && /universal/.test(name))
-        : /(?:x86_64|x64|amd64|intel)/.test(name) ||
-          (platform.system === 'macos' && /universal/.test(name));
-    return (
-      systemMatches &&
-      architectureMatches &&
-      !/(?:symbols|debug|checksum|signature)/.test(name)
-    );
+  async function readReleaseBody(response) {
+    if (Number(response.headers.get('Content-Length')) > maximumResponseBytes) {
+      await response.body.cancel();
+      throw new Error('公开版本数据超过读取上限');
+    }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8', { fatal: true });
+    let bytes = 0;
+    let text = '';
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        bytes += value.byteLength;
+        if (bytes > maximumResponseBytes) {
+          await reader.cancel();
+          throw new Error('公开版本数据超过读取上限');
+        }
+        text += decoder.decode(value, { stream: true });
+      }
+      return JSON.parse(text + decoder.decode());
+    } finally {
+      reader.releaseLock();
+    }
   }
 
-  function installPriority(name) {
-    return /\.(dmg|exe|appimage)$/i.test(name) ? 0 : 1;
+  function validateReleases(data) {
+    if (!Array.isArray(data) || data.length > 20)
+      throw new Error('公开版本列表格式错误');
+    const versions = new Set();
+    for (const release of data) {
+      const match = typeof release?.version === 'string' && release.version.length <= 128
+        ? versionPattern.exec(release.version)
+        : null;
+      if (!match || versions.has(release.version) || typeof release.prerelease !== 'boolean' ||
+        release.prerelease !== Boolean(match[4]) || !validPublishedAt(release.published_at) ||
+        typeof release.notes !== 'string' || !Array.isArray(release.assets) || release.assets.length > 64)
+        throw new Error('公开版本信息格式错误');
+      versions.add(release.version);
+      const names = new Set();
+      for (const asset of release.assets) {
+        if (typeof asset?.name !== 'string' || asset.name.length > 255 || names.has(asset.name) ||
+          !platforms.some((platform) => installerPriority(asset.name, release.version, platform) !== undefined) ||
+          !Number.isSafeInteger(asset.size) || asset.size <= 0 || asset.size > 1024 * 1024 * 1024 ||
+          typeof asset.sha256 !== 'string' || !/^[a-fA-F0-9]{64}$/.test(asset.sha256) ||
+          !asset.sources || typeof asset.sources !== 'object')
+          throw new Error('安装包信息格式错误');
+        names.add(asset.name);
+        const path = `v${release.version}/${asset.name}`;
+        validateSource(asset.sources.official, `https://download.siyadao.cn/${path}`);
+        if (asset.sources.github !== null)
+          validateSource(asset.sources.github, `${releaseHistory}/download/${path}`);
+      }
+    }
+    return data.sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at));
+  }
+
+  function validateSource(value, expected) {
+    if (typeof value !== 'string' || value !== expected || new URL(value).href !== expected)
+      throw new Error('安装包下载地址与官方发布信息不一致');
+  }
+
+  function validPublishedAt(value) {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value) ||
+      !Number.isFinite(Date.parse(value))) return false;
+    const year = Number(value.slice(0, 4));
+    const month = Number(value.slice(5, 7));
+    const day = Number(value.slice(8, 10));
+    const days = [31, year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28,
+      31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return month >= 1 && month <= 12 && day >= 1 && day <= days[month - 1] &&
+      Number(value.slice(11, 13)) < 24 && Number(value.slice(14, 16)) < 60 && Number(value.slice(17, 19)) < 60;
+  }
+
+  function installerPriority(name, version, platform) {
+    const prefix = `siyadao-v${version}-${platform.system}-${platform.architecture}`;
+    if (!name.startsWith(prefix)) return undefined;
+    const suffixes = {
+      macos: ['.dmg', '.pkg', '.zip'],
+      windows: ['-setup.exe', '.msi', '.zip'],
+      linux: ['.appimage', '.deb', '.rpm', '.tar.gz'],
+    };
+    const priority = suffixes[platform.system].indexOf(name.slice(prefix.length).toLowerCase());
+    return priority === -1 ? undefined : priority;
   }
 
   return { platforms, getRelease, getFeedbackUrl };

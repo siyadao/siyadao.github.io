@@ -7,10 +7,11 @@
     <title>思芽岛 — 让想法，即刻发生</title>
     <meta
       name="description"
-      content="便签记录灵感，TODO 推动计划，魔法球连接下一步。思芽岛以本地智能串联写作、白板、代码与开发工具。"
+      content="思芽岛原生桌面工作台：便签、待办、日历与笔记时间线，连接写作、白板、代码和数据。离线使用个人空间，按需启用账号与内容同步。"
     />
     <link rel="icon" href="./public/favicon.svg" />
     <link rel="canonical" href="https://studio.siyadao.cn/" />
+    <script src="./theme.js"></script>
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="./downloads.js"></script>
     <script defer src="./app.js"></script>
@@ -41,6 +42,7 @@
         ><span>思芽岛</span><span class="brand-en">SIYADAO</span></a
       >
       <nav aria-label="主导航">
+<button type="button" class="theme-toggle" aria-label="切换到浅色主题" title="切换到浅色主题"><svg class="theme-sun lucide lucide-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg><svg class="theme-moon lucide lucide-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.463.402.807a6.25 6.25 0 0 0 8.268 8.268c.344-.215.829-.004.803.397"></path></svg></button>
         <a href="#intelligence">魔法球</a><a href="#workspace">工作台</a
         ><a href="#highlights">亮点功能</a>
         <div class="download-container">
@@ -598,706 +600,297 @@
           ></a>
         </div>
         <div class="hero-bottom">
-          <span>THINK IT. MAKE IT.</span
-          ><span class="micro">本地智能 · 原生性能 · 多维创作</span>
+          <span>THINK IT. MAKE IT.</span>
+          <span class="micro">本地智能 · 原生性能 · 多维创作</span>
         </div>
       </section>
-      <section
-        class="workspace-section shell"
-        id="workspace"
-        aria-label="真实产品截图"
-      >
-        <div>
-          <div class="screenshot-gallery">
-            <div class="gallery-bar">
-              <div
-                class="scene-tabs"
-                role="tablist"
-                aria-label="选择产品展示场景"
+      <section class="workspace-section shell" id="workspace" aria-label="产品展示">
+<div class="gallery-journey" aria-label="展示分类"><button type="button" class="gallery-group" data-scene-group="daily" aria-pressed="true">日常记录</button><button type="button" class="gallery-group" data-scene-group="create" aria-pressed="false">创作与开发</button><button type="button" class="gallery-group" data-scene-group="more" aria-pressed="false">更多功能</button></div>
+<div class="gallery-bar"><div class="scene-tabs" role="tablist" aria-label="选择产品展示场景"><button type="button" class="scene-tab" role="tab" id="tab-sticky" data-group="daily" aria-controls="scene-sticky" aria-selected="true" tabindex="0"><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-file-text"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                  ></path>
+                  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                  <path d="M10 9H8"></path>
+                  <path d="M16 13H8"></path>
+                  <path d="M16 17H8"></path>
+                </svg>便签</button><button type="button" class="scene-tab" role="tab" id="tab-todo" data-group="daily" aria-controls="scene-todo" aria-selected="false" tabindex="-1"><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-list-todo"
+                  aria-hidden="true"
+                >
+                  <path d="M13 5h8"></path>
+                  <path d="M13 12h8"></path>
+                  <path d="M13 19h8"></path>
+                  <path d="m3 17 2 2 4-4"></path>
+                  <rect x="3" y="4" width="6" height="6" rx="1"></rect>
+                </svg>待办</button><button type="button" class="scene-tab" role="tab" id="tab-calendar" data-group="daily" aria-controls="scene-calendar" aria-selected="false" tabindex="-1"><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-calendar-days"
+              aria-hidden="true"
+            >
+              <path d="M8 2v3"></path>
+              <path d="M16 2v3"></path>
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <path d="M3 9h18"></path>
+              <path d="M8 13h.01"></path>
+              <path d="M12 13h.01"></path>
+              <path d="M16 13h.01"></path>
+              <path d="M8 17h.01"></path>
+              <path d="M12 17h.01"></path>
+              <path d="M16 17h.01"></path>
+            </svg>日历</button><button type="button" class="scene-tab" role="tab" id="tab-timeline" data-group="daily" aria-controls="scene-timeline" aria-selected="false" tabindex="-1"><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-calendar-days"
+              aria-hidden="true"
+            >
+              <path d="M8 2v3"></path>
+              <path d="M16 2v3"></path>
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <path d="M3 9h18"></path>
+              <path d="M8 13h.01"></path>
+              <path d="M12 13h.01"></path>
+              <path d="M16 13h.01"></path>
+              <path d="M8 17h.01"></path>
+              <path d="M12 17h.01"></path>
+              <path d="M16 17h.01"></path>
+            </svg>时间线</button><button type="button" class="scene-tab" role="tab" id="tab-writing" data-group="create" aria-controls="scene-writing" aria-selected="false" tabindex="-1" hidden><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-file-text"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                  ></path>
+                  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                  <path d="M10 9H8"></path>
+                  <path d="M16 13H8"></path>
+                  <path d="M16 17H8"></path>
+                </svg>文稿</button><button type="button" class="scene-tab" role="tab" id="tab-canvas" data-group="create" aria-controls="scene-canvas" aria-selected="false" tabindex="-1" hidden><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-network"
+                  aria-hidden="true"
+                >
+                  <rect x="16" y="16" width="6" height="6" rx="1"></rect>
+                  <rect x="2" y="16" width="6" height="6" rx="1"></rect>
+                  <rect x="9" y="2" width="6" height="6" rx="1"></rect>
+                  <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path>
+                  <path d="M12 12V8"></path>
+                </svg>白板</button><button type="button" class="scene-tab" role="tab" id="tab-code" data-group="create" aria-controls="scene-code" aria-selected="false" tabindex="-1" hidden><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-braces"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"
+                  ></path>
+                  <path
+                    d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"
+                  ></path>
+                </svg>代码</button><button type="button" class="scene-tab" role="tab" id="tab-notebook" data-group="create" aria-controls="scene-notebook" aria-selected="false" tabindex="-1" hidden><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-book-open"
+                aria-hidden="true"
               >
-                <button
-                  type="button"
-                  class="scene-tab"
-                  role="tab"
-                  id="tab-sticky-notes"
-                  aria-controls="scene-sticky-notes"
-                  aria-selected="true"
-                  tabindex="0"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-sticky-note"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M21 9a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 15 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"
-                    ></path>
-                    <path d="M15 3v5a1 1 0 0 0 1 1h5"></path></svg
-                  >便签墙
-                </button>
-                <button
-                  type="button"
-                  class="scene-tab"
-                  role="tab"
-                  id="tab-todo"
-                  aria-controls="scene-todo"
-                  aria-selected="false"
-                  tabindex="-1"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-list-todo"
-                    aria-hidden="true"
-                  >
-                    <path d="M13 5h8"></path>
-                    <path d="M13 12h8"></path>
-                    <path d="M13 19h8"></path>
-                    <path d="m3 17 2 2 4-4"></path>
-                    <rect x="3" y="4" width="6" height="6" rx="1"></rect></svg
-                  >TODO
-                </button>
-                <button
-                  type="button"
-                  class="scene-tab"
-                  role="tab"
-                  id="tab-canvas"
-                  aria-controls="scene-canvas"
-                  aria-selected="false"
-                  tabindex="-1"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-move-up-right"
-                    aria-hidden="true"
-                  >
-                    <path d="M13 5H19V11"></path>
-                    <path d="M19 5L5 19"></path></svg
-                  >构思
-                </button>
-                <button
-                  type="button"
-                  class="scene-tab"
-                  role="tab"
-                  id="tab-writing"
-                  aria-controls="scene-writing"
-                  aria-selected="false"
-                  tabindex="-1"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-file-text"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
-                    ></path>
-                    <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
-                    <path d="M10 9H8"></path>
-                    <path d="M16 13H8"></path>
-                    <path d="M16 17H8"></path></svg
-                  >写作
-                </button>
-                <button
-                  type="button"
-                  class="scene-tab"
-                  role="tab"
-                  id="tab-code"
-                  aria-controls="scene-code"
-                  aria-selected="false"
-                  tabindex="-1"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-braces"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"
-                    ></path>
-                    <path
-                      d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"
-                    ></path></svg
-                  >开发
-                </button>
-                <button
-                  type="button"
-                  class="scene-tab"
-                  role="tab"
-                  id="tab-tools"
-                  aria-controls="scene-tools"
-                  aria-selected="false"
-                  tabindex="-1"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-keyboard"
-                    aria-hidden="true"
-                  >
-                    <path d="M10 8h.01"></path>
-                    <path d="M12 12h.01"></path>
-                    <path d="M14 8h.01"></path>
-                    <path d="M16 12h.01"></path>
-                    <path d="M18 8h.01"></path>
-                    <path d="M6 8h.01"></path>
-                    <path d="M7 16h10"></path>
-                    <path d="M8 12h.01"></path>
-                    <rect width="20" height="16" x="2" y="4" rx="2"></rect></svg
-                  >工具
-                </button>
-              </div>
-              <span class="gallery-status"
-                ><span class="live-dot"></span>真实应用 · 样例演示</span
-              >
-            </div>
-            <div
-              class="scene-panel"
-              id="scene-sticky-notes"
-              role="tabpanel"
-              aria-labelledby="tab-sticky-notes"
-              tabindex="0"
+                <path d="M12 5v16"></path>
+                <path
+                  d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"
+                ></path></svg
+              >Notebook</button><button type="button" class="scene-tab" role="tab" id="tab-database" data-group="more" aria-controls="scene-database" aria-selected="false" tabindex="-1" hidden><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-hard-drive"
+              aria-hidden="true"
             >
-              <div class="product-stack">
-                <div class="stack-halo" aria-hidden="true"></div>
-                <div class="stack-window stack-window-back" aria-hidden="true">
-                  <img
-                    src="./public/screenshots/todo.jpg"
-                    width="760"
-                    height="561"
-                    alt="思芽岛 TODO 实际截图：山野手记创作计划的三级任务、备注与完成进度"
-                    loading="lazy"
-                  />
-                </div>
-                <figure class="product-frame">
-                  <a
-                    class="screenshot-trigger"
-                    href="./public/screenshots/sticky-notes.jpg"
-                    data-zoom
-                    data-title="灵感，先贴在这里。"
-                    data-description="自由摆放、彩色分类、桌面置顶。"
-                    aria-label="放大查看：便签墙真实截图"
-                    ><img
-                      src="./public/screenshots/sticky-notes.jpg"
-                      width="1259"
-                      height="768"
-                      alt="思芽岛便签墙实际截图：六张彩色便签记录山野手记的路线、创作和拍摄灵感"
-                      fetchpriority="high"
-                    /><span class="zoom-hint"
-                      ><svg
+              <path d="M10 16h.01"></path>
+              <path
+                d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
+              ></path>
+              <path d="M21.946 12.013H2.054"></path>
+              <path d="M6 16h.01"></path>
+            </svg>数据库</button><button type="button" class="scene-tab" role="tab" id="tab-table" data-group="more" aria-controls="scene-table" aria-selected="false" tabindex="-1" hidden><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-list-todo"
+                  aria-hidden="true"
+                >
+                  <path d="M13 5h8"></path>
+                  <path d="M13 12h8"></path>
+                  <path d="M13 19h8"></path>
+                  <path d="m3 17 2 2 4-4"></path>
+                  <rect x="3" y="4" width="6" height="6" rx="1"></rect>
+                </svg>表格</button><button type="button" class="scene-tab" role="tab" id="tab-tools" data-group="more" aria-controls="scene-tools" aria-selected="false" tabindex="-1" hidden><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-keyboard"
+                  aria-hidden="true"
+                >
+                  <path d="M10 8h.01"></path>
+                  <path d="M12 12h.01"></path>
+                  <path d="M14 8h.01"></path>
+                  <path d="M16 12h.01"></path>
+                  <path d="M18 8h.01"></path>
+                  <path d="M6 8h.01"></path>
+                  <path d="M7 16h10"></path>
+                  <path d="M8 12h.01"></path>
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                </svg>工具</button><button type="button" class="scene-tab" role="tab" id="tab-account" data-group="more" aria-controls="scene-account" aria-selected="false" tabindex="-1" hidden><svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
+                        width="16"
+                        height="16"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        class="lucide lucide-maximize2 lucide-maximize-2"
+                        class="lucide lucide-monitor"
                         aria-hidden="true"
                       >
-                        <path d="M15 3h6v6"></path>
-                        <path d="m21 3-7 7"></path>
-                        <path d="m3 21 7-7"></path>
-                        <path d="M9 21H3v-6"></path></svg
-                      >放大查看</span
-                    ></a
-                  >
-                </figure>
-                <div class="stack-window stack-window-front" aria-hidden="true">
-                  <div class="stack-window-label">
-                    <span class="live-dot"></span>构思<span>SIYADAO</span>
-                  </div>
-                  <img
-                    src="./public/screenshots/canvas.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实白板截图：山野手记产品构思，展示发现、记录、分享三个阶段及连线"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="stack-caption" aria-hidden="true">
-                  <span class="stack-caption-line"></span>ONE SPACE. MORE
-                  POSSIBILITIES.
-                </div>
-              </div>
-              <div class="scene-metadata">
-                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
-                ><span>山野手记 / 05-便签墙.md</span>
-              </div>
-              <div class="scene-description">
-                <h2>灵感，先贴在这里。</h2>
-                <p>自由摆放、彩色分类、桌面置顶。</p>
-              </div>
-            </div>
-            <div
-              class="scene-panel"
-              id="scene-todo"
-              role="tabpanel"
-              aria-labelledby="tab-todo"
-              tabindex="0"
-              hidden
+                        <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                        <line x1="8" x2="16" y1="21" y2="21"></line>
+                        <line x1="12" x2="12" y1="17" y2="21"></line></svg
+                      >账号</button></div><span class="gallery-status"><span class="live-dot"></span>开发版 · 实际画面</span></div>
+<div class="scene-panel" id="scene-sticky" role="tabpanel" aria-labelledby="tab-sticky" tabindex="0"><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/sticky-dark.jpg" data-light-href="./public/screenshots/sticky-current.jpg" data-dark-href="./public/screenshots/sticky-dark.jpg" data-zoom data-title="便签墙" data-description="六张演示便签的颜色、布局和实际内容。" aria-label="放大查看：便签墙"><img src="./public/screenshots/sticky-dark.jpg" data-light-src="./public/screenshots/sticky-current.jpg" data-dark-src="./public/screenshots/sticky-dark.jpg" alt="六张演示便签的颜色、布局和实际内容。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>让灵感留在眼前</h2><p>为便签选择颜色，整理位置与尺寸；需要常驻提醒时，可以把便签固定到桌面。</p></div></div><div class="scene-panel" id="scene-todo" role="tabpanel" aria-labelledby="tab-todo" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/todo-dark.jpg" data-light-href="./public/screenshots/todo-current.jpg" data-dark-href="./public/screenshots/todo-dark.jpg" data-zoom data-title="待办" data-description="快速访问窗口里的分组、嵌套任务与完成状态。" aria-label="放大查看：待办"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" alt="快速访问窗口里的分组、嵌套任务与完成状态。" width="1520" height="1120" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>把计划拆成下一步</h2><p>按分组组织任务，补充备注、拆分子任务；完成后归档，需要时再恢复。支持 Markdown 导入与导出。</p></div></div><div class="scene-panel" id="scene-calendar" role="tabpanel" aria-labelledby="tab-calendar" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/calendar-dark.jpg" data-light-href="./public/screenshots/calendar-current.jpg" data-dark-href="./public/screenshots/calendar-dark.jpg" data-zoom data-title="日历" data-description="2026 年 10 月月历及五条真实演示记录。" aria-label="放大查看：日历"><img src="./public/screenshots/calendar-dark.jpg" data-light-src="./public/screenshots/calendar-current.jpg" data-dark-src="./public/screenshots/calendar-dark.jpg" alt="2026 年 10 月月历及五条真实演示记录。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>每天都有可回看的记录</h2><p>月历串起日常记录。同一天可以写多条笔记，复用模板，并为重要事项设置提醒。</p></div></div><div class="scene-panel" id="scene-timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0" hidden><div class="product-stack timeline-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/timeline-dark.png" data-light-href="./public/screenshots/timeline-current.png" data-dark-href="./public/screenshots/timeline-dark.png" data-zoom data-title="笔记时间线" data-description="独立笔记时间线，由生产视图原生渲染；预览仅裁去外围透明空白。" aria-label="放大查看：笔记时间线"><img src="./public/screenshots/timeline-dark-preview.png" data-light-src="./public/screenshots/timeline-preview.png" data-dark-src="./public/screenshots/timeline-dark-preview.png" alt="独立笔记时间线，由生产视图原生渲染；预览仅裁去外围透明空白。" width="336" height="650" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>独立时间线 · 原生窗口渲染</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>沿时间回看你的记录</h2><p>独立时间线串起每日笔记，滚动联动日历日期，点击记录即可打开笔记。</p></div></div><div class="scene-panel" id="scene-writing" role="tabpanel" aria-labelledby="tab-writing" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/writing-dark.jpg" data-light-href="./public/screenshots/writing-current.jpg" data-dark-href="./public/screenshots/writing-dark.jpg" data-zoom data-title="文稿" data-description="Markdown 文稿的真实预览，包含目录、图片与排版。" aria-label="放大查看：文稿"><img src="./public/screenshots/writing-dark.jpg" data-light-src="./public/screenshots/writing-current.jpg" data-dark-src="./public/screenshots/writing-dark.jpg" alt="Markdown 文稿的真实预览，包含目录、图片与排版。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>写作、预览与发布准备</h2><p>编辑与预览、文件历史、富文本复制和公众号发布预检，让一篇文章从草稿走到分享。</p></div></div><div class="scene-panel" id="scene-canvas" role="tabpanel" aria-labelledby="tab-canvas" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/canvas-dark.jpg" data-light-href="./public/screenshots/canvas-current.jpg" data-dark-href="./public/screenshots/canvas-dark.jpg" data-zoom data-title="白板" data-description="应用内打开并渲染 Excalidraw 路线规划样例。" aria-label="放大查看：白板"><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" alt="应用内打开并渲染 Excalidraw 路线规划样例。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>把想法画在一张画布上</h2><p>原生 .syd 画布与 Excalidraw 文件承接图形、连线与草图；思维导图支持 XMind 读取和保存。</p></div></div><div class="scene-panel" id="scene-code" role="tabpanel" aria-labelledby="tab-code" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/code-dark.jpg" data-light-href="./public/screenshots/code-current.jpg" data-dark-href="./public/screenshots/code-dark.jpg" data-zoom data-title="Rust 编辑器" data-description="真实 Rust 源文件与语法高亮；截图不用于证明语言服务运行。" aria-label="放大查看：Rust 编辑器"><img src="./public/screenshots/code-dark.jpg" data-light-src="./public/screenshots/code-current.jpg" data-dark-src="./public/screenshots/code-dark.jpg" alt="真实 Rust 源文件与语法高亮；截图不用于证明语言服务运行。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>从记录自然走向开发</h2><p>Rust、Go、Python 编辑，结合语言服务完成导航与诊断；项目内还可使用搜索、Git 和真实终端。</p></div></div><div class="scene-panel" id="scene-notebook" role="tabpanel" aria-labelledby="tab-notebook" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/notebook-dark.jpg" data-light-href="./public/screenshots/notebook-current.jpg" data-dark-href="./public/screenshots/notebook-dark.jpg" data-zoom data-title="Notebook" data-description="真实 Jupyter 内核运行后保留的路线分析结果。" aria-label="放大查看：Notebook"><img src="./public/screenshots/notebook-dark.jpg" data-light-src="./public/screenshots/notebook-current.jpg" data-dark-src="./public/screenshots/notebook-dark.jpg" alt="真实 Jupyter 内核运行后保留的路线分析结果。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>代码、结果和笔记放在一起</h2><p>在 Notebook 中编辑与执行单元，查看实际输出；配合 Python 环境管理和实验记录，保留探索过程。</p></div></div><div class="scene-panel" id="scene-database" role="tabpanel" aria-labelledby="tab-database" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/database-dark.jpg" data-light-href="./public/screenshots/database-current.jpg" data-dark-href="./public/screenshots/database-dark.jpg" data-zoom data-title="数据库" data-description="只读连接演示 SQLite，执行查询并展示五条日历记录。" aria-label="放大查看：数据库"><img src="./public/screenshots/database-dark.jpg" data-light-src="./public/screenshots/database-current.jpg" data-dark-src="./public/screenshots/database-dark.jpg" alt="只读连接演示 SQLite，执行查询并展示五条日历记录。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>连接数据，直接查询</h2><p>连接 SQLite、PostgreSQL、MySQL、MariaDB 或 ClickHouse，浏览对象、执行 SQL、查看和导出结果。</p></div></div><div class="scene-panel" id="scene-table" role="tabpanel" aria-labelledby="tab-table" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/table-dark.jpg" data-light-href="./public/screenshots/table-current.jpg" data-dark-href="./public/screenshots/table-dark.jpg" data-zoom data-title="表格" data-description="CSV 路线数据在真实表格视图中打开。" aria-label="放大查看：表格"><img src="./public/screenshots/table-dark.jpg" data-light-src="./public/screenshots/table-current.jpg" data-dark-src="./public/screenshots/table-dark.jpg" alt="CSV 路线数据在真实表格视图中打开。" width="2560" height="1560" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>让零散信息变得可比较</h2><p>查看和编辑 CSV、TSV，把路线、清单或实验结果整理成可比较的数据。</p></div></div><div class="scene-panel" id="scene-tools" role="tabpanel" aria-labelledby="tab-tools" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/tools-dark.jpg" data-light-href="./public/screenshots/tools-current.jpg" data-dark-href="./public/screenshots/tools-dark.jpg" data-zoom data-title="工具箱" data-description="快速访问窗口内的 16 项实际工具。" aria-label="放大查看：工具箱"><img src="./public/screenshots/tools-dark.jpg" data-light-src="./public/screenshots/tools-current.jpg" data-dark-src="./public/screenshots/tools-dark.jpg" alt="快速访问窗口内的 16 项实际工具。" width="1520" height="1120" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>常用转换，随手就做</h2><p>JSON、时间戳、Cron、编码、二维码、正则等工具集中在快速访问里，无需打断当前文稿。</p></div></div><div class="scene-panel" id="scene-account" role="tabpanel" aria-labelledby="tab-account" tabindex="0" hidden><div class="product-stack"><div class="stack-halo" aria-hidden="true"></div><div class="stack-window stack-window-back" aria-hidden="true"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="" loading="lazy" /></div><figure class="product-frame"><a class="screenshot-trigger" href="./public/screenshots/account-dark.jpg" data-light-href="./public/screenshots/account-current.jpg" data-dark-href="./public/screenshots/account-dark.jpg" data-zoom data-title="账号设置" data-description="匿名账号设置实拍，不包含个人账号或凭据。" aria-label="放大查看：账号设置"><img src="./public/screenshots/account-dark.jpg" data-light-src="./public/screenshots/account-current.jpg" data-dark-src="./public/screenshots/account-dark.jpg" alt="匿名账号设置实拍，不包含个人账号或凭据。" width="1520" height="1120" loading="lazy" /></a></figure><div class="stack-window stack-window-front" aria-hidden="true"><div class="stack-window-label"><span class="live-dot"></span>构思<span>SIYADAO</span></div><img src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg" width="2560" height="1560" alt="" loading="lazy" /></div><div class="stack-caption" aria-hidden="true"><span class="stack-caption-line"></span>ONE SPACE. MORE POSSIBILITIES.</div></div><div class="scene-metadata"><span><span class="live-dot"></span>思芽岛 · 原生应用实拍</span><span>山野手记 · 演示空间</span></div><div class="scene-description"><h2>本地开始，按需连接</h2><p>账号密码登录，公众号验证码用于注册与找回密码。登录后可以管理设备，并自主选择需要同步的内容。</p></div></div>
+<div class="scene-navigation" aria-label="功能展示导航">
+  <span id="scene-count" aria-live="polite">01 / 12</span>
+  <div class="scene-navigation-actions">
+    <button type="button" id="scene-previous" aria-label="上一个功能" title="上一个功能" disabled><svg class="lucide lucide-chevron-left" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+    <button type="button" id="scene-next" aria-label="下一个功能" title="下一个功能"><svg class="lucide lucide-chevron-right" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+  </div>
+</div>
+<div class="gallery-footnote"><a class="inline-link" href="#highlights">继续探索 <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
             >
-              <div class="product-stack">
-                <div class="stack-halo" aria-hidden="true"></div>
-                <div class="stack-window stack-window-back" aria-hidden="true">
-                  <img
-                    src="./public/screenshots/canvas.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实白板截图：山野手记产品构思，展示发现、记录、分享三个阶段及连线"
-                    loading="lazy"
-                  />
-                </div>
-                <figure class="product-frame">
-                  <a
-                    class="screenshot-trigger"
-                    href="./public/screenshots/todo.jpg"
-                    data-zoom
-                    data-title="把想做的，一件件做到。"
-                    data-description="三级任务、完成进度、Markdown 存储。"
-                    aria-label="放大查看：TODO真实截图"
-                    ><img
-                      src="./public/screenshots/todo.jpg"
-                      width="760"
-                      height="561"
-                      alt="思芽岛 TODO 实际截图：山野手记创作计划的三级任务、备注与完成进度"
-                      loading="lazy"
-                    /><span class="zoom-hint"
-                      ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-maximize2 lucide-maximize-2"
-                        aria-hidden="true"
-                      >
-                        <path d="M15 3h6v6"></path>
-                        <path d="m21 3-7 7"></path>
-                        <path d="m3 21 7-7"></path>
-                        <path d="M9 21H3v-6"></path></svg
-                      >放大查看</span
-                    ></a
-                  >
-                </figure>
-                <div class="stack-window stack-window-front" aria-hidden="true">
-                  <div class="stack-window-label">
-                    <span class="live-dot"></span>写作<span>SIYADAO</span>
-                  </div>
-                  <img
-                    src="./public/screenshots/writing.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实 Markdown 截图：把山野写进日常，包含路线表格与创作手记"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="stack-caption" aria-hidden="true">
-                  <span class="stack-caption-line"></span>ONE SPACE. MORE
-                  POSSIBILITIES.
-                </div>
-              </div>
-              <div class="scene-metadata">
-                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
-                ><span>山野手记 / 06-TODO待办.md</span>
-              </div>
-              <div class="scene-description">
-                <h2>把想做的，一件件做到。</h2>
-                <p>三级任务、完成进度、Markdown 存储。</p>
-              </div>
-            </div>
-            <div
-              class="scene-panel"
-              id="scene-canvas"
-              role="tabpanel"
-              aria-labelledby="tab-canvas"
-              tabindex="0"
-              hidden
-            >
-              <div class="product-stack">
-                <div class="stack-halo" aria-hidden="true"></div>
-                <div class="stack-window stack-window-back" aria-hidden="true">
-                  <img
-                    src="./public/screenshots/writing.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实 Markdown 截图：把山野写进日常，包含路线表格与创作手记"
-                    loading="lazy"
-                  />
-                </div>
-                <figure class="product-frame">
-                  <a
-                    class="screenshot-trigger"
-                    href="./public/screenshots/canvas.jpg"
-                    data-zoom
-                    data-title="让思路，在画布上展开。"
-                    data-description="形状、连线、文字，灵感自由展开。"
-                    aria-label="放大查看：构思真实截图"
-                    ><img
-                      src="./public/screenshots/canvas.jpg"
-                      width="1259"
-                      height="768"
-                      alt="思芽岛真实白板截图：山野手记产品构思，展示发现、记录、分享三个阶段及连线"
-                      loading="lazy"
-                    /><span class="zoom-hint"
-                      ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-maximize2 lucide-maximize-2"
-                        aria-hidden="true"
-                      >
-                        <path d="M15 3h6v6"></path>
-                        <path d="m21 3-7 7"></path>
-                        <path d="m3 21 7-7"></path>
-                        <path d="M9 21H3v-6"></path></svg
-                      >放大查看</span
-                    ></a
-                  >
-                </figure>
-                <div class="stack-window stack-window-front" aria-hidden="true">
-                  <div class="stack-window-label">
-                    <span class="live-dot"></span>开发<span>SIYADAO</span>
-                  </div>
-                  <img
-                    src="./public/screenshots/code.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实 Rust 编辑截图：Trail 结构体和步行时间计算，显示行号与语法高亮"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="stack-caption" aria-hidden="true">
-                  <span class="stack-caption-line"></span>ONE SPACE. MORE
-                  POSSIBILITIES.
-                </div>
-              </div>
-              <div class="scene-metadata">
-                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
-                ><span>山野手记 / 02-灵感地图.excalidraw</span>
-              </div>
-              <div class="scene-description">
-                <h2>让思路，在画布上展开。</h2>
-                <p>形状、连线、文字，灵感自由展开。</p>
-              </div>
-            </div>
-            <div
-              class="scene-panel"
-              id="scene-writing"
-              role="tabpanel"
-              aria-labelledby="tab-writing"
-              tabindex="0"
-              hidden
-            >
-              <div class="product-stack">
-                <div class="stack-halo" aria-hidden="true"></div>
-                <div class="stack-window stack-window-back" aria-hidden="true">
-                  <img
-                    src="./public/screenshots/code.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实 Rust 编辑截图：Trail 结构体和步行时间计算，显示行号与语法高亮"
-                    loading="lazy"
-                  />
-                </div>
-                <figure class="product-frame">
-                  <a
-                    class="screenshot-trigger"
-                    href="./public/screenshots/writing.jpg"
-                    data-zoom
-                    data-title="让文字，长成自己的样子。"
-                    data-description="Markdown 写作，清晰预览。"
-                    aria-label="放大查看：写作真实截图"
-                    ><img
-                      src="./public/screenshots/writing.jpg"
-                      width="1259"
-                      height="768"
-                      alt="思芽岛真实 Markdown 截图：把山野写进日常，包含路线表格与创作手记"
-                      loading="lazy"
-                    /><span class="zoom-hint"
-                      ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-maximize2 lucide-maximize-2"
-                        aria-hidden="true"
-                      >
-                        <path d="M15 3h6v6"></path>
-                        <path d="m21 3-7 7"></path>
-                        <path d="m3 21 7-7"></path>
-                        <path d="M9 21H3v-6"></path></svg
-                      >放大查看</span
-                    ></a
-                  >
-                </figure>
-                <div class="stack-window stack-window-front" aria-hidden="true">
-                  <div class="stack-window-label">
-                    <span class="live-dot"></span>工具<span>SIYADAO</span>
-                  </div>
-                  <img
-                    src="./public/screenshots/tools.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实 JSON 工具截图：左侧路线数据输入，右侧实际格式化结果"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="stack-caption" aria-hidden="true">
-                  <span class="stack-caption-line"></span>ONE SPACE. MORE
-                  POSSIBILITIES.
-                </div>
-              </div>
-              <div class="scene-metadata">
-                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
-                ><span>山野手记 / 01-创作手记.md</span>
-              </div>
-              <div class="scene-description">
-                <h2>让文字，长成自己的样子。</h2>
-                <p>Markdown 写作，清晰预览。</p>
-              </div>
-            </div>
-            <div
-              class="scene-panel"
-              id="scene-code"
-              role="tabpanel"
-              aria-labelledby="tab-code"
-              tabindex="0"
-              hidden
-            >
-              <div class="product-stack">
-                <div class="stack-halo" aria-hidden="true"></div>
-                <div class="stack-window stack-window-back" aria-hidden="true">
-                  <img
-                    src="./public/screenshots/tools.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛真实 JSON 工具截图：左侧路线数据输入，右侧实际格式化结果"
-                    loading="lazy"
-                  />
-                </div>
-                <figure class="product-frame">
-                  <a
-                    class="screenshot-trigger"
-                    href="./public/screenshots/code.jpg"
-                    data-zoom
-                    data-title="让下一步，有代码可循。"
-                    data-description="真实 Rust 文件，多语言语法高亮。"
-                    aria-label="放大查看：开发真实截图"
-                    ><img
-                      src="./public/screenshots/code.jpg"
-                      width="1259"
-                      height="768"
-                      alt="思芽岛真实 Rust 编辑截图：Trail 结构体和步行时间计算，显示行号与语法高亮"
-                      loading="lazy"
-                    /><span class="zoom-hint"
-                      ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-maximize2 lucide-maximize-2"
-                        aria-hidden="true"
-                      >
-                        <path d="M15 3h6v6"></path>
-                        <path d="m21 3-7 7"></path>
-                        <path d="m3 21 7-7"></path>
-                        <path d="M9 21H3v-6"></path></svg
-                      >放大查看</span
-                    ></a
-                  >
-                </figure>
-                <div class="stack-window stack-window-front" aria-hidden="true">
-                  <div class="stack-window-label">
-                    <span class="live-dot"></span>便签墙<span>SIYADAO</span>
-                  </div>
-                  <img
-                    src="./public/screenshots/sticky-notes.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛便签墙实际截图：六张彩色便签记录山野手记的路线、创作和拍摄灵感"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="stack-caption" aria-hidden="true">
-                  <span class="stack-caption-line"></span>ONE SPACE. MORE
-                  POSSIBILITIES.
-                </div>
-              </div>
-              <div class="scene-metadata">
-                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
-                ><span>山野手记 / 03-trail.rs</span>
-              </div>
-              <div class="scene-description">
-                <h2>让下一步，有代码可循。</h2>
-                <p>真实 Rust 文件，多语言语法高亮。</p>
-              </div>
-            </div>
-            <div
-              class="scene-panel"
-              id="scene-tools"
-              role="tabpanel"
-              aria-labelledby="tab-tools"
-              tabindex="0"
-              hidden
-            >
-              <div class="product-stack">
-                <div class="stack-halo" aria-hidden="true"></div>
-                <div class="stack-window stack-window-back" aria-hidden="true">
-                  <img
-                    src="./public/screenshots/sticky-notes.jpg"
-                    width="1259"
-                    height="768"
-                    alt="思芽岛便签墙实际截图：六张彩色便签记录山野手记的路线、创作和拍摄灵感"
-                    loading="lazy"
-                  />
-                </div>
-                <figure class="product-frame">
-                  <a
-                    class="screenshot-trigger"
-                    href="./public/screenshots/tools.jpg"
-                    data-zoom
-                    data-title="把手边的小事，顺手完成。"
-                    data-description="整理 JSON，让数据清晰可读。"
-                    aria-label="放大查看：工具真实截图"
-                    ><img
-                      src="./public/screenshots/tools.jpg"
-                      width="1259"
-                      height="768"
-                      alt="思芽岛真实 JSON 工具截图：左侧路线数据输入，右侧实际格式化结果"
-                      loading="lazy"
-                    /><span class="zoom-hint"
-                      ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-maximize2 lucide-maximize-2"
-                        aria-hidden="true"
-                      >
-                        <path d="M15 3h6v6"></path>
-                        <path d="m21 3-7 7"></path>
-                        <path d="m3 21 7-7"></path>
-                        <path d="M9 21H3v-6"></path></svg
-                      >放大查看</span
-                    ></a
-                  >
-                </figure>
-                <div class="stack-window stack-window-front" aria-hidden="true">
-                  <div class="stack-window-label">
-                    <span class="live-dot"></span>TODO<span>SIYADAO</span>
-                  </div>
-                  <img
-                    src="./public/screenshots/todo.jpg"
-                    width="760"
-                    height="561"
-                    alt="思芽岛 TODO 实际截图：山野手记创作计划的三级任务、备注与完成进度"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="stack-caption" aria-hidden="true">
-                  <span class="stack-caption-line"></span>ONE SPACE. MORE
-                  POSSIBILITIES.
-                </div>
-              </div>
-              <div class="scene-metadata">
-                <span><span class="live-dot"></span>思芽岛 · 实际运行画面</span
-                ><span>山野手记 / 04-路线数据.json</span>
-              </div>
-              <div class="scene-description">
-                <h2>把手边的小事，顺手完成。</h2>
-                <p>整理 JSON，让数据清晰可读。</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></a><a class="inline-link" href="./public/samples/siyadao-samples.zip" download>下载创作样例 <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-arrow-up-right"
+          aria-hidden="true"
+        >
+          <path d="M7 7h10v10"></path>
+          <path d="M7 17 17 7"></path></svg
+      ></a></div></section><section
         class="daily-products shell"
         id="highlights"
         aria-labelledby="daily-title"
       >
-        <div class="visual-section-heading">
+        <div class="visual-section-heading" data-reveal>
           <p class="eyebrow">01 / CAPTURE. ORGANIZE. DO.</p>
           <h2 id="daily-title">
             记下来。<span class="text-electric">做得到。</span>
           </h2>
         </div>
         <div class="daily-product-grid">
-          <article class="daily-product sticky-product">
+          <article class="daily-product sticky-product" data-reveal>
             <div class="product-heading">
               <span class="highlight-kicker"
                 ><svg
@@ -1323,17 +916,17 @@
               <h3>让灵感，贴在眼前。</h3>
               <p>自由摆放 · 彩色分类 · 桌面置顶</p>
             </div>
-            <a
+            <a data-zoom data-title="查看便签墙原始产品截图" data-description="思芽岛实际运行画面。"
               class="daily-product-image"
-              href="./public/screenshots/sticky-notes.jpg"
+              href="./public/screenshots/sticky-dark.jpg" data-light-href="./public/screenshots/sticky-current.jpg" data-dark-href="./public/screenshots/sticky-dark.jpg"
               target="_blank"
               rel="noreferrer"
               aria-label="查看便签墙原始产品截图"
               ><img
-                src="./public/screenshots/sticky-notes.jpg"
+                src="./public/screenshots/sticky-dark.jpg" data-light-src="./public/screenshots/sticky-current.jpg" data-dark-src="./public/screenshots/sticky-dark.jpg"
                 alt="六张山野手记样例便签在思芽岛真实画布上自由排列"
-                width="1259"
-                height="768"
+                width="2560"
+                height="1560"
                 loading="lazy" /><span class="shot-open"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1351,8 +944,23 @@
                   <path d="M7 7h10v10"></path>
                   <path d="M7 17 17 7"></path></svg></span
             ></a>
-          </article>
-          <article class="daily-product todo-product">
+          <details class="feature-detail"><summary><span>便签的更多用法</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>选择颜色，整理位置与尺寸；需要常驻提醒时，可以把便签固定到桌面。</p></div></details></article>
+          <article class="daily-product todo-product" data-reveal>
             <div class="product-heading">
               <span class="highlight-kicker"
                 ><svg
@@ -1377,19 +985,19 @@
                 TODO 待办</span
               >
               <h3>把想做的，一件件做到。</h3>
-              <p>三级任务 · 完成进度 · Markdown 存储</p>
+              <p>分组与子任务 · 完成进度 · 归档恢复</p>
             </div>
-            <a
+            <a data-zoom data-title="查看 TODO 待办原始产品截图" data-description="思芽岛实际运行画面。"
               class="daily-product-image"
-              href="./public/screenshots/todo.jpg"
+              href="./public/screenshots/todo-dark.jpg" data-light-href="./public/screenshots/todo-current.jpg" data-dark-href="./public/screenshots/todo-dark.jpg"
               target="_blank"
               rel="noreferrer"
               aria-label="查看 TODO 待办原始产品截图"
               ><img
-                src="./public/screenshots/todo.jpg"
+                src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg"
                 alt="山野手记创作计划在真实 TODO 界面中显示三级任务、备注和完成进度"
-                width="760"
-                height="561"
+                width="1520"
+                height="1120"
                 loading="lazy" /><span class="shot-open"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1407,72 +1015,66 @@
                   <path d="M7 7h10v10"></path>
                   <path d="M7 17 17 7"></path></svg></span
             ></a>
-          </article>
+          <details class="feature-detail"><summary><span>待办的更多用法</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>按分组组织任务，添加子任务与备注。完成后归档，需要时恢复；支持 Markdown 导入、导出，当前数据保存在本地数据库。</p></div></details></article>
         </div>
       </section>
-      <section
+      <section class="calendar-product shell" id="calendar" aria-labelledby="calendar-title"><div class="visual-section-heading" data-reveal><p class="eyebrow">02 / DAYS WORTH KEEPING</p><h2 id="calendar-title">让每一天，<span class="text-electric">有迹可循。</span></h2><p>日历记录当下，时间线连接过往。</p></div><div class="calendar-stage" data-reveal><a class="calendar-shot" href="./public/screenshots/calendar-dark.jpg" data-light-href="./public/screenshots/calendar-current.jpg" data-dark-href="./public/screenshots/calendar-dark.jpg" data-zoom data-title="日历" data-description="最新开发版日历实拍：月历与演示笔记。" aria-label="放大查看：日历"><img src="./public/screenshots/calendar-dark.jpg" data-light-src="./public/screenshots/calendar-current.jpg" data-dark-src="./public/screenshots/calendar-dark.jpg" alt="最新开发版日历实拍：月历与演示笔记。" width="2560" height="1560" loading="lazy" /></a><figure class="calendar-timeline"><a class="timeline-shot" href="./public/screenshots/timeline-dark.png" data-light-href="./public/screenshots/timeline-current.png" data-dark-href="./public/screenshots/timeline-dark.png" data-zoom data-title="笔记时间线" data-description="独立时间线原生窗口渲染；仅裁去外围透明空白。" aria-label="放大查看：笔记时间线"><img src="./public/screenshots/timeline-dark-preview.png" data-light-src="./public/screenshots/timeline-preview.png" data-dark-src="./public/screenshots/timeline-dark-preview.png" alt="独立时间线原生窗口渲染；仅裁去外围透明空白。" width="336" height="650" loading="lazy" /></a><figcaption>笔记时间线 · 原生窗口渲染</figcaption></figure></div><details class="feature-detail"><summary><span>日历与时间线</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>同一天记录多条笔记，复用模板并设置提醒。独立时间线按日期串起记录，滚动时联动日历日期，点击即可打开笔记。</p></div></details></section><section
         class="magic-product shell"
         id="intelligence"
         aria-labelledby="magic-title"
       >
-        <div class="visual-section-heading">
-          <p class="eyebrow">02 / YOUR NEXT MOVE, WITHIN REACH</p>
+        <div class="visual-section-heading" data-reveal>
+          <p class="eyebrow">03 / YOUR NEXT MOVE, WITHIN REACH</p>
           <h2 id="magic-title">
             魔法球。<span class="text-electric">随叫随到。</span>
           </h2>
           <p>单击展开工具，双击说出想法。</p>
         </div>
         <div class="magic-product-stage">
-          <a
+          <a data-zoom data-title="查看魔法球可召回的 JSON 工具真实截图" data-description="思芽岛实际运行画面。"
             class="magic-workspace-image"
-            href="./public/screenshots/tools.jpg"
+            href="./public/screenshots/tools-dark.jpg" data-light-href="./public/screenshots/tools-current.jpg" data-dark-href="./public/screenshots/tools-dark.jpg"
             target="_blank"
             rel="noreferrer"
-            aria-label="查看魔法球可召回的 JSON 工具真实截图"
+              aria-label="查看快速访问工具的真实截图"
             ><img
-              src="./public/screenshots/tools.jpg"
-              alt="思芽岛 JSON 格式化工具真实操作画面"
-              width="1259"
-              height="768"
+              src="./public/screenshots/tools-dark.jpg" data-light-src="./public/screenshots/tools-current.jpg" data-dark-src="./public/screenshots/tools-dark.jpg"
+              alt="思芽岛快速访问窗口的 16 项实际工具"
+              width="1520"
+              height="1120"
               loading="lazy"
           /></a>
-          <figure class="magic-ring-image">
-            <a
-              href="./public/screenshots/magic-ring.jpg"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="查看魔法球工具环原始截图"
-              ><img
-                src="./public/screenshots/magic-ring.jpg"
-                alt="真实魔法球工具环，包含搜索、文件、日历、便签和 Git 入口"
-                width="220"
-                height="204"
-                loading="lazy"
-            /></a>
-            <figcaption>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-sparkles"
-                aria-hidden="true"
-              >
-                <path
-                  d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
-                ></path>
-                <path d="M20 2v4"></path>
-                <path d="M22 4h-4"></path>
-                <circle cx="4" cy="20" r="2"></circle>
-              </svg>
-              魔法球 · 真实工具环
-            </figcaption>
-          </figure>
+          <figure class="magic-ring-image"><a class="screenshot-trigger" href="./public/screenshots/todo-dark.jpg" data-light-href="./public/screenshots/todo-current.jpg" data-dark-href="./public/screenshots/todo-dark.jpg" data-zoom data-title="待办 · 快速访问" data-description="快速访问窗口里的真实分组与嵌套待办。"><img src="./public/screenshots/todo-dark.jpg" data-light-src="./public/screenshots/todo-current.jpg" data-dark-src="./public/screenshots/todo-dark.jpg" width="1520" height="1120" alt="快速访问窗口中的待办分组、嵌套任务与完成状态" loading="lazy" /></a><figcaption>待办 · 快速访问</figcaption></figure>
           <div class="magic-product-caption">
             <span class="live-dot"></span> 从一个入口，连接常用工具。
           </div>
@@ -1482,16 +1084,30 @@
           ><span>本机表达学习</span>
         </div>
         <p class="privacy-caption">表达学习可关闭、可清除，数据留在本机。</p>
-      </section>
+      <details class="feature-detail"><summary><span>常用工具与密码库</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>JSON、时间戳、Cron、进制转换、Base64 文本与图片、GZip、JWT、二维码、URL 编解码、哈希、密码生成、UUID、图片转换、正则表达式、密码管理，共 16 项工具。</p><p>密码库将加密后的密码字段写入本地数据库，登录后可选择账号密码库同步。模型 API Key 和公众号发布密钥不进入内容同步；模型服务为可选配置，需要时再连接。</p></div></details></section>
       <section class="creation-products shell" aria-labelledby="creation-title">
-        <div class="visual-section-heading">
-          <p class="eyebrow">03 / A SPACE FOR EVERY IDEA</p>
+        <div class="visual-section-heading" data-reveal>
+          <p class="eyebrow">04 / A SPACE FOR EVERY IDEA</p>
           <h2 id="creation-title">
             从灵感，<span class="text-electric">到作品。</span>
           </h2>
         </div>
-        <div class="creation-grid">
-          <article class="creation-product">
+        <div class="creation-grid"><article class="creation-product" data-reveal>
             <div class="product-heading">
               <span class="highlight-kicker"
                 ><svg
@@ -1516,23 +1132,37 @@
                 白板 · 思维导图</span
               >
               <h3>自由构思，有序展开。</h3>
-              <p>Excalidraw 白板 · XMind 导图</p>
+              <p>.syd 画布 · Excalidraw · XMind</p>
             </div>
-            <a
+            <a data-zoom data-title="查看真实白板截图" data-description="思芽岛实际运行画面。"
               class="creation-shot"
-              href="./public/screenshots/canvas.jpg"
+              href="./public/screenshots/canvas-dark.jpg" data-light-href="./public/screenshots/canvas-current.jpg" data-dark-href="./public/screenshots/canvas-dark.jpg"
               target="_blank"
               rel="noreferrer"
               aria-label="查看真实白板截图"
               ><img
-                src="./public/screenshots/canvas.jpg"
+                src="./public/screenshots/canvas-dark.jpg" data-light-src="./public/screenshots/canvas-current.jpg" data-dark-src="./public/screenshots/canvas-dark.jpg"
                 alt="思芽岛真实白板，展示发现、记录、分享的灵感地图"
-                width="1259"
-                height="768"
+                width="2560"
+                height="1560"
                 loading="lazy"
             /></a>
-          </article>
-          <article class="creation-product">
+          <details class="feature-detail"><summary><span>画布与思维导图</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>用形状、连线和文字组织灵感。原生 .syd 画布与 Excalidraw 文件可编辑保存；XMind 支持读取、编辑与保存。</p></div></details></article><article class="creation-product" data-reveal>
             <div class="product-heading">
               <span class="highlight-kicker"
                 ><svg
@@ -1561,251 +1191,165 @@
               <h3>写下来，分享出去。</h3>
               <p>富文本复制 · 预检 · 草稿同步</p>
             </div>
-            <a
+            <a data-zoom data-title="查看真实 Markdown 写作截图" data-description="思芽岛实际运行画面。"
               class="creation-shot"
-              href="./public/screenshots/writing.jpg"
+              href="./public/screenshots/writing-dark.jpg" data-light-href="./public/screenshots/writing-current.jpg" data-dark-href="./public/screenshots/writing-dark.jpg"
               target="_blank"
               rel="noreferrer"
               aria-label="查看真实 Markdown 写作截图"
               ><img
-                src="./public/screenshots/writing.jpg"
+                src="./public/screenshots/writing-dark.jpg" data-light-src="./public/screenshots/writing-current.jpg" data-dark-src="./public/screenshots/writing-dark.jpg"
                 alt="山野手记 Markdown 文章在思芽岛中的真实预览"
-                width="1259"
-                height="768"
+                width="2560"
+                height="1560"
                 loading="lazy"
             /></a>
             <p class="product-condition">
               公众号同步需配置账号，发布由你确认。
             </p>
-          </article>
-          <article class="creation-product">
-            <div class="product-heading">
-              <span class="highlight-kicker"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-braces"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"
-                  ></path>
-                  <path
-                    d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"
-                  ></path>
-                </svg>
-                代码编辑</span
-              >
-              <h3>想到，也能做到。</h3>
-              <p>多语言高亮 · F12 导航 · 跨文件跳转</p>
-            </div>
-            <a
-              class="creation-shot"
-              href="./public/screenshots/code.jpg"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="查看真实 Rust 编辑截图"
-              ><img
-                src="./public/screenshots/code.jpg"
-                alt="思芽岛对 Rust 路线样例进行真实语法高亮"
-                width="1259"
-                height="768"
-                loading="lazy"
-            /></a>
-            <p class="product-condition">代码导航需安装对应语言服务。</p>
-          </article>
-          <article class="creation-product">
-            <div class="product-heading">
-              <span class="highlight-kicker"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-keyboard"
-                  aria-hidden="true"
-                >
-                  <path d="M10 8h.01"></path>
-                  <path d="M12 12h.01"></path>
-                  <path d="M14 8h.01"></path>
-                  <path d="M16 12h.01"></path>
-                  <path d="M18 8h.01"></path>
-                  <path d="M6 8h.01"></path>
-                  <path d="M7 16h10"></path>
-                  <path d="M8 12h.01"></path>
-                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                </svg>
-                开发工具集</span
-              >
-              <h3>小事，顺手完成。</h3>
-              <p>JSON · Cron · 正则 · 编码转换</p>
-            </div>
-            <a
-              class="creation-shot"
-              href="./public/screenshots/tools.jpg"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="查看 JSON 格式化真实截图"
-              ><img
-                src="./public/screenshots/tools.jpg"
-                alt="思芽岛真实 JSON 工具的输入与格式化输出"
-                width="1259"
-                height="768"
-                loading="lazy"
-            /></a>
-          </article>
-        </div>
-        <div class="workspace-feature-strip" aria-label="更多工作台功能">
-          <article>
-            <svg
+          <details class="feature-detail"><summary><span>文稿与公众号</span><svg
               xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-calendar-days"
+              class="lucide lucide-arrow-down"
               aria-hidden="true"
             >
-              <path d="M8 2v3"></path>
-              <path d="M16 2v3"></path>
-              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-              <path d="M3 9h18"></path>
-              <path d="M8 13h.01"></path>
-              <path d="M12 13h.01"></path>
-              <path d="M16 13h.01"></path>
-              <path d="M8 17h.01"></path>
-              <path d="M12 17h.01"></path>
-              <path d="M16 17h.01"></path>
-            </svg>
-            <h3>日历笔记</h3>
-            <p>按日记录 · 模板 · 提醒</p>
-          </article>
-          <article>
-            <svg
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>Markdown 编辑、预览、文件历史和富文本复制。配置自己的公众号发布凭据后，可预检排版与图片、保存草稿，并在确认后发布。</p></div></details></article></div></section><section class="development-product shell" id="development" aria-labelledby="development-title"><div class="visual-section-heading" data-reveal><p class="eyebrow">05 / BUILD. RUN. DISCOVER.</p><h2 id="development-title">想到，<span class="text-electric">也能做到。</span></h2><p>代码、终端和数据，接住下一步探索。</p></div><div class="development-stage" data-reveal><a class="creation-shot" href="./public/screenshots/notebook-dark.jpg" data-light-href="./public/screenshots/notebook-current.jpg" data-dark-href="./public/screenshots/notebook-dark.jpg" data-zoom data-title="Notebook" data-description="真实 Jupyter 内核运行后保留的路线分析结果。" aria-label="放大查看：Notebook"><img src="./public/screenshots/notebook-dark.jpg" data-light-src="./public/screenshots/notebook-current.jpg" data-dark-src="./public/screenshots/notebook-dark.jpg" alt="真实 Jupyter 内核运行后保留的路线分析结果。" width="2560" height="1560" loading="lazy" /></a></div><div class="feature-accordion">
+<details class="feature-detail" name="development"><summary><span>代码、终端与 Git</span><svg
               xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-book-open"
+              class="lucide lucide-arrow-down"
               aria-hidden="true"
             >
-              <path d="M12 5v16"></path>
-              <path
-                d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"
-              ></path>
-            </svg>
-            <h3>PDF 阅读</h3>
-            <p>高亮与批注 · macOS</p>
-          </article>
-          <article>
-            <svg
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>Rust、Go、Python 高亮、项目导航与语言服务诊断。真实 PTY 终端支持独立会话，可启用 Zsh 或 PowerShell 增强。代码项目可查看变更、分支、历史和差异，管理远程。</p><p>代码导航需要配置 rust-analyzer、gopls 或 Pyright。个人默认空间无需安装 Git。</p></div></details>
+<details class="feature-detail" name="development"><summary><span>Python、Notebook 与数据库</span><svg
               xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-search"
+              class="lucide lucide-arrow-down"
               aria-hidden="true"
             >
-              <path d="m21 21-4.34-4.34"></path>
-              <circle cx="11" cy="11" r="8"></circle>
-            </svg>
-            <h3>全局搜索</h3>
-            <p>文件 · 正文 · 代码符号</p>
-          </article>
-          <article>
-            <svg
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>管理 Python 解释器、环境和依赖，连接 Jupyter 内核运行 Notebook，归档和比较实验记录。运行需要对应解释器和内核。</p><p>数据库工作台支持 SQLite、PostgreSQL、MySQL、MariaDB、ClickHouse，提供对象树、SQL 查询、结果和导出。</p></div></details>
+<details class="feature-detail" name="development"><summary><span>文件、阅读与检索</span><svg
               xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-terminal"
+              class="lucide lucide-arrow-down"
               aria-hidden="true"
             >
-              <path d="M12 19h8"></path>
-              <path d="m4 17 6-6-6-6"></path>
-            </svg>
-            <h3>多会话终端</h3>
-            <p>独立 shell · 真实 PTY</p>
-          </article>
-          <article>
-            <svg
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>查看、编辑 CSV / TSV，预览、旋转、压缩和转换图片；macOS 支持 PDF 阅读、高亮与批注。按文件名、正文或代码符号搜索，查看和恢复本地文件历史。</p><p>书库整理标签、收藏、评分和阅读进度；词汇表按领域和词表管理条目，支持导入、导出。</p></div></details>
+<details class="feature-detail" name="development"><summary><span>CLI 与脚本</span><svg
               xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-git-branch"
+              class="lucide lucide-arrow-down"
               aria-hidden="true"
             >
-              <path d="M15 6a9 9 0 0 0-9 9V3"></path>
-              <circle cx="18" cy="6" r="3"></circle>
-              <circle cx="6" cy="18" r="3"></circle>
-            </svg>
-            <h3>可视化 Git</h3>
-            <p>变更 · 分支 · 历史 · Diff</p>
-          </article>
-          <article>
-            <svg
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>siyadao-cli 与桌面端共用真实工作区数据和操作，可以打开文件、管理内容或调用应用操作。结构化 JSON 输出便于接入脚本。</p></div></details></div></section><section class="sync-product shell" id="sync" aria-labelledby="sync-title"><div class="visual-section-heading" data-reveal><p class="eyebrow">06 / PICK UP WHERE YOU LEFT OFF</p><h2 id="sync-title">换一台设备，<span class="text-electric">接着来。</span></h2><p>本地开始，需要时再连接。</p></div><div class="sync-intro" data-reveal><div><h3>你的内容，<br />由你选择。</h3><p>不登录也能使用本地空间。登录同一账号，选择需要同步的内容，延续另一台设备上的工作。</p><a class="inline-link" href="#sync-options">了解同步范围 <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-hard-drive"
+              class="lucide lucide-arrow-down"
               aria-hidden="true"
             >
-              <path d="M10 16h.01"></path>
-              <path
-                d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
-              ></path>
-              <path d="M21.946 12.013H2.054"></path>
-              <path d="M6 16h.01"></path>
-            </svg>
-            <h3>本地工作区</h3>
-            <p>真实文件 · 自由备份</p>
-          </article>
-        </div>
-      </section>
-      <section class="closing-section shell" aria-labelledby="closing-title">
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></a></div><a class="creation-shot" href="./public/screenshots/account-dark.jpg" data-light-href="./public/screenshots/account-current.jpg" data-dark-href="./public/screenshots/account-dark.jpg" data-zoom data-title="账号设置" data-description="开发版未登录状态实拍，未使用个人账号或凭据。" aria-label="放大查看：账号设置"><img src="./public/screenshots/account-dark.jpg" data-light-src="./public/screenshots/account-current.jpg" data-dark-src="./public/screenshots/account-dark.jpg" alt="开发版未登录状态实拍，未使用个人账号或凭据。" width="1520" height="1120" loading="lazy" /></a></div><div class="feature-accordion" id="sync-options">
+<details class="feature-detail" name="sync"><summary><span>账号与设备</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>账号密码登录；关注公众号获取注册、找回密码的验证码，支持粘贴。登录后查看和管理设备。</p></div></details>
+<details class="feature-detail" name="sync"><summary><span>九类可选同步</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>待办、便签、日历、词汇表、文稿与画布、文件与附件、书库、密码库、通用偏好。类别默认全部勾选；首次同步总开关关闭，由你确认并启用。随时关闭不需要同步的类别。</p></div></details>
+<details class="feature-detail" name="sync"><summary><span>同步、冲突与文件恢复</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>启用后，内容变更触发同步，也可手动立即同步。冲突时查看差异，选择保留本机或云端内容。</p><p>结构化记录同步最新状态；文件从同账号在线设备按需补齐，服务器只作临时中继。外部代码项目和本机窗口布局不参与同步。</p><p>同步不等同于永久云备份：原文件设备全部丢失、临时副本也已清理时，无法恢复文件。重要资料请另行备份。</p></div></details></div></section><section id="downloads" class="closing-section shell" aria-labelledby="closing-title">
         <div>
           <p class="eyebrow">MAKE ROOM FOR YOUR IDEAS</p>
           <h2 id="closing-title">下一步，<br />从你的想法开始。</h2>
@@ -2111,7 +1655,22 @@
           ></a>
         </div>
       </section>
-    </main>
+    <section class="release-info shell" aria-label="版本说明"><details class="feature-detail"><summary><span>下载与自动更新</span><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-down"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14"></path>
+              <path d="m19 12-7 7-7-7"></path></svg
+          ></summary><div class="detail-body"><p>官网为主下载源，GitHub 为备用。菜单显示各平台可用安装包及真实版本。</p><p>开发版发现更新时，标题栏目录位置出现蓝色下载图标。点击开始下载，悬停查看进度并可取消；失败可重试。受支持的 macOS DMG、Windows 安装 EXE 下载完成后，处理未保存内容，再自动替换并重启。其他包或无法写入的安装位置提供手动入口。</p></div></details><p class="release-boundary">页面展示最新开发版。当前公开安装包仍为较早的预览版本；新同步与更新交互需等待对应版本发布，实际版本以下载菜单为准。</p></section></main>
     <footer class="site-footer shell">
       <a class="brand" href="#main"
         ><svg
@@ -2181,7 +1740,7 @@
       <p id="zoom-description"></p>
       <div class="dialog-image-scroll"><img id="zoom-image" alt="" /></div>
       <a class="inline-link" id="zoom-original" target="_blank" rel="noreferrer"
-        >查看原始 JPEG
+        >查看原始截图
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="14"
