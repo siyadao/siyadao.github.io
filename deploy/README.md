@@ -6,7 +6,7 @@
 
 | 项目 | 位置 |
 | --- | --- |
-| SSH 连接 | `root@47.122.118.98`，使用已配置本机密钥，密钥不进项目 |
+| SSH 连接 | 本机别名 `aliyun-siyadao`（`admin@47.122.118.98`），使用专用 known_hosts 与密钥；密钥不进项目。发布命令在服务器上通过 sudo 执行 |
 | 版本目录 | `/var/www/siyadao-studio/releases/<UTC版本号>/` |
 | 生效目录 | `/var/www/siyadao-studio/current`，指向一个完整版本 |
 | Nginx 配置 | `/etc/nginx/sites-available/studio.siyadao.cn` |
@@ -18,7 +18,7 @@
 
 只发布 HTML、CSS、JavaScript、图标许可证和 `public/` 中已审核的产品截图、图标、样例 ZIP。项目源码、原始样例目录、测试、部署文件、SSH 密钥和应用数据不进入 Web 根目录。原始样例继续保留在 `samples/`，公开 ZIP 提供下载副本。安装包由独立下载虚拟主机提供，不进入官网静态版本目录。
 
-备案链接使用用户确认且与主站一致的「粤ICP备2026108587号-1」。安装包公开备用仓库为 `siyadao/studio`。下载菜单按需读取官方版本 API，包含 preview，按发布时间确定展示版本；各平台独立选择最近可用安装包并标注旧版本。平台主项直接下载 `download.siyadao.cn` 的附件，旁边的 GitHub 备用仅在该包具有备用地址时出现。
+备案链接使用用户确认且与主站一致的「粤ICP备2026108587号-1」。安装包公开备用仓库为 `siyadao/studio`。下载菜单按需读取官方版本 API，包含 preview，按发布时间确定展示版本；各平台独立选择最近可用安装包并标注旧版本。平台主项优先下载 GitHub 附件；两个源都有时旁边的「备用」指向官网。只有 GitHub 时不显示「备用」；没有 GitHub 地址时主项落到官网，旁边不再重复「备用」。
 
 每次发布安装包不再修改或部署官网页面/版本清单。打开菜单才查询，浏览器成功结果缓存一分钟并合并并发请求。官网同源 `GET /api/app/releases` 由 Nginx 按需代理固定本机上游 `http://127.0.0.1:8081/v1/app/releases`，成功响应共用一分钟缓存和并发锁；不转发客户端请求头、认证、请求体或查询参数，不配置 GitHub Token，不增加后台轮询或额外常驻进程。缓存目录为 `/var/cache/nginx/siyadao-releases`，容量上限 10 MB；使用新缓存键，不复用旧 GitHub JSON。
 
@@ -39,8 +39,8 @@
 新任务每天服务器本地时间 04:00、16:00 检查续期，各加最多 30 分钟随机延迟。采用 webroot 验证，不停止 Nginx；续期成功后先校验配置，再平滑重载。没有修改原站点的续期任务。
 
 ```sh
-ssh root@47.122.118.98 'sudo systemctl list-timers siyadao-studio-certbot-renew.timer; sudo systemctl status siyadao-studio-certbot-renew.service --no-pager'
-ssh root@47.122.118.98 'sudo certbot certificates --config-dir /etc/letsencrypt-studio --work-dir /var/lib/letsencrypt-studio --logs-dir /var/log/letsencrypt-studio'
+ssh aliyun-siyadao 'sudo systemctl list-timers siyadao-studio-certbot-renew.timer; sudo systemctl status siyadao-studio-certbot-renew.service --no-pager'
+ssh aliyun-siyadao 'sudo certbot certificates --config-dir /etc/letsencrypt-studio --work-dir /var/lib/letsencrypt-studio --logs-dir /var/log/letsencrypt-studio'
 ```
 
 ## 后续更新
@@ -53,30 +53,32 @@ studio_archive=$(mktemp /tmp/siyadao-studio.XXXXXX)
 COPYFILE_DISABLE=1 tar --format=ustar -czf "$studio_archive" -C . \
   index.html styles.css app.js theme.js downloads.js LICENSE-icons.txt \
   public/favicon.svg public/samples/siyadao-samples.zip \
-  public/screenshots/writing-current.jpg public/screenshots/sticky-current.jpg \
-  public/screenshots/todo-current.jpg public/screenshots/calendar-current.jpg \
-  public/screenshots/timeline-current.png public/screenshots/timeline-preview.png \
-  public/screenshots/canvas-current.jpg \
-  public/screenshots/notebook-current.jpg public/screenshots/database-current.jpg \
-  public/screenshots/code-current.jpg public/screenshots/table-current.jpg \
-  public/screenshots/tools-current.jpg public/screenshots/account-current.jpg \
-  public/screenshots/writing-dark.jpg public/screenshots/sticky-dark.jpg \
-  public/screenshots/todo-dark.jpg public/screenshots/calendar-dark.jpg \
-  public/screenshots/timeline-dark.png public/screenshots/timeline-dark-preview.png \
-  public/screenshots/canvas-dark.jpg public/screenshots/notebook-dark.jpg \
-  public/screenshots/database-dark.jpg public/screenshots/code-dark.jpg \
-  public/screenshots/table-dark.jpg public/screenshots/tools-dark.jpg \
-  public/screenshots/account-dark.jpg \
+  public/screenshots/writing-current.jpg public/screenshots/writing-dark.jpg \
+  public/screenshots/sticky-current.jpg public/screenshots/sticky-dark.jpg \
+  public/screenshots/todo-current.jpg public/screenshots/todo-dark.jpg \
+  public/screenshots/calendar-current.jpg public/screenshots/calendar-dark.jpg \
+  public/screenshots/timeline-current.jpg public/screenshots/timeline-dark.jpg \
+  public/screenshots/timeline-preview.jpg public/screenshots/timeline-dark-preview.jpg \
+  public/screenshots/canvas-current.jpg public/screenshots/canvas-dark.jpg \
+  public/screenshots/notebook-current.jpg public/screenshots/notebook-dark.jpg \
+  public/screenshots/database-current.jpg public/screenshots/database-dark.jpg \
+  public/screenshots/code-current.jpg public/screenshots/code-dark.jpg \
+  public/screenshots/table-current.jpg public/screenshots/table-dark.jpg \
+  public/screenshots/tools-current.jpg public/screenshots/tools-dark.jpg \
+  public/screenshots/account-current.jpg public/screenshots/account-dark.jpg \
+  public/screenshots/workflow-current.jpg public/screenshots/workflow-dark.jpg \
+  public/screenshots/bookshelf-spine-current.jpg public/screenshots/bookshelf-spine-dark.jpg \
+  public/screenshots/git-current.jpg public/screenshots/git-dark.jpg \
   public/screenshots/provenance.json
 shasum -a 256 "$studio_archive"
-scp "$studio_archive" "root@47.122.118.98:/tmp/siyadao-studio-${studio_release}.tar.gz"
-ssh root@47.122.118.98 "sha256sum /tmp/siyadao-studio-${studio_release}.tar.gz"
+scp "$studio_archive" "aliyun-siyadao:/tmp/siyadao-studio-${studio_release}.tar.gz"
+ssh aliyun-siyadao "sha256sum /tmp/siyadao-studio-${studio_release}.tar.gz"
 ```
 
 确认本机和远程 SHA-256 一致后，创建独立版本并原子切换。下面的 `test` 防止覆盖已有版本或另一项待切换部署：
 
 ```sh
-ssh root@47.122.118.98 "
+ssh aliyun-siyadao "
   set -eu
   sudo test ! -e /var/www/siyadao-studio/releases/${studio_release}
   sudo test ! -e /var/www/siyadao-studio/next
@@ -172,3 +174,17 @@ curl --fail --silent --show-error --head https://studio.siyadao.cn/
 - 本地实际浏览器验证全部十二个场景连续前进及返回、反向动画帧、分类切换、Home / End 焦点、主题切换时选择其他场景、鼠标横向拖动且不误开放大、普通点击放大及关闭后的焦点恢复。320px 宽度下十二个展示区域均高 483.75px，无横向溢出；390px 布局亦无横向溢出。
 - 线上实际浏览器验证连续切换、跨分类、主题过渡时切换场景和深浅截图来源。动画完成后只显示最终场景。公开 HTML、CSS、JavaScript 的 HTTPS SHA-256 与发布源一致，官网及新旧两个下载接口均为 HTTP 200。JavaScript 语法、diff 检查通过，原有 26 个下载测试通过。
 - 未进行实体手机触屏、系统减少动画设置或其他浏览器内核的原生验收。本次没有发布新的桌面安装包。
+
+### 2026-10-25 本地预览：按准备发布的版本更新说明和实拍
+
+- 只在本机更新页面，没有部署，也没有发布新的桌面安装包。
+- 十二个场景和原有区块保持不变。文案改为当前能力：块编辑、日视图时间线、15 项工具、十类同步、Redis、以及自动化工作流。工作流放在原有「想到，也能做到」的主图位置，Notebook 仍留在场景页签里。
+- 截图来自隔离演示空间的调试构建，样例源文件和 Notebook 已有输出未改。日视图小卡是时间线裁切，放大仍是完整日视图。数据库画面没有执行查询。来源和哈希见 `public/screenshots/provenance.json`。
+
+### 2026-10-26 官网界面发布
+
+- 静态版本 `20261025T232338Z`，上一版本 `20261007T161942Z` 保留。归档 SHA-256 为 `ae01a0b6242a4b421503e9eaf2bf03c421369992578b152399c5fb6974a4f012`，本机与服务器一致。原子切换 `current`，没有重载 Nginx。
+- 发布 41 个公开文件：页面、样式、脚本、图标许可、样例 ZIP，以及浅色/深色实拍。新增自动化工作流、书脊和 Git 面板；日视图时间线改为 JPEG。部署目录、源码、测试和部署说明不在 Web 根目录。
+- 公网 HTTPS 返回 200，HTTP 跳转 HTTPS。41 个文件的公网 SHA-256 与本机一致。`.git` 和 `deploy/README.md` 返回 404。`/api/app/releases` 与旧 `/api/releases` 均返回 200。
+- 浏览器打开下载菜单后，macOS M 芯片与 Intel 主按钮指向 GitHub `v0.2.1` DMG，旁边「备用」指向 `download.siyadao.cn`。Windows x86_64 仍是 `v0.1.1-preview`。十二个场景随滚动从「便签」到「账号」依次切换，展示区保持钉在视口，最后一幕后页面继续向下。浅色主题会换成对应浅色截图。书脊与 Git 画面已在「想到，也能做到」中加载。
+- 发布前 `node --test tests/downloads.test.mjs` 27 项通过。没有发布新的桌面安装包；菜单仍是已经公开的版本。本次部署记录写进仓库后尚未提交。

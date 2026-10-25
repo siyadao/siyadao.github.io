@@ -1,4 +1,4 @@
-/** 公开反馈仓库；安装包元数据与主下载源由官方服务提供。 */
+/** 公开反馈仓库；安装包元数据由官方服务提供，主下载优先使用其中的 GitHub 地址。 */
 window.SIYADAO_REPOSITORY = 'siyadao/studio';
 
 /** 六种平台共用按需请求与短期缓存；不探测 GitHub，不需要账号或凭据。 */
@@ -204,6 +204,20 @@ window.SiyadaoDownloads = (() => {
       Number(value.slice(11, 13)) < 24 && Number(value.slice(14, 16)) < 60 && Number(value.slice(17, 19)) < 60;
   }
 
+  /** 主下载优先 GitHub 完整地址；「备用」只在两边都有时指向官网。不探测可达性。 */
+  function downloadTargets(asset) {
+    const sources = asset?.sources;
+    const github = typeof sources?.github === 'string' && sources.github ? sources.github : null;
+    const official = typeof sources?.official === 'string' && sources.official ? sources.official : null;
+    if (github && official) {
+      return { href: github, alternateHref: official, alternateLabel: '备用' };
+    }
+    if (github || official) {
+      return { href: github || official, alternateHref: null, alternateLabel: null };
+    }
+    return null;
+  }
+
   function installerPriority(name, version, platform) {
     const prefix = `siyadao-v${version}-${platform.system}-${platform.architecture}`;
     if (!name.startsWith(prefix)) return undefined;
@@ -216,5 +230,5 @@ window.SiyadaoDownloads = (() => {
     return priority === -1 ? undefined : priority;
   }
 
-  return { platforms, getRelease, getFeedbackUrl };
+  return { platforms, getRelease, getFeedbackUrl, downloadTargets };
 })();

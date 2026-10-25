@@ -105,7 +105,7 @@ test('失败不缓存且可以立即重试', async () => {
   assert.equal(calls, 2);
 });
 
-test('六平台主下载源为官网，保留可选 GitHub 备用与 SHA-256', async () => {
+test('六平台保留官网与可选 GitHub 地址；有 GitHub 时主下载走 GitHub，备用指向官网', async () => {
   const assets = [
     asset('macos-arm64.dmg'), asset('macos-x64.dmg'),
     asset('windows-x64-setup.exe'), asset('windows-arm64.msi'),
@@ -118,10 +118,36 @@ test('六平台主下载源为官网，保留可选 GitHub 备用与 SHA-256', a
     const selected = result.assets[platform.id];
     assert.equal(selected.sources.official, `https://download.siyadao.cn/v0.1.1/${selected.name}`);
     assert.equal(selected.sha256, 'ab'.repeat(32));
+    const targets = api.downloadTargets(selected);
+    if (selected.sources.github) {
+      assert.equal(targets.href, selected.sources.github);
+      assert.equal(targets.alternateHref, selected.sources.official);
+      assert.equal(targets.alternateLabel, '备用');
+    } else {
+      assert.equal(targets.href, selected.sources.official);
+      assert.equal(targets.alternateHref, null);
+      assert.equal(targets.alternateLabel, null);
+    }
   }
   assert.equal(result.assets['linux-arm64'].sources.github, null);
   assert.equal(result.assets['macos-arm64'].sources.github,
     `https://github.com/siyadao/studio/releases/download/v0.1.1/${assets[0].name}`);
+});
+
+test('只有 GitHub 时主按钮不带备用，只有官网不重复备用，都没有则不可下载', () => {
+  const { api } = createContext(async () => response());
+  const github = 'https://github.com/siyadao/studio/releases/download/v0.1.1/siyadao-v0.1.1-macos-arm64.dmg';
+  const official = 'https://download.siyadao.cn/v0.1.1/siyadao-v0.1.1-macos-arm64.dmg';
+  const onlyGithub = api.downloadTargets({ sources: { github, official: null } });
+  assert.equal(onlyGithub.href, github);
+  assert.equal(onlyGithub.alternateHref, null);
+  assert.equal(onlyGithub.alternateLabel, null);
+  const onlyOfficial = api.downloadTargets({ sources: { github: null, official } });
+  assert.equal(onlyOfficial.href, official);
+  assert.equal(onlyOfficial.alternateHref, null);
+  assert.equal(onlyOfficial.alternateLabel, null);
+  assert.equal(api.downloadTargets({ sources: { github: null, official: null } }), null);
+  assert.equal(api.downloadTargets(null), null);
 });
 
 test('同版本优先选择安装包而不是 ZIP，未发布架构不可下载', async () => {
@@ -198,7 +224,7 @@ for (const [name, url] of Object.entries(invalidSources)) {
   });
 }
 
-test('拒绝 GitHub 错误仓库、版本、文件、缺失字段，null 是明确无备用源', async () => {
+test('拒绝 GitHub 错误仓库、版本、文件和缺失字段；null 表示没有 GitHub 地址', async () => {
   for (const github of [
     'https://github.com/siyadao/ai-studio/releases/download/v0.1.1/siyadao-v0.1.1-macos-arm64.dmg',
     'https://github.com/siyadao/studio/releases/download/v0.1.2/siyadao-v0.1.1-macos-arm64.dmg',

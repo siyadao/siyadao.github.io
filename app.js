@@ -94,6 +94,9 @@
   }
 
   let sceneAnimations = [];
+  // 滚动换场进行中时，后续跨幕不再重播入场，避免退出层叠在新画面上。
+  let scrollHandoffUntil = 0;
+  let scrollHandoffToken = 0;
   const tabs = [...document.querySelectorAll('[role="tab"]')];
   const panels = tabs.map((tab) => document.getElementById(tab.getAttribute("aria-controls")));
   const sceneStage = document.createElement("div");
@@ -260,8 +263,86 @@
     }
   }
 
-  function selectTab(index) {
-    if (sceneIndex === index) return;
+  const scenePin = document.createElement("div");
+  scenePin.className = "scene-pin";
+  const sceneFrame = document.createElement("div");
+  sceneFrame.className = "scene-pin-frame";
+  sceneFrame.append(...sceneArea.childNodes);
+  scenePin.append(sceneFrame);
+  sceneArea.append(scenePin);
+  let ignoreSceneScroll = 0;
+  function runwayActive() {
+    return sceneArea.classList.contains("scene-runway");
+  }
+  function layoutSceneRunway() {
+    sceneArea.classList.add("scene-runway");
+    // 每一幕占满一屏滚动，十二幕走完，粘性区才松开。
+    const step = Math.max(window.innerHeight, 640);
+    const pinHeight = scenePin.offsetHeight || window.innerHeight;
+    sceneArea.style.height = `${Math.round(pinHeight + step * tabs.length)}px`;
+  }
+  function runwayTravel() {
+    return Math.max(0, sceneArea.offsetHeight - (scenePin.offsetHeight || window.innerHeight));
+  }
+  function sceneProgress() {
+    const travel = runwayTravel();
+    if (travel <= 0) return 0;
+    return Math.min(1, Math.max(0, -sceneArea.getBoundingClientRect().top / travel));
+  }
+  function alignRunway(index) {
+    if (!runwayActive()) return;
+    const travel = runwayTravel();
+    const progress = tabs.length <= 1 ? 0 : (index + 0.5) / tabs.length;
+    const top = window.scrollY + sceneArea.getBoundingClientRect().top + progress * travel;
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    ignoreSceneScroll += 1;
+    window.scrollTo(0, top);
+    root.style.scrollBehavior = previous;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      ignoreSceneScroll = Math.max(0, ignoreSceneScroll - 1);
+    }));
+  }
+  function sceneIndexFromScroll() {
+    if (tabs.length <= 1) return 0;
+    const progress = sceneProgress();
+    if (progress >= 1) return tabs.length - 1;
+    return Math.min(tabs.length - 1, Math.floor(progress * tabs.length));
+  }
+  let sceneScrollFrame = 0;
+  function syncSceneToScroll() {
+    if (!runwayActive() || ignoreSceneScroll) return;
+    const index = sceneIndexFromScroll();
+    if (index !== sceneIndex) selectTab(index, "scroll");
+  }
+  window.addEventListener("scroll", () => {
+    if (sceneScrollFrame) return;
+    sceneScrollFrame = requestAnimationFrame(() => {
+      sceneScrollFrame = 0;
+      syncSceneToScroll();
+    });
+  }, { passive: true });
+  window.addEventListener("resize", () => {
+    const top = sceneArea.getBoundingClientRect().top;
+    const inside = runwayActive() && top <= 2 && top > -runwayTravel();
+    const index = inside ? sceneIndexFromScroll() : sceneIndex;
+    layoutSceneRunway();
+    if (inside) alignRunway(index);
+  });
+  reducedMotion.addEventListener("change", () => {
+    layoutSceneRunway();
+    alignRunway(sceneIndex);
+  });
+  layoutSceneRunway();
+  syncSceneToScroll();
+  warmNearbyScenes(sceneIndex);
+
+  function selectTab(index, source = "control") {
+    if (sceneIndex === index) {
+      if (source !== "scroll") alignRunway(index);
+      return;
+    }
     const direction = index > sceneIndex ? "forward" : "backward";
     sceneIndex = index;
     const request = ++sceneRequest;
@@ -274,14 +355,21 @@
       tab.tabIndex = selected ? 0 : -1;
     }
     updateSceneNavigation();
+    warmNearbyScenes(index);
+    if (source !== "scroll") alignRunway(index);
     if (reducedMotion.matches) {
-      presentScene(index, direction);
+      presentScene(index, direction, "instant");
+      return;
+    }
+    // 滚动用短交叉淡入；连续快滑直接跟上当前幕。点选仍用完整滑入。
+    if (source === "scroll") {
+      presentScene(index, direction, "scroll");
       return;
     }
     sceneArea.setAttribute("aria-busy", "true");
     void prepareImages([...panels[index].querySelectorAll("img[data-dark-src]")].map((image) => image.src)).then(() => {
       if (request !== sceneRequest) return;
-      presentScene(index, direction);
+      presentScene(index, direction, "full");
     });
   }
 
@@ -298,47 +386,97 @@
     delete sceneStage.dataset.animating;
   }
 
-  function presentScene(index, direction) {
-    const outgoing = displayedScene;
-    const panel = panels[index];
-    // 读取当前帧后再取消，连续点击时旧画面从当前的位置退出。
-    const exiting = [...outgoing.querySelectorAll(".product-stack, .scene-metadata, .scene-description")].map((element) => {
-      const style = getComputedStyle(element);
-      return { element, opacity: style.opacity, transform: style.transform };
-    });
-    stopSceneAnimations();
+  function warmNearbyScenes(index) {
+    const urls = [];
+    for (let cursor = index - 1; cursor <= index + 2; cursor += 1) {
+      const item = panels[cursor];
+      if (!item) continue;
+      for (const image of item.querySelectorAll("img[src]")) urls.push(image.currentSrc || image.src);
+    }
+    if (urls.length) void prepareImages(urls);
+  }
+
+  function revealScene(panel) {
     sceneArea.setAttribute("aria-busy", "false");
     for (const item of panels) item.hidden = item !== panel;
     displayedScene = panel;
-    if (outgoing === panel || reducedMotion.matches) return;
-    const x = direction === "forward" ? 48 : -48;
+  }
+
+  function settleSceneAnimations(animations, token) {
+    void Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
+      if (token !== 0 && scrollHandoffToken === token) scrollHandoffUntil = 0;
+      if (sceneAnimations === animations) stopSceneAnimations();
+    });
+  }
+
+  function presentScene(index, direction, mode = "full") {
+    const outgoing = displayedScene;
+    const panel = panels[index];
+    const now = performance.now();
+    // 上一幕滚动淡入还没结束就又跨界：丢掉退出层，新画面直接就位，不再从零滑入。
+    if (mode === "scroll" && now < scrollHandoffUntil) {
+      scrollHandoffToken += 1;
+      scrollHandoffUntil = now + 200;
+      stopSceneAnimations();
+      revealScene(panel);
+      return;
+    }
+    if (mode !== "scroll") {
+      scrollHandoffToken += 1;
+      scrollHandoffUntil = 0;
+    }
+    const animated = mode !== "instant";
+    // 读取当前帧后再取消，点选打断时旧画面从当前位置退出。
+    const exiting = animated && mode !== "scroll" ? [...outgoing.querySelectorAll(".product-stack, .scene-metadata, .scene-description")].map((element) => {
+      const style = getComputedStyle(element);
+      return { element, opacity: style.opacity, transform: style.transform };
+    }) : [];
+    stopSceneAnimations();
+    revealScene(panel);
+    if (!animated || outgoing === panel) return;
+    const ease = "cubic-bezier(0.16, 1, 0.3, 1)";
     outgoing.hidden = false;
     outgoing.inert = true;
     outgoing.setAttribute("aria-hidden", "true");
     outgoing.classList.add("scene-leaving");
     leavingScene = outgoing;
     sceneStage.dataset.animating = direction;
+    if (mode === "scroll") {
+      const token = ++scrollHandoffToken;
+      const x = direction === "forward" ? 14 : -14;
+      const fade = 200;
+      scrollHandoffUntil = now + fade;
+      // 新截图盖在旧画面上淡入。旧截图保持不透明，避免两层一起变淡时透出底色。
+      sceneAnimations.push(panel.querySelector(".product-stack").animate([
+        { opacity: 0, transform: `translate3d(${x}px, 0, 0)` },
+        { opacity: 1, transform: "translate3d(0, 0, 0)" },
+      ], { duration: fade, easing: "cubic-bezier(0.25, 0.8, 0.3, 1)", fill: "both" }));
+      // 文案立刻换成当前幕，不跟在截图后面，也不让两行标题叠在一起。
+      for (const copy of outgoing.querySelectorAll(".scene-metadata, .scene-description")) {
+        sceneAnimations.push(copy.animate([{ opacity: 0 }], { duration: 1, fill: "forwards" }));
+      }
+      settleSceneAnimations(sceneAnimations, token);
+      return;
+    }
+    const x = direction === "forward" ? 40 : -40;
     for (const { element, opacity, transform } of exiting) {
       const picture = element.classList.contains("product-stack");
       sceneAnimations.push(element.animate([
         { opacity, transform },
-        { opacity: 0, transform: picture ? `translateX(${-x * 0.6}px) scale(0.975)` : "translateY(-10px)" },
-      ], { duration: picture ? 240 : 120, fill: "forwards", easing: "ease-out" }));
+        { opacity: 0, transform: picture ? `translate3d(${-x * 0.4}px, 0, 0) scale(0.985)` : "translate3d(0, -6px, 0)" },
+      ], { duration: picture ? 200 : 120, fill: "forwards", easing: "ease-out" }));
     }
     sceneAnimations.push(panel.querySelector(".product-stack").animate([
-      { opacity: 0, transform: `translateX(${x}px) scale(0.975)` },
-      { opacity: 1, transform: "translateX(0) scale(1)" },
-    ], { duration: 560, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }));
+      { opacity: 0, transform: `translate3d(${x}px, 0, 0) scale(0.985)` },
+      { opacity: 1, transform: "translate3d(0, 0, 0) scale(1)" },
+    ], { duration: 360, easing: ease, fill: "both" }));
     for (const copy of panel.querySelectorAll(".scene-metadata, .scene-description")) {
       sceneAnimations.push(copy.animate([
-        { opacity: 0, transform: "translateY(18px)" },
-        { opacity: 1, transform: "translateY(0)" },
-      ], { duration: 420, delay: 140, fill: "backwards", easing: "cubic-bezier(0.16, 1, 0.3, 1)" }));
+        { opacity: 0, transform: "translate3d(0, 10px, 0)" },
+        { opacity: 1, transform: "translate3d(0, 0, 0)" },
+      ], { duration: 280, delay: 30, fill: "both", easing: ease }));
     }
-    const animations = sceneAnimations;
-    void Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
-      if (sceneAnimations === animations) stopSceneAnimations();
-    });
+    settleSceneAnimations(sceneAnimations, 0);
   }
 
   function selectAdjacentScene(direction) {
@@ -379,14 +517,15 @@
       const current = menu.querySelector(`[data-platform="${platform.id}"]`);
       const row = document.createElement("div");
       row.className = "platform-download";
-      const option = document.createElement(asset ? "a" : "button");
+      const targets = asset ? window.SiyadaoDownloads.downloadTargets(asset) : null;
+      const option = document.createElement(targets ? "a" : "button");
       option.className = "platform-option";
       option.dataset.platform = platform.id;
       option.append(current.querySelector("svg").cloneNode(true));
       const label = document.createElement("span");
       label.textContent = platform.label;
       const size = document.createElement("small");
-      size.textContent = asset
+      size.textContent = targets
         ? `${Math.max(1, Math.round(asset.size / 1024 / 1024))} MB${asset.version !== release.version ? ` · v${asset.version}` : ''}`
         : loading
           ? "查询中"
@@ -394,25 +533,27 @@
             ? "暂不可用"
             : "暂无安装包";
       option.append(label, size);
-      if (asset) {
-        option.href = asset.sources.official;
+      if (targets) {
+        const viaGithub = targets.href === asset.sources.github;
+        const sourceLabel = viaGithub ? "GitHub 下载" : "官网下载";
+        option.href = targets.href;
         option.download = asset.name;
-        option.setAttribute("aria-label", `官网下载 ${platform.label} v${asset.version}`);
-        option.title = `${platform.label} · v${asset.version} · 官网下载`;
+        option.setAttribute("aria-label", `${sourceLabel} ${platform.label} v${asset.version}`);
+        option.title = `${platform.label} · v${asset.version} · ${sourceLabel}`;
       } else {
         option.type = "button";
         option.disabled = true;
       }
       row.append(option);
-      if (asset?.sources.github) {
+      if (targets?.alternateHref) {
         const alternate = document.createElement("a");
         alternate.className = "platform-alternate";
-        alternate.href = asset.sources.github;
+        alternate.href = targets.alternateHref;
         alternate.download = asset.name;
         alternate.rel = "noreferrer";
-        alternate.textContent = "GitHub";
-        alternate.title = "GitHub 备用下载";
-        alternate.setAttribute("aria-label", `GitHub 备用下载 ${platform.label} v${asset.version}`);
+        alternate.textContent = targets.alternateLabel;
+        alternate.title = "官网备用下载";
+        alternate.setAttribute("aria-label", `官网备用下载 ${platform.label} v${asset.version}`);
         row.append(alternate);
       }
       if (current.parentElement.classList.contains("platform-download"))

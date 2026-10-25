@@ -1645,9 +1645,19 @@ h2 { font-size: 44px; }
 .theme-toggle svg { width: 18px; height: 18px; }
 .dark .theme-moon, :root:not(.dark) .theme-sun { display: none; }
 .theme-fading body { transition: background-color .3s ease-in-out, color .3s ease-in-out; }
+.workspace-section.scene-runway { width: 100%; max-width: none; }
+.scene-pin { position: sticky; top: 0; z-index: 1; box-sizing: border-box; height: 100dvh; width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
+.scene-pin-frame { display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; height: 100%; overflow: clip; }
+.scene-runway .scene-stage { flex: 1 1 auto; min-height: 0; }
+.scene-runway .scene-panel:not([hidden]) { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.scene-runway .product-stack { flex: 1 1 auto; min-height: 0; margin-top: 0; padding: 28px 0 52px; }
+.scene-runway .product-frame { width: min(87%, max(280px, calc((100dvh - 390px) * 1.641))); }
+.scene-runway .scene-description { min-height: 0; }
+.scene-runway .scene-navigation { margin-top: 8px; }
+.scene-runway .gallery-footnote { padding-top: 12px; }
 .scene-stage { display: grid; position: relative; isolation: isolate; }
-.scene-stage > .scene-panel { grid-area: 1 / 1; min-width: 0; }
-.scene-stage > .scene-leaving { position: absolute; inset: 0; pointer-events: none; }
+.scene-stage > .scene-panel { grid-area: 1 / 1; min-width: 0; z-index: 1; }
+.scene-stage > .scene-leaving { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .hero-scroll { color: var(--primary); display: inline-flex; gap: 12px; align-items: center; font-size: 13px; }
 .gallery-journey { display: flex; gap: 28px; padding: 12px 0 20px; }
 .gallery-group { padding: 8px 0; border: 0; border-bottom: 2px solid transparent; cursor: pointer; font-size: 14px; color: var(--muted-foreground); transition: color .18s, border-color .18s; }
@@ -1657,7 +1667,7 @@ h2 { font-size: 44px; }
 .scene-tab { transition: color .18s, background-color .18s, border-color .18s; }
 .scene-tab svg { width: 16px; height: 16px; }
 .scene-panel .screenshot-trigger img { aspect-ratio: 2560 / 1560; object-fit: contain; background: var(--card); }
-.timeline-stack .screenshot-trigger img { height: auto; aspect-ratio: 2560 / 1560; padding: 24px; }
+.timeline-stack .screenshot-trigger img { height: auto; aspect-ratio: 2560 / 1560; padding: 0; }
 .scene-description { min-height: 116px; }
 .scene-panel .product-stack { touch-action: pan-y; user-select: none; }
 .scene-panel .product-stack img { -webkit-user-drag: none; }
@@ -1675,6 +1685,7 @@ h2 { font-size: 44px; }
 .calendar-timeline { position: absolute; right: 0; bottom: 0; width: 210px; max-width: 24%; padding: 12px; border: 1px solid var(--photo-border); border-radius: 8px; background: var(--card); box-shadow: var(--showcase-shadow); transform: rotate(3deg); }
 .calendar-timeline figcaption { display: block; text-align: center; font-size: 11px; padding: 12px 0 0; background: transparent; border: 0; }
 .development-stage .creation-shot { margin-left: 8%; width: 88%; transform: rotate(1deg); }
+.development-stage .creation-shot + .creation-shot { margin-top: 36px; transform: rotate(-1deg); }
 .feature-accordion { margin-top: 36px; }
 .feature-detail { border-bottom: 1px solid var(--border); margin-top: 20px; }
 .feature-detail summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 0; cursor: pointer; color: var(--foreground); font-size: 15px; }
@@ -1729,6 +1740,8 @@ h2 { font-size: 44px; }
 @media (min-width: 1024px) and (max-width: 1190px) { .hero h1, .hero h1 span { font-size: 76px; } }
 @media (max-width: 1000px) { .hero h1, .hero h1 span { font-size: 76px; } .sync-intro { gap: 32px; } }
 @media (max-width: 700px) {
+  .scene-pin { width: calc(100% - 40px); }
+  .scene-runway .product-frame { width: min(92%, max(240px, calc((100dvh - 430px) * 1.641))); }
   .hero h1, .hero h1 span { font-size: 48px; }
   h2, .closing-section h2 { font-size: 30px; }
   .product-heading h3, .sync-intro h3 { font-size: 24px; }
