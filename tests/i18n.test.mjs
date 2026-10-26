@@ -27,8 +27,7 @@ const allow = new Set(['思芽岛', '粤ICP备2026108587号-1']);
 function chinesePieces(markup) {
   const visible = markup
     .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<svg[\s\S]*?<\/svg>/gi, '');
+    .replace(/<style[\s\S]*?<\/style>/gi, '');
   const found = new Set();
   const attributes = /(?:alt|aria-label|title|content|data-title|data-description)="([^"]*)"/g;
   for (const match of visible.matchAll(attributes)) {
