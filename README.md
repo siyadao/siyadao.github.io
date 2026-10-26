@@ -12,11 +12,9 @@ python3 -m http.server 3001 --bind 127.0.0.1 --directory .
 
 打开 `http://127.0.0.1:3001/`，修改后刷新即可。直接打开 `index.html` 可以查看静态页面，但下载菜单需要 HTTP 本地预览和后端允许的 CORS 来源。只监听本机，不上传、不推送、不部署，不使用隧道或外网调试。详细检查项见 [LOCAL_PREVIEW.md](LOCAL_PREVIEW.md)。
 
-## 阿里云发布
+## 线上站点
 
-生产地址为 <https://studio.siyadao.cn/>。2026-09-06 经用户明确授权，使用现有阿里云服务器的 Nginx 发布纯静态文件，不使用 Sites、Docker 或 Node.js 服务。
-
-本地预览仍是默认工作方式，后续部署和 Git 推送需要各自明确授权。服务器目录、独立证书续期和更新步骤见 [deploy/README.md](deploy/README.md)。
+生产地址为 <https://studio.siyadao.cn/>。本地预览仍是默认工作方式，后续部署和 Git 推送需要各自明确授权。
 
 ## 文件结构
 
@@ -55,9 +53,9 @@ python3 scripts/package-samples.py
 
 保留 macOS M 芯片、macOS Intel、Windows x86_64、Windows ARM64、Linux x86_64、Linux ARM64 六种平台入口。
 
-版本名和各平台链接来自官方服务 `GET https://studioapi.siyadao.cn/v1/app/releases`，包括稳定版与预览版。官网正式使用同源 `/api/app/releases`，由 Nginx 代理本机 `127.0.0.1:8081/v1/app/releases` 并缓存一分钟；本地预览直接请求官方 API，后端需允许官网和本机 HTTP 预览的 CORS 来源。
+版本名和各平台链接来自官方服务 `GET https://studioapi.siyadao.cn/v1/app/releases`，包括稳定版与预览版。官网正式使用同源 `/api/app/releases`，结果缓存一分钟；本地预览直接请求官方 API，后端需允许官网和本机 HTTP 预览的 CORS 来源。
 
-Nginx 同时保留旧 `/api/releases` 的 GitHub 元数据代理，专供已安装旧客户端升级过渡；官网不使用它，新协议不回退旧字段。旧客户端无法访问 GitHub 时，仍需从官网下载并安装一次新版。过渡期发布要求见 [deploy/README.md](deploy/README.md)。
+旧 `/api/releases` 仍供已安装旧客户端升级过渡；官网不使用它，新协议不回退旧字段。旧客户端无法访问 GitHub 时，仍需从官网下载并安装一次新版。
 
 用户打开下载菜单时才发起匿名请求，多个入口合并请求，浏览器成功结果缓存一分钟。各平台主下载优先使用 GitHub 完整地址；官网与 GitHub 都有时，旁边显示「备用」并指向 `https://download.siyadao.cn/v<version>/<name>`。只有 GitHub 时不显示「备用」；GitHub 为 null 时主下载落到官网，旁边不再重复「备用」。浏览器不探测 GitHub 可达性。各平台按发布时间选择最近可用安装包，并明确显示自己的旧版本；同版本优先 DMG、Windows Setup、AppImage 等安装包。缺少的架构禁用。`window.SIYADAO_REPOSITORY` 仅控制问题反馈入口，默认指向 `siyadao/studio` 的 GitHub Issues，不控制元数据或下载来源。
 
@@ -69,4 +67,4 @@ Nginx 同时保留旧 `/api/releases` 的 GitHub 元数据代理，专供已安�
 
 ## 迁移说明
 
-旧框架源码及托管配置已在本机临时目录备份后从项目移除，不再参与预览。框架迁移本身未改动远程站点；随后按用户单独授权发布到上述阿里云地址。2026-10-26 已把更新后的说明、滚动场景、书脊与 Git 实拍发布到生产站点，静态版本为 `20261025T232338Z`。下载菜单仍读取已经公开的安装包。
+旧框架源码及托管配置已在本机临时目录备份后从项目移除，不再参与预览。2026-10-26 已把更新后的说明、滚动场景、书脊与 Git 实拍发布到生产站点。下载菜单仍读取已经公开的安装包。
