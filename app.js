@@ -219,9 +219,92 @@
   }
 
   const menus = [...document.querySelectorAll(".download-menu")];
+  let detectedPlatform = null;
+  let detectingPlatform = null;
+  let primaryDownloadBusy = false;
+  let downloadStatusOverride = null;
+
+  async function resolveDetectedPlatform() {
+    if (detectedPlatform) return detectedPlatform;
+    if (!detectingPlatform) {
+      detectingPlatform = window.SiyadaoDownloads.detectClientPlatform()
+        .then((platform) => {
+          detectedPlatform = platform;
+          return platform;
+        })
+        .finally(() => {
+          detectingPlatform = null;
+        });
+    }
+    return detectingPlatform;
+  }
+
+  function startAssetDownload(targets, asset) {
+    const link = document.createElement("a");
+    link.href = targets.href;
+    link.download = asset.name;
+    link.rel = "noreferrer";
+    link.style.display = "none";
+    document.body.append(link);
+    link.click();
+    link.remove();
+  }
+
+  async function handlePrimaryDownload(menu) {
+    if (primaryDownloadBusy) return;
+    primaryDownloadBusy = true;
+    const summary = menu.querySelector("summary");
+    const label = summary.querySelector("span");
+    const previous = label.textContent;
+    label.textContent = "正在准备…";
+    try {
+      const [release, platform] = await Promise.all([
+        window.SiyadaoDownloads.getRelease(),
+        resolveDetectedPlatform(),
+      ]);
+      for (const item of menus) renderRelease(item, release, false);
+      const action = window.SiyadaoDownloads.primaryDownloadAction(release, platform);
+      if (action.kind === "download") {
+        downloadStatusOverride = null;
+        label.textContent = previous;
+        summary.title = `下载 ${action.platform.label} · v${action.asset.version}`;
+        summary.setAttribute("aria-label", `下载 ${action.platform.label}`);
+        startAssetDownload(action.targets, action.asset);
+        return;
+      }
+      label.textContent = previous;
+      downloadStatusOverride = action.kind === "unavailable"
+        ? `当前系统是 ${action.platform.label}，暂无对应安装包。请从下方选择其他平台，或稍后再试。`
+        : null;
+      menu.open = true;
+      placeMenu(menu);
+    } catch {
+      label.textContent = previous;
+      menu.open = true;
+      placeMenu(menu);
+      void refreshDownloads();
+    } finally {
+      primaryDownloadBusy = false;
+    }
+  }
+
   for (const menu of menus) {
+    const summary = menu.querySelector("summary");
+    summary.addEventListener("pointerenter", () => {
+      void resolveDetectedPlatform();
+      void window.SiyadaoDownloads.getRelease();
+    });
+    summary.addEventListener("click", (event) => {
+      // 点箭头仍打开六平台菜单；点主文案则尝试一键下载当前芯片包。
+      if (event.target.closest("svg.lucide-chevron-down")) return;
+      event.preventDefault();
+      void handlePrimaryDownload(menu);
+    });
     menu.addEventListener("toggle", () => {
-      if (!menu.open) return;
+      if (!menu.open) {
+        downloadStatusOverride = null;
+        return;
+      }
       for (const other of menus) if (other !== menu) other.open = false;
       placeMenu(menu);
       void refreshDownloads();
@@ -500,7 +583,10 @@
     if (refreshing) return;
     refreshing = true;
     for (const menu of menus) renderRelease(menu, { assets: {} }, true);
-    const release = await window.SiyadaoDownloads.getRelease();
+    const [release] = await Promise.all([
+      window.SiyadaoDownloads.getRelease(),
+      resolveDetectedPlatform(),
+    ]);
     for (const menu of menus) renderRelease(menu, release, false);
     refreshing = false;
     placeOpenMenus();
@@ -517,10 +603,12 @@
       const current = menu.querySelector(`[data-platform="${platform.id}"]`);
       const row = document.createElement("div");
       row.className = "platform-download";
+      if (detectedPlatform?.id === platform.id) row.dataset.detected = "true";
       const targets = asset ? window.SiyadaoDownloads.downloadTargets(asset) : null;
       const option = document.createElement(targets ? "a" : "button");
       option.className = "platform-option";
       option.dataset.platform = platform.id;
+      if (detectedPlatform?.id === platform.id) option.dataset.detected = "true";
       option.append(current.querySelector("svg").cloneNode(true));
       const label = document.createElement("span");
       label.textContent = platform.label;
@@ -567,13 +655,14 @@
     };
     menu.querySelector(".download-status").textContent = loading
       ? "正在获取最新版本…"
-      : release.stale
-        ? "暂时无法刷新，当前显示上次获取的版本。"
-      : release.status === "ready"
-        ? Object.values(release.assets).some((asset) => asset.version !== release.version)
-          ? "各平台版本以下载项为准。"
-          : release.prerelease ? "官方发布 · 测试版" : messages.ready
-        : messages[release.status];
+      : downloadStatusOverride
+        || (release.stale
+          ? "暂时无法刷新，当前显示上次获取的版本。"
+        : release.status === "ready"
+          ? Object.values(release.assets).some((asset) => asset.version !== release.version)
+            ? "各平台版本以下载项为准。"
+            : release.prerelease ? "官方发布 · 测试版" : messages.ready
+          : messages[release.status]);
     menu.querySelector(".download-retry").hidden = loading || (release.status !== "unavailable" && !release.stale);
     const history = menu.querySelector(".release-history");
     history.hidden = !release.releaseUrl;

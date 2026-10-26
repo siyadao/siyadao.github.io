@@ -4,7 +4,7 @@
 
 | 文件 | 用途 |
 | --- | --- |
-| `01-创作手记.md` | Markdown 写作和预览 |
+| `01-创作手记.md` | Markdown 写作、公众号手机预览 |
 | `02-灵感地图.excalidraw` | Excalidraw 白板 |
 | `03-trail.rs` | Rust 源码与语法高亮 |
 | `04-路线数据.json` | JSON 工具输入样例 |

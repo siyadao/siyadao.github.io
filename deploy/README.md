@@ -69,6 +69,7 @@ COPYFILE_DISABLE=1 tar --format=ustar -czf "$studio_archive" -C . \
   public/screenshots/workflow-current.jpg public/screenshots/workflow-dark.jpg \
   public/screenshots/bookshelf-spine-current.jpg public/screenshots/bookshelf-spine-dark.jpg \
   public/screenshots/git-current.jpg public/screenshots/git-dark.jpg \
+  public/screenshots/mobile-preview-current.jpg public/screenshots/mobile-preview-dark.jpg \
   public/screenshots/provenance.json
 shasum -a 256 "$studio_archive"
 scp "$studio_archive" "aliyun-siyadao:/tmp/siyadao-studio-${studio_release}.tar.gz"
@@ -188,3 +189,10 @@ curl --fail --silent --show-error --head https://studio.siyadao.cn/
 - 公网 HTTPS 返回 200，HTTP 跳转 HTTPS。41 个文件的公网 SHA-256 与本机一致。`.git` 和 `deploy/README.md` 返回 404。`/api/app/releases` 与旧 `/api/releases` 均返回 200。
 - 浏览器打开下载菜单后，macOS M 芯片与 Intel 主按钮指向 GitHub `v0.2.1` DMG，旁边「备用」指向 `download.siyadao.cn`。Windows x86_64 仍是 `v0.1.1-preview`。十二个场景随滚动从「便签」到「账号」依次切换，展示区保持钉在视口，最后一幕后页面继续向下。浅色主题会换成对应浅色截图。书脊与 Git 画面已在「想到，也能做到」中加载。
 - 发布前 `node --test tests/downloads.test.mjs` 27 项通过。没有发布新的桌面安装包；菜单仍是已经公开的版本。本次部署记录写进仓库后尚未提交。
+
+### 2026-10-26 手机预览场景与芯片识别
+
+- 静态版本 `20261026T000806Z`，上一版本 `20261025T232338Z` 保留。归档 SHA-256 为 `748c76765dccebfb774978a5e692618d79fcab3c8ef60eb6c3c7fa46b8e99f81`，本机与服务器一致。原子切换 `current`，没有重载 Nginx。
+- 发布 43 个公开文件：在既有页面与截图基础上，新增 `mobile-preview-current.jpg` / `mobile-preview-dark.jpg`；文稿场景改为手机预览实拍与对应文案；`scene-runway` 与样式缓存标记仍在线。
+- 下载菜单增强 macOS 芯片识别：优先 `userAgentData` 高熵字段，不确定时不臆测 Intel；相关用例共 31 项本地通过。公网 HTTPS 返回 200，HTTP 跳转 HTTPS；43 个文件公网 SHA-256 与本机一致。`.git`、`deploy/README.md` 返回 404。`/api/app/releases` 与旧 `/api/releases` 均返回 200。
+- 线上 `downloads.js` / `app.js` / `index.html` / `styles.css` 哈希与本机一致，芯片识别与手机预览标记可从公开响应直接核对。没有发布新的桌面安装包。

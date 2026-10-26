@@ -230,5 +230,139 @@ window.SiyadaoDownloads = (() => {
     return priority === -1 ? undefined : priority;
   }
 
-  return { platforms, getRelease, getFeedbackUrl, downloadTargets };
+  function platformById(id) {
+    return platforms.find((platform) => platform.id === id) || null;
+  }
+
+  function normalizeArchitecture(value) {
+    const text = String(value || '').trim().toLowerCase();
+    if (!text) return null;
+    if (/(arm64|aarch64|armv8|apple silicon|\bm\d+(?:pro|max|ultra)?\b)/.test(text)) return 'arm64';
+    if (/(x86_64|x86-64|amd64|x64|win64|intel|wow64)/.test(text)) return 'x64';
+    if (/(^|[^a-z])(arm|aarch)([^a-z]|$)/.test(text)) return 'arm64';
+    if (/(^|[^a-z])(x86|i[3-6]86)([^a-z]|$)/.test(text)) return 'x64';
+    return null;
+  }
+
+  function normalizeSystem(value) {
+    const text = String(value || '').trim().toLowerCase();
+    if (!text) return null;
+    if (/(mac|darwin|iphone|ipad)/.test(text)) return 'macos';
+    if (/win/.test(text)) return 'windows';
+    if (/(linux|cros|chromium os|android)/.test(text)) return 'linux';
+    return null;
+  }
+
+  function appleSiliconFromWebGL(nav) {
+    try {
+      const documentRef = typeof document !== 'undefined' ? document : nav?.document;
+      if (!documentRef?.createElement) return null;
+      const canvas = documentRef.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return null;
+      const info = gl.getExtension('WEBGL_debug_renderer_info');
+      if (!info) return null;
+      const renderer = String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL) || '');
+      const vendor = String(gl.getParameter(info.UNMASKED_VENDOR_WEBGL) || '');
+      const blob = `${vendor} ${renderer}`.toLowerCase();
+      if (/apple\s*m\d|apple gpu|apple.*metal/.test(blob)) return 'arm64';
+      if (/intel|amd|nvidia|radeon|geforce/.test(blob)) return 'x64';
+    } catch (_) {
+      /* 启发式失败时保持未知，交给菜单选择 */
+    }
+    return null;
+  }
+
+  /**
+   * 同步启发式：能确定系统与架构才返回平台 id。
+   * 不确定时返回 null，避免下错安装包。
+   */
+  function detectClientPlatformSync(nav = typeof navigator !== 'undefined' ? navigator : undefined) {
+    if (!nav) return null;
+    const uaData = nav.userAgentData;
+    const ua = String(nav.userAgent || '');
+    const platformHint = String(nav.platform || nav.userAgentData?.platform || '');
+    let system = normalizeSystem(uaData?.platform) ||
+      normalizeSystem(platformHint) ||
+      normalizeSystem(ua);
+    if (!system) return null;
+
+    let architecture = null;
+    const brands = Array.isArray(uaData?.brands) ? uaData.brands : [];
+    const brandBlob = brands.map((item) => item?.brand).filter(Boolean).join(' ');
+    architecture = normalizeArchitecture(uaData?.architecture) ||
+      normalizeArchitecture(uaData?.platform) ||
+      normalizeArchitecture(brandBlob);
+
+    if (!architecture) {
+      if (system === 'windows') {
+        if (/\b(?:Windows\s+ARM64|ARM64|AArch64)\b/i.test(ua)) architecture = 'arm64';
+        else if (/\b(?:Win64|WOW64|x64|x86_64|AMD64)\b/i.test(ua)) architecture = 'x64';
+        else if (/\bWindows\s+NT\b/i.test(ua) && !/\bARM\b/i.test(ua)) architecture = 'x64';
+      } else if (system === 'linux') {
+        architecture = normalizeArchitecture(ua) || normalizeArchitecture(platformHint);
+      } else if (system === 'macos') {
+        // Safari / Chrome 在 Apple Silicon 上仍常写 “Intel Mac OS X”，不能据此认定 x64。
+        if (/\b(?:ARM64|AArch64|Apple\s+Silicon)\b/i.test(ua)) architecture = 'arm64';
+        else architecture = appleSiliconFromWebGL(nav);
+      }
+    }
+
+    if (!architecture) return null;
+    return platformById(`${system}-${architecture}`);
+  }
+
+  /**
+   * 优先用 userAgentData 高熵字段；不可用或仍不确定时回退同步启发式。
+   * 返回 Promise<platform|null>。
+   */
+  async function detectClientPlatform(nav = typeof navigator !== 'undefined' ? navigator : undefined) {
+    if (!nav) return null;
+    const uaData = nav.userAgentData;
+    if (uaData && typeof uaData.getHighEntropyValues === 'function') {
+      try {
+        const values = await uaData.getHighEntropyValues(['architecture', 'bitness', 'platform', 'model']);
+        const system = normalizeSystem(values.platform) ||
+          normalizeSystem(uaData.platform) ||
+          normalizeSystem(nav.platform) ||
+          normalizeSystem(nav.userAgent);
+        let architecture = normalizeArchitecture(values.architecture) ||
+          normalizeArchitecture(values.model);
+        if (!architecture && values.bitness === '64' && system === 'windows') {
+          architecture = normalizeArchitecture(nav.userAgent) || 'x64';
+        }
+        if (system && architecture) {
+          const matched = platformById(`${system}-${architecture}`);
+          if (matched) return matched;
+        }
+      } catch (_) {
+        /* 继续同步回退 */
+      }
+    }
+    return detectClientPlatformSync(nav);
+  }
+
+  /**
+   * 根据识别结果与公开版本，给出主 CTA 行为。
+   * - download：可一键下载（主链优先 GitHub）
+   * - unavailable：已识别但该平台暂无安装包，应提示并打开菜单
+   * - choose：无法可靠识别，打开六平台菜单
+   */
+  function primaryDownloadAction(release, platform) {
+    if (!platform) return { kind: 'choose', platform: null, asset: null, targets: null };
+    const asset = release?.assets?.[platform.id];
+    const targets = asset ? downloadTargets(asset) : null;
+    if (targets) return { kind: 'download', platform, asset, targets };
+    return { kind: 'unavailable', platform, asset: null, targets: null };
+  }
+
+  return {
+    platforms,
+    getRelease,
+    getFeedbackUrl,
+    downloadTargets,
+    detectClientPlatformSync,
+    detectClientPlatform,
+    primaryDownloadAction,
+  };
 })();

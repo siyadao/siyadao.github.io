@@ -325,3 +325,67 @@ test('反馈仓库设置只影响 Issues，不改变官方版本 API', async () 
   await api.getRelease();
   assert.deepEqual(urls, ['/api/app/releases']);
 });
+
+test('高熵 userAgentData 可区分 macOS Apple Silicon 与 Intel', async () => {
+  const { api } = createContext(async () => response());
+  const arm = await api.detectClientPlatform({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+    platform: 'MacIntel',
+    userAgentData: {
+      platform: 'macOS',
+      getHighEntropyValues: async () => ({ platform: 'macOS', architecture: 'arm', bitness: '64' }),
+    },
+  });
+  assert.equal(arm?.id, 'macos-arm64');
+  const intel = await api.detectClientPlatform({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+    platform: 'MacIntel',
+    userAgentData: {
+      platform: 'macOS',
+      getHighEntropyValues: async () => ({ platform: 'macOS', architecture: 'x86', bitness: '64' }),
+    },
+  });
+  assert.equal(intel?.id, 'macos-x64');
+});
+
+test('仅有 Intel Mac UA 时不臆测架构，避免下错芯片包', () => {
+  const { api } = createContext(async () => response());
+  assert.equal(api.detectClientPlatformSync({
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15',
+    platform: 'MacIntel',
+  }), null);
+});
+
+test('Windows 与 Linux 可从 UA 识别常见架构', () => {
+  const { api } = createContext(async () => response());
+  assert.equal(api.detectClientPlatformSync({
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+    platform: 'Win32',
+  })?.id, 'windows-x64');
+  assert.equal(api.detectClientPlatformSync({
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; ARM64)',
+    platform: 'Win32',
+  })?.id, 'windows-arm64');
+  assert.equal(api.detectClientPlatformSync({
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64)',
+    platform: 'Linux x86_64',
+  })?.id, 'linux-x64');
+  assert.equal(api.detectClientPlatformSync({
+    userAgent: 'Mozilla/5.0 (X11; Linux aarch64)',
+    platform: 'Linux aarch64',
+  })?.id, 'linux-arm64');
+});
+
+test('主 CTA：识别到有包则一键下载，无包提示，不确定则打开菜单', async () => {
+  const assets = [asset('macos-arm64.dmg'), asset('windows-x64-setup.exe')];
+  const { api } = createContext(async () => response([release(assets)]));
+  const result = await api.getRelease();
+  const download = api.primaryDownloadAction(result, api.platforms[0]);
+  assert.equal(download.kind, 'download');
+  assert.equal(download.targets.href, assets[0].sources.github);
+  assert.equal(download.targets.alternateLabel, '备用');
+  const missing = api.primaryDownloadAction(result, api.platforms.find((p) => p.id === 'linux-arm64'));
+  assert.equal(missing.kind, 'unavailable');
+  assert.equal(missing.platform.id, 'linux-arm64');
+  assert.equal(api.primaryDownloadAction(result, null).kind, 'choose');
+});

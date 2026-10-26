@@ -907,6 +907,17 @@ body {
   align-items: stretch;
   gap: 4px;
 }
+.platform-download[data-detected="true"] .platform-option {
+  background: #173757;
+  color: #c0e8ff;
+}
+.platform-download[data-detected="true"] .platform-option small::after {
+  content: " · 当前设备";
+}
+:root:not(.dark) .platform-download[data-detected="true"] .platform-option {
+  background: var(--accent);
+  color: var(--primary);
+}
 .platform-download .platform-option {
   display: grid;
   grid-template-columns: 16px minmax(0, 1fr);

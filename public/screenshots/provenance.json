@@ -1,11 +1,11 @@
 {
-  "capturedAt": "2026-10-25",
+  "capturedAt": "2026-10-26",
   "application": "思芽岛 官网拍摄",
   "applicationSource": {
     "repository": "siyadao/ai-studio",
     "baseCommit": "d1794abd",
     "workingTreeModified": true,
-    "note": "Debug build target/debug/siyadao. Not the currently published installer."
+    "note": "Debug build target/debug/siyadao. Not the currently published installer. Mobile preview shots captured 2026-10-26."
   },
   "captureMethod": "macOS screencapture of the isolated demo app window",
   "format": "JPEG. Timeline cards are crops of the day-view JPEG.",
@@ -365,6 +365,28 @@
       "height": 1560,
       "sample": "go 工程",
       "action": "打开 /Users/lovec/code/go 后的 Git 面板，展示提交历史和文件差异。",
+      "captureMethod": "screencapture of the isolated demo window",
+      "theme": "dark"
+    },
+    {
+      "file": "mobile-preview-current.jpg",
+      "sha256": "408e8009c725691afcee23bb6b6cc2d03438dd118579e78bc4dd4307bc322820",
+      "capturedAt": "2026-10-26",
+      "width": 2560,
+      "height": 1560,
+      "sample": "01-创作手记.md",
+      "action": "块编辑器旁打开公众号手机预览侧栏，竖屏机框显示山野手记导出 HTML。",
+      "captureMethod": "screencapture of the isolated demo window",
+      "theme": "light"
+    },
+    {
+      "file": "mobile-preview-dark.jpg",
+      "sha256": "203bd8dedb0b995a9e9167b29181d530868884df45ca86cea1382c903491057f",
+      "capturedAt": "2026-10-26",
+      "width": 2560,
+      "height": 1560,
+      "sample": "01-创作手记.md",
+      "action": "块编辑器旁打开公众号手机预览侧栏，竖屏机框显示山野手记导出 HTML。",
       "captureMethod": "screencapture of the isolated demo window",
       "theme": "dark"
     }
