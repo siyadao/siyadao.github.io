@@ -14,7 +14,7 @@ python3 -m http.server 3001 --bind 127.0.0.1 --directory .
 
 ## 线上站点
 
-中文站为 <https://studio.siyadao.cn/>。英文站为 <https://siyadao.github.io/>。本地预览仍是默认工作方式，后续部署和 Git 推送需要各自明确授权。
+中文站为 <https://studio.siyadao.cn/>。英文站为 <https://siyadao.github.io/>。英文站由 `siyadao/siyadao.github.io` 的 Actions 读取本仓库 `main` 后渲染发布，不经过中文站服务器。
 
 ## 文件结构
 

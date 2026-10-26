@@ -1,6 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { assembleEnglishSite, readSiteFiles } from '../scripts/assemble-english-site.mjs';
 import { catalogFromSource, renderEnglishHtml } from '../scripts/render-english-site.mjs';
 
 const root = new URL('../', import.meta.url);
@@ -55,4 +59,39 @@ test('分享图是 1200×630', () => {
   assert.equal(png.subarray(12, 16).toString(), 'IHDR');
   assert.equal(png.readUInt32BE(16), 1200);
   assert.equal(png.readUInt32BE(20), 630);
+});
+
+test('公开文件清单覆盖页面引用', () => {
+  const rootDir = fileURLToPath(root);
+  const files = readSiteFiles(rootDir);
+  const listed = new Set(files);
+  const page = [
+    html,
+    fs.readFileSync(new URL('app.js', root), 'utf8'),
+    fs.readFileSync(new URL('styles.css', root), 'utf8'),
+  ].join('\n');
+  for (const rel of files) {
+    assert.equal(rel.includes('..'), false);
+    assert.equal(rel.startsWith('/'), false);
+    assert.ok(fs.existsSync(path.join(rootDir, rel)), rel);
+  }
+  assert.equal(listed.has('public/releases/v0.1.0-preview.1.json'), false);
+  for (const match of page.matchAll(/public\/[A-Za-z0-9_./-]+/g)) {
+    assert.ok(listed.has(match[0]), match[0]);
+  }
+});
+
+test('英文目录使用渲染后的首页', () => {
+  const dest = fs.mkdtempSync(path.join(os.tmpdir(), 'siyadao-en-'));
+  try {
+    assembleEnglishSite(fileURLToPath(root), dest);
+    const english = fs.readFileSync(path.join(dest, 'index.html'), 'utf8');
+    assert.match(english, /<title>Siyadao — Ideas, as they happen<\/title>/);
+    assert.match(fs.readFileSync(path.join(dest, 'robots.txt'), 'utf8'), /Sitemap: https:\/\/siyadao\.github\.io\/sitemap\.xml/);
+    assert.ok(fs.existsSync(path.join(dest, 'styles.css')));
+    assert.ok(fs.existsSync(path.join(dest, '.nojekyll')));
+    assert.equal(fs.existsSync(path.join(dest, 'public/releases')), false);
+  } finally {
+    fs.rmSync(dest, { recursive: true, force: true });
+  }
 });
