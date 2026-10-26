@@ -1,12 +1,16 @@
 // 展示内容直接写在 HTML 中，JavaScript 增强主题、渐进浏览与原生控件。
 (() => {
   const themeToggle = document.querySelector(".theme-toggle");
+  function tr(value) {
+    return window.SiyadaoI18n?.t(value) ?? value;
+  }
   function applyTheme(theme) {
     document.documentElement.classList.toggle("dark", theme === "dark");
     document.documentElement.dataset.theme = theme;
     const next = theme === "dark" ? "浅色" : "深色";
-    themeToggle.setAttribute("aria-label", `切换到${next}主题`);
-    themeToggle.title = `切换到${next}主题`;
+    const label = tr(`切换到${next}主题`);
+    themeToggle.setAttribute("aria-label", label);
+    themeToggle.title = label;
     document.querySelector('meta[name="color-scheme"]').content = theme;
     for (const image of document.querySelectorAll("img[data-dark-src]")) {
       image.src = theme === "dark" ? image.dataset.darkSrc : image.dataset.lightSrc;
@@ -222,7 +226,9 @@
   let detectedPlatform = null;
   let detectingPlatform = null;
   let primaryDownloadBusy = false;
-  let downloadStatusOverride = null;
+  let unavailablePlatform = null;
+  let renderedRelease = null;
+  let renderedLoading = false;
 
   async function resolveDetectedPlatform() {
     if (detectedPlatform) return detectedPlatform;
@@ -256,7 +262,7 @@
     const summary = menu.querySelector("summary");
     const label = summary.querySelector("span");
     const previous = label.textContent;
-    label.textContent = "正在准备…";
+    label.textContent = tr("正在准备…");
     try {
       const [release, platform] = await Promise.all([
         window.SiyadaoDownloads.getRelease(),
@@ -265,17 +271,20 @@
       for (const item of menus) renderRelease(item, release, false);
       const action = window.SiyadaoDownloads.primaryDownloadAction(release, platform);
       if (action.kind === "download") {
-        downloadStatusOverride = null;
+        unavailablePlatform = null;
         label.textContent = previous;
-        summary.title = `下载 ${action.platform.label} · v${action.asset.version}`;
-        summary.setAttribute("aria-label", `下载 ${action.platform.label}`);
+        const name = tr(action.platform.label);
+        summary.title = window.SiyadaoI18n?.lang === "en"
+          ? `Download ${name} · v${action.asset.version}`
+          : `下载 ${action.platform.label} · v${action.asset.version}`;
+        summary.setAttribute("aria-label", window.SiyadaoI18n?.lang === "en"
+          ? `Download ${name}`
+          : `下载 ${action.platform.label}`);
         startAssetDownload(action.targets, action.asset);
         return;
       }
       label.textContent = previous;
-      downloadStatusOverride = action.kind === "unavailable"
-        ? `当前系统是 ${action.platform.label}，暂无对应安装包。请从下方选择其他平台，或稍后再试。`
-        : null;
+      unavailablePlatform = action.kind === "unavailable" ? action.platform : null;
       menu.open = true;
       placeMenu(menu);
     } catch {
@@ -302,7 +311,7 @@
     });
     menu.addEventListener("toggle", () => {
       if (!menu.open) {
-        downloadStatusOverride = null;
+        unavailablePlatform = null;
         return;
       }
       for (const other of menus) if (other !== menu) other.open = false;
@@ -592,7 +601,16 @@
     placeOpenMenus();
   }
 
+  function unavailableCopy(platform) {
+    const name = tr(platform.label);
+    return window.SiyadaoI18n?.lang === "en"
+      ? `${name} has no installer yet. Choose another platform below, or try again later.`
+      : `当前系统是 ${platform.label}，暂无对应安装包。请从下方选择其他平台，或稍后再试。`;
+  }
+
   function renderRelease(menu, release, loading) {
+    renderedRelease = release;
+    renderedLoading = loading;
     const popup = menu.querySelector(".download-popup");
     popup.setAttribute("aria-busy", String(loading));
     const version = menu.querySelector(".release-version");
@@ -611,23 +629,24 @@
       if (detectedPlatform?.id === platform.id) option.dataset.detected = "true";
       option.append(current.querySelector("svg").cloneNode(true));
       const label = document.createElement("span");
-      label.textContent = platform.label;
+      const platformName = tr(platform.label);
+      label.textContent = platformName;
       const size = document.createElement("small");
       size.textContent = targets
-        ? `${Math.max(1, Math.round(asset.size / 1024 / 1024))} MB${asset.version !== release.version ? ` · v${asset.version}` : ''}`
+        ? `${Math.max(1, Math.round(asset.size / 1024 / 1024))} MB · v${asset.version}`
         : loading
-          ? "查询中"
+          ? tr("查询中")
           : release.status === "unavailable"
-            ? "暂不可用"
-            : "暂无安装包";
+            ? tr("暂不可用")
+            : tr("暂无安装包");
       option.append(label, size);
       if (targets) {
         const viaGithub = targets.href === asset.sources.github;
-        const sourceLabel = viaGithub ? "GitHub 下载" : "官网下载";
+        const sourceLabel = tr(viaGithub ? "GitHub 下载" : "官网下载");
         option.href = targets.href;
         option.download = asset.name;
-        option.setAttribute("aria-label", `${sourceLabel} ${platform.label} v${asset.version}`);
-        option.title = `${platform.label} · v${asset.version} · ${sourceLabel}`;
+        option.setAttribute("aria-label", `${sourceLabel} ${platformName} v${asset.version}`);
+        option.title = `${platformName} · v${asset.version} · ${sourceLabel}`;
       } else {
         option.type = "button";
         option.disabled = true;
@@ -639,9 +658,9 @@
         alternate.href = targets.alternateHref;
         alternate.download = asset.name;
         alternate.rel = "noreferrer";
-        alternate.textContent = targets.alternateLabel;
-        alternate.title = "官网备用下载";
-        alternate.setAttribute("aria-label", `官网备用下载 ${platform.label} v${asset.version}`);
+        alternate.textContent = tr(targets.alternateLabel);
+        alternate.title = tr("官网备用下载");
+        alternate.setAttribute("aria-label", `${tr("官网备用下载")} ${platformName} v${asset.version}`);
         row.append(alternate);
       }
       if (current.parentElement.classList.contains("platform-download"))
@@ -649,19 +668,24 @@
       else current.replaceWith(row);
     }
     const messages = {
-      empty: "暂未获取到公开版本。",
-      unavailable: "暂时无法获取版本，请稍后重试。",
-      ready: "官方发布 · 稳定版",
+      empty: tr("暂未获取到公开版本。"),
+      unavailable: tr("暂时无法获取版本，请稍后重试。"),
+      ready: tr("官方发布 · 稳定版"),
     };
     menu.querySelector(".download-status").textContent = loading
-      ? "正在获取最新版本…"
-      : downloadStatusOverride
-        || (release.stale
-          ? "暂时无法刷新，当前显示上次获取的版本。"
+      ? tr("正在获取最新版本…")
+      : unavailablePlatform
+        ? unavailableCopy(unavailablePlatform)
+        : (release.stale
+          ? tr("暂时无法刷新，当前显示上次获取的版本。")
         : release.status === "ready"
-          ? Object.values(release.assets).some((asset) => asset.version !== release.version)
-            ? "各平台版本以下载项为准。"
-            : release.prerelease ? "官方发布 · 测试版" : messages.ready
+          ? (() => {
+              const versions = new Set(
+                Object.values(release.assets).map((asset) => asset.version).filter(Boolean),
+              );
+              if (versions.size > 1) return tr("各平台使用各自最新可用版本。");
+              return release.prerelease ? tr("官方发布 · 测试版") : messages.ready;
+            })()
           : messages[release.status]);
     menu.querySelector(".download-retry").hidden = loading || (release.status !== "unavailable" && !release.stale);
     const history = menu.querySelector(".release-history");
@@ -694,4 +718,18 @@
     popup.style.maxHeight = `${Math.min(580, Math.max(120, (openBelow ? below : above) / scale - 10))}px`;
     popup.style.top = `${Math.max(margin, openBelow ? trigger.bottom + 10 * scale : trigger.top - popup.getBoundingClientRect().height - 10 * scale) / scale}px`;
   }
+
+  document.addEventListener("siyadao:lang", () => {
+    applyTheme(document.documentElement.dataset.theme || "dark");
+    if (renderedRelease) {
+      for (const menu of menus) renderRelease(menu, renderedRelease, renderedLoading);
+    }
+    const opener = dialogOpeners.get(screenshotDialog);
+    if (screenshotDialog.open && opener) {
+      document.getElementById("zoom-title").textContent = opener.dataset.title || "";
+      document.getElementById("zoom-description").textContent = opener.dataset.description || "";
+      const image = opener.querySelector("img");
+      if (image) zoomImage.alt = image.alt;
+    }
+  });
 })();

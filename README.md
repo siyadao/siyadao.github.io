@@ -21,6 +21,7 @@ python3 -m http.server 3001 --bind 127.0.0.1 --directory .
 - `index.html`：产品介绍、三组十二场景、按需展开的说明、下载入口和原生弹窗。
 - `styles.css`：原有蓝色视觉、浅色与深色主题、叠窗展示、移动端适配和减少动画支持。
 - `theme.js`：在样式加载前恢复主题；首次访问默认深色。
+- `i18n.js`：中文 / 英文切换。页面默认中文，选择记在本机，`?lang=en` 可直接打开英文。
 - `app.js`：主题与对应截图切换、分组页签、滚动渐进展示、键盘操作、截图放大、下载菜单及反馈入口。
 - `downloads.js`：官方版本 API、数据校验、按需请求和安装包匹配。
 - `public/screenshots/`：原始产品截图及 `provenance.json` 拍摄记录。
@@ -57,7 +58,7 @@ python3 scripts/package-samples.py
 
 旧 `/api/releases` 仍供已安装旧客户端升级过渡；官网不使用它，新协议不回退旧字段。旧客户端无法访问 GitHub 时，仍需从官网下载并安装一次新版。
 
-用户打开下载菜单时才发起匿名请求，多个入口合并请求，浏览器成功结果缓存一分钟。各平台主下载优先使用 GitHub 完整地址；官网与 GitHub 都有时，旁边显示「备用」并指向 `https://download.siyadao.cn/v<version>/<name>`。只有 GitHub 时不显示「备用」；GitHub 为 null 时主下载落到官网，旁边不再重复「备用」。浏览器不探测 GitHub 可达性。各平台按发布时间选择最近可用安装包，并明确显示自己的旧版本；同版本优先 DMG、Windows Setup、AppImage 等安装包。缺少的架构禁用。`window.SIYADAO_REPOSITORY` 仅控制问题反馈入口，默认指向 `siyadao/studio` 的 GitHub Issues，不控制元数据或下载来源。
+用户打开下载菜单时才发起匿名请求，多个入口合并请求，浏览器成功结果缓存一分钟。各平台主下载优先使用 GitHub 完整地址；官网与 GitHub 都有时，旁边显示「备用」并指向 `https://download.siyadao.cn/v<version>/<name>`。只有 GitHub 时不显示「备用」；GitHub 为 null 时主下载落到官网，旁边不再重复「备用」。浏览器不探测 GitHub 可达性。各平台独立选择自己最近可用的安装包，允许版本不一致，并在每一项上标明该平台版本；同版本优先 DMG、Windows Setup、AppImage 等安装包。缺少的架构禁用。`window.SIYADAO_REPOSITORY` 仅控制问题反馈入口，默认指向 `siyadao/studio` 的 GitHub Issues，不控制元数据或下载来源。
 
 接口返回最多 20 个发布的 JSON 数组，每条具有 `version`（不含 `v` 的 SemVer）、`prerelease`、`published_at`（RFC3339）、`notes` 和 `assets`。每个附件包含 `name`、`size`（正整数且不超过 1 GiB）、`sha256`（64 位十六进制）、`sources: { official, github }`。`github` 为完整 URL 或明确的 `null`；`official` 必须为 `https://download.siyadao.cn/v<version>/<name>`，`github` 非空时必须为 `https://github.com/siyadao/studio/releases/download/v<version>/<name>`。有 `github` 时菜单主按钮使用该地址；同时有 `official` 时旁边「备用」使用官网地址。文件名使用 `siyadao-v<version>-<macos|windows|linux>-<arm64|x64>` 加对应系统的安装格式后缀。响应限制 2 MiB、每发布最多 64 个附件；错误字段、大小、哈希、版本或地址使整次请求失败，不回退旧 GitHub 数据格式。
 
