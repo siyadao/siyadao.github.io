@@ -1,8 +1,9 @@
-// 中文写在页面里。英文在打开时替换，选择记在本机，可用 ?lang=en 分享。
+// 中文写在页面里。英文官网是 https://siyadao.github.io/ 。本机预览仍可在本页切换，并用 ?lang=en 分享。
 (() => {
   const storageKey = "siyadao.website.lang";
   const catalog = [
     ["思芽岛 — 让想法，即刻发生", "Siyadao — Ideas, as they happen"],
+    ["思芽岛，原生桌面工作台", "Siyadao, a native desktop workspace"],
     ["思芽岛原生桌面工作台：便签、待办、日历与笔记时间线，连接写作、白板、代码、数据和自动化。离线使用个人空间，按需启用账号与内容同步。", "Siyadao is a native desktop workspace for notes, tasks, a calendar, and a daily timeline, connected to writing, whiteboards, code, data, and automation. The personal space works offline. Sign in when you want to sync."],
     ["跳转到正文", "Skip to content"],
     ["思芽岛首页", "Siyadao home"],
@@ -264,8 +265,23 @@
     return value === "en" || value === "zh" ? value : null;
   }
 
+  const chineseSite = "https://studio.siyadao.cn/";
+  const englishSite = "https://siyadao.github.io/";
+
   function resolveLang({ stored, query } = {}) {
     return normalizeLang(query) || normalizeLang(stored) || "zh";
+  }
+
+  function siteKind() {
+    let host = "";
+    try {
+      host = location.hostname;
+    } catch {
+      host = "";
+    }
+    if (host === "siyadao.github.io") return "en";
+    if (host === "studio.siyadao.cn") return "zh";
+    return "local";
   }
 
   function translate(language, value) {
@@ -351,15 +367,35 @@
       if (node.nodeType === 3) translateText(node);
       else if (node.nodeType === 1) translateAttributes(node);
     }
+    const pageUrl = lang === "en" ? englishSite : chineseSite;
     const canonical = document.querySelector?.('link[rel="canonical"]');
-    if (canonical) {
-      canonical.href = lang === "en"
-        ? "https://studio.siyadao.cn/?lang=en"
-        : "https://studio.siyadao.cn/";
-    }
+    if (canonical) canonical.href = pageUrl;
+    const ogUrl = document.querySelector?.('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute("content", pageUrl);
+    const locale = document.querySelector?.('meta[property="og:locale"]');
+    if (locale) locale.setAttribute("content", lang === "en" ? "en_US" : "zh_CN");
+    const alternate = document.querySelector?.('meta[property="og:locale:alternate"]');
+    if (alternate) alternate.setAttribute("content", lang === "en" ? "zh_CN" : "en_US");
+    const structured = document.getElementById?.("site-jsonld");
+    if (!structured) return;
+    const descriptionKey = catalog.find(([key]) => key.startsWith("思芽岛原生桌面工作台："))?.[0];
+    structured.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "思芽岛",
+      alternateName: "SIYADAO",
+      applicationCategory: "ProductivityApplication",
+      operatingSystem: "macOS, Windows",
+      description: descriptionKey ? translate(lang, descriptionKey) : "",
+      url: pageUrl,
+      downloadUrl: `${pageUrl}#downloads`,
+      inLanguage: lang === "en" ? "en" : "zh-CN",
+      image: `${pageUrl}public/og.png`,
+    });
   }
 
   function syncUrl() {
+    if (siteKind() !== "local") return;
     if (typeof location === "undefined" || !location.href || typeof history === "undefined") return;
     try {
       const url = new URL(location.href);
@@ -376,11 +412,26 @@
   function updateToggle() {
     const button = document.querySelector?.("[data-lang-toggle]");
     if (!button) return;
-    const toEnglish = lang !== "en";
+    const kind = siteKind();
+    const toEnglish = kind === "en" ? false : kind === "zh" ? true : lang !== "en";
     button.textContent = toEnglish ? "EN" : "中文";
     const label = toEnglish ? "Switch to English" : "切换到中文";
     button.setAttribute("aria-label", label);
     button.title = label;
+    if (button.tagName === "A") {
+      if (kind === "local") {
+        try {
+          const url = new URL(location.href);
+          if (toEnglish) url.searchParams.set("lang", "en");
+          else url.searchParams.delete("lang");
+          button.setAttribute("href", `${url.pathname}${url.search}${url.hash}`);
+        } catch {
+          button.setAttribute("href", toEnglish ? "?lang=en" : "./");
+        }
+      } else {
+        button.setAttribute("href", toEnglish ? englishSite : chineseSite);
+      }
+    }
   }
 
   function setLang(next) {
@@ -400,16 +451,21 @@
 
   function boot() {
     if (typeof document === "undefined") return;
+    const kind = siteKind();
     const fromPage = normalizeLang(document.documentElement.dataset.lang);
-    lang = fromPage || resolveLang({ stored: readStored(), query: readQuery() });
+    if (kind === "en") lang = "en";
+    else if (kind === "zh") lang = "zh";
+    else lang = fromPage || resolveLang({ stored: readStored(), query: readQuery() });
     document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
     document.documentElement.dataset.lang = lang;
-    if (normalizeLang(readQuery())) writeStored(lang);
+    if (kind === "local" && normalizeLang(readQuery())) writeStored(lang);
     apply();
     updateToggle();
     syncUrl();
     document.documentElement.classList.add("i18n-ready");
-    document.querySelector("[data-lang-toggle]")?.addEventListener("click", () => {
+    document.querySelector("[data-lang-toggle]")?.addEventListener("click", (event) => {
+      if (siteKind() !== "local") return;
+      event.preventDefault();
       setLang(lang === "en" ? "zh" : "en");
     });
   }

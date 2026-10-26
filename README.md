@@ -14,14 +14,16 @@ python3 -m http.server 3001 --bind 127.0.0.1 --directory .
 
 ## 线上站点
 
-生产地址为 <https://studio.siyadao.cn/>。本地预览仍是默认工作方式，后续部署和 Git 推送需要各自明确授权。
+中文站为 <https://studio.siyadao.cn/>。英文站为 <https://siyadao.github.io/>。本地预览仍是默认工作方式，后续部署和 Git 推送需要各自明确授权。
 
 ## 文件结构
 
 - `index.html`：产品介绍、三组十二场景、按需展开的说明、下载入口和原生弹窗。
 - `styles.css`：原有蓝色视觉、浅色与深色主题、叠窗展示、移动端适配和减少动画支持。
 - `theme.js`：在样式加载前恢复主题；首次访问默认深色。
-- `i18n.js`：中文 / 英文切换。页面默认中文，选择记在本机，`?lang=en` 可直接打开英文。
+- `i18n.js`：中文站与英文站。线上中文站的 EN 打开 GitHub Pages，英文站的「中文」回到中文站。本机预览仍在本页切换，`?lang=en` 可直接打开英文。
+- `robots.txt`、`sitemap.xml`：允许抓取，并收录中文首页与英文地址。
+- `public/og.png`：1200×630 分享图，供链接预览使用。
 - `app.js`：主题与对应截图切换、分组页签、滚动渐进展示、键盘操作、截图放大、下载菜单及反馈入口。
 - `downloads.js`：官方版本 API、数据校验、按需请求和安装包匹配。
 - `public/screenshots/`：原始产品截图及 `provenance.json` 拍摄记录。
