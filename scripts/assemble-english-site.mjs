@@ -35,7 +35,7 @@ export function assembleEnglishSite(rootDir, destination) {
   fs.writeFileSync(path.join(dest, '.nojekyll'), '');
   fs.writeFileSync(
     path.join(dest, 'README.md'),
-    '# Siyadao English site\n\nPublished from https://github.com/siyadao/website by GitHub Actions.\nThe Chinese site is https://studio.siyadao.cn/.\n',
+    '# Siyadao English site\n\nPublished from https://github.com/siyadao/siyadao.github.io by GitHub Actions.\nThe Chinese site is https://studio.siyadao.cn/.\n',
   );
 }
 
